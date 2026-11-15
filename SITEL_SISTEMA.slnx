@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="SITEL.Client/SITEL.Client.csproj" />
+  <Project Path="SITEL.Server/SITEL.Server.csproj" />
+  <Project Path="SITEL.Shared/SITEL.Shared.csproj" />
+</Solution>

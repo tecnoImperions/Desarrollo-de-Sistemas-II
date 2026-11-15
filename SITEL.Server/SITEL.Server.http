@@ -1,0 +1,6 @@
+@SITEL.Server_HostAddress = http://localhost:5281
+
+GET {{SITEL.Server_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

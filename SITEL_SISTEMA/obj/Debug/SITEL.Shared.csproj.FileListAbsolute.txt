@@ -1,0 +1,2 @@
+C:\Users\Juan Andres\source\repos\SITEL_SISTEMA\SITEL_SISTEMA\obj\Debug\SITEL.Shared.csproj.AssemblyReference.cache
+C:\Users\Juan Andres\source\repos\SITEL_SISTEMA\SITEL_SISTEMA\obj\Debug\SITEL.Shared.csproj.CoreCompileInputs.cache

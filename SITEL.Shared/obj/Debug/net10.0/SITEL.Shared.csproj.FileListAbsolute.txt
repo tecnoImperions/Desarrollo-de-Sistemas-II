@@ -1,0 +1,12 @@
+C:\Users\Juan Andres\source\repos\SITEL_SISTEMA\SITEL.Shared\bin\Debug\net10.0\SITEL.Shared.deps.json
+C:\Users\Juan Andres\source\repos\SITEL_SISTEMA\SITEL.Shared\bin\Debug\net10.0\SITEL.Shared.dll
+C:\Users\Juan Andres\source\repos\SITEL_SISTEMA\SITEL.Shared\bin\Debug\net10.0\SITEL.Shared.pdb
+C:\Users\Juan Andres\source\repos\SITEL_SISTEMA\SITEL.Shared\obj\Debug\net10.0\SITEL.Shared.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Juan Andres\source\repos\SITEL_SISTEMA\SITEL.Shared\obj\Debug\net10.0\SITEL.Shared.AssemblyInfoInputs.cache
+C:\Users\Juan Andres\source\repos\SITEL_SISTEMA\SITEL.Shared\obj\Debug\net10.0\SITEL.Shared.AssemblyInfo.cs
+C:\Users\Juan Andres\source\repos\SITEL_SISTEMA\SITEL.Shared\obj\Debug\net10.0\SITEL.Shared.csproj.CoreCompileInputs.cache
+C:\Users\Juan Andres\source\repos\SITEL_SISTEMA\SITEL.Shared\obj\Debug\net10.0\SITEL.Shared.dll
+C:\Users\Juan Andres\source\repos\SITEL_SISTEMA\SITEL.Shared\obj\Debug\net10.0\refint\SITEL.Shared.dll
+C:\Users\Juan Andres\source\repos\SITEL_SISTEMA\SITEL.Shared\obj\Debug\net10.0\SITEL.Shared.pdb
+C:\Users\Juan Andres\source\repos\SITEL_SISTEMA\SITEL.Shared\obj\Debug\net10.0\ref\SITEL.Shared.dll
+C:\Users\Juan Andres\source\repos\SITEL_SISTEMA\SITEL.Shared\obj\Debug\net10.0\SITEL.Sh.EC83BD71.Up2Date
