@@ -11,10 +11,11 @@
 using System;
 using System.Reflection;
 
+[assembly: Microsoft.Extensions.Configuration.UserSecrets.UserSecretsIdAttribute("368ba984-c7b9-4d64-abcc-5dc75e1a884d")]
 [assembly: System.Reflection.AssemblyCompanyAttribute("SITEL.Server")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+ec1c2b3ff4d631d13ffded3f474eafa7146d9cd8")]
 [assembly: System.Reflection.AssemblyProductAttribute("SITEL.Server")]
 [assembly: System.Reflection.AssemblyTitleAttribute("SITEL.Server")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

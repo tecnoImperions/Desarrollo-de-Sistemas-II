@@ -54,7 +54,9 @@ C:\Users\Juan Andres\source\repos\SITEL_SISTEMA\SITEL.Server\bin\Debug\net10.0\S
 C:\Users\Juan Andres\source\repos\SITEL_SISTEMA\SITEL.Server\bin\Debug\net10.0\SITEL.Server.pdb
 C:\Users\Juan Andres\source\repos\SITEL_SISTEMA\SITEL.Server\bin\Debug\net10.0\Azure.Core.dll
 C:\Users\Juan Andres\source\repos\SITEL_SISTEMA\SITEL.Server\bin\Debug\net10.0\Azure.Identity.dll
+C:\Users\Juan Andres\source\repos\SITEL_SISTEMA\SITEL.Server\bin\Debug\net10.0\BCrypt-Net-Next.dll
 C:\Users\Juan Andres\source\repos\SITEL_SISTEMA\SITEL.Server\bin\Debug\net10.0\Humanizer.dll
+C:\Users\Juan Andres\source\repos\SITEL_SISTEMA\SITEL.Server\bin\Debug\net10.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
 C:\Users\Juan Andres\source\repos\SITEL_SISTEMA\SITEL.Server\bin\Debug\net10.0\Microsoft.AspNetCore.OpenApi.dll
 C:\Users\Juan Andres\source\repos\SITEL_SISTEMA\SITEL.Server\bin\Debug\net10.0\Microsoft.Bcl.AsyncInterfaces.dll
 C:\Users\Juan Andres\source\repos\SITEL_SISTEMA\SITEL.Server\bin\Debug\net10.0\Microsoft.Bcl.Cryptography.dll
@@ -198,6 +200,7 @@ C:\Users\Juan Andres\source\repos\SITEL_SISTEMA\SITEL.Server\obj\Debug\net10.0\S
 C:\Users\Juan Andres\source\repos\SITEL_SISTEMA\SITEL.Server\obj\Debug\net10.0\SITEL.Server.csproj.CoreCompileInputs.cache
 C:\Users\Juan Andres\source\repos\SITEL_SISTEMA\SITEL.Server\obj\Debug\net10.0\SITEL.Server.MvcApplicationPartsAssemblyInfo.cs
 C:\Users\Juan Andres\source\repos\SITEL_SISTEMA\SITEL.Server\obj\Debug\net10.0\SITEL.Server.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\Juan Andres\source\repos\SITEL_SISTEMA\SITEL.Server\obj\Debug\net10.0\SITEL.Server.sourcelink.json
 C:\Users\Juan Andres\source\repos\SITEL_SISTEMA\SITEL.Server\obj\Debug\net10.0\rjimswa.dswa.cache.json
 C:\Users\Juan Andres\source\repos\SITEL_SISTEMA\SITEL.Server\obj\Debug\net10.0\rjsmrazor.dswa.cache.json
 C:\Users\Juan Andres\source\repos\SITEL_SISTEMA\SITEL.Server\obj\Debug\net10.0\rjsmcshtml.dswa.cache.json

@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("SITEL.Shared")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+ec1c2b3ff4d631d13ffded3f474eafa7146d9cd8")]
 [assembly: System.Reflection.AssemblyProductAttribute("SITEL.Shared")]
 [assembly: System.Reflection.AssemblyTitleAttribute("SITEL.Shared")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

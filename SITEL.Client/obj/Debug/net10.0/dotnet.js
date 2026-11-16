@@ -5,7 +5,7 @@ var e=!1;const t=async()=>WebAssembly.validate(new Uint8Array([0,97,115,109,1,0,
   "mainAssemblyName": "SITEL.Client",
   "applicationEnvironment": "Development",
   "resources": {
-    "hash": "sha256-FBE74j0N5zYWLZz59Shvq3aO19pUmrLgRTORBEs0Vgc=",
+    "hash": "sha256-3SFNaHfqaWjxV7u3Vvem+oR6FXLIC1EXNXCOr0wbaAQ=",
     "jsModuleNative": [
       {
         "name": "dotnet.native.bjoj0wmylw.js"
@@ -1242,16 +1242,16 @@ var e=!1;const t=async()=>WebAssembly.validate(new Uint8Array([0,97,115,109,1,0,
       },
       {
         "virtualPath": "SITEL.Client.wasm",
-        "name": "SITEL.Client.saenduk5u8.wasm",
-        "hash": "sha256-3HKQzo+4sXiuPDKch/WngtIk7S5gILCf66Zwgyquezc=",
+        "name": "SITEL.Client.hxec6ycp09.wasm",
+        "hash": "sha256-a5t2HjJShlaYhj2TvGZXr7qt2zavkParmF5WtjQTzPk=",
         "cache": "force-cache"
       }
     ],
     "pdb": [
       {
         "virtualPath": "SITEL.Client.pdb",
-        "name": "SITEL.Client.5dv740v8vo.pdb",
-        "hash": "sha256-iQ6QR1ENdD8ILs5Kc5tKsd1l9BIyAWtt1qWbjCTkc5g=",
+        "name": "SITEL.Client.w53besf53a.pdb",
+        "hash": "sha256-xNJ8u71qhCMLD/svrHFWGHpizkH5AgvP+xZOf4N+yZg=",
         "cache": "force-cache"
       }
     ],
