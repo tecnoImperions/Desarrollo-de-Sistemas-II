@@ -1,0 +1,223 @@
+@page "/login"
+@using System.ComponentModel.DataAnnotations
+@using SITEL.Client.Services
+@using SITEL.Shared.Enums
+@inject AuthService AuthService
+@inject NavigationManager Navigation
+
+<PageTitle>SITEL | Iniciar Sesión Corporativa</PageTitle>
+
+<div style="min-height: 100vh; display: flex; align-items: center; justify-content: center; background: radial-gradient(circle at top right, #1E293B 0%, #0F172A 65%); padding: 1.5rem;">
+    <div class="row g-0 shadow-lg" style="max-width: 960px; width: 100%; border-radius: 18px; overflow: hidden; border: 1px solid rgba(255,255,255,0.1);">
+
+        <!-- Panel Izquierdo: Identidad Corporativa SITEL -->
+        <div class="col-lg-5 d-none d-lg-flex flex-column justify-content-between p-5"
+             style="background: linear-gradient(155deg, #1E3A8A 0%, #0F172A 100%); color: #FFFFFF;">
+            <div>
+                <div class="d-flex align-items-center gap-2 mb-4">
+                    <span style="background: #2563EB; padding: 0.45rem 0.7rem; border-radius: 10px; font-size: 1.25rem; display: inline-flex;">
+                        <i class="bi bi-box-seam-fill text-white"></i>
+                    </span>
+                    <span style="font-weight: 800; font-size: 1.35rem; letter-spacing: 0.02em;">
+                        SITEL <span style="color: #60A5FA; font-weight: 600;">Logistics</span>
+                    </span>
+                </div>
+
+                <h3 style="font-weight: 800; font-size: 1.65rem; line-height: 1.25; margin-bottom: 1rem;">
+                    Trazabilidad Logística y Control Transaccional
+                </h3>
+                <p style="color: #CBD5E1; font-size: 0.92rem; line-height: 1.6;">
+                    Plataforma empresarial para el monitoreo de despachos en tiempo real, control de inventarios en almacén y gestión operativa de flota.
+                </p>
+            </div>
+
+            <div class="mt-4 pt-3" style="border-top: 1px solid rgba(255,255,255,0.12); font-size: 0.82rem; color: #94A3B8;">
+                <div class="d-flex align-items-center gap-2 mb-2">
+                    <i class="bi bi-shield-check text-info"></i>
+                    <span>Autenticación segura JWT + BCrypt</span>
+                </div>
+                <div class="d-flex align-items-center gap-2 mb-2">
+                    <i class="bi bi-upc-scan text-info"></i>
+                    <span>Guía Única Inmodificable (Regla RN01)</span>
+                </div>
+                <div class="d-flex align-items-center gap-2">
+                    <i class="bi bi-phone-fill text-info"></i>
+                    <span>Interfaz Móvil de Campo en 3 Pasos (RNF02)</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Panel Derecho: Formulario de Autenticación -->
+        <div class="col-lg-7 p-4 p-md-5" style="background-color: #FFFFFF;">
+            <div class="mb-4">
+                <span class="badge-sitel badge-asignado mb-2">
+                    <i class="bi bi-shield-lock-fill"></i> Acceso Seguro Corporativo
+                </span>
+                <h4 style="font-weight: 800; color: #0F172A; margin: 0;">Iniciar Sesión en SITEL</h4>
+                <p style="color: #64748B; font-size: 0.88rem; margin: 0.25rem 0 0;">
+                    Ingrese sus credenciales para acceder al panel según su perfil asignado.
+                </p>
+            </div>
+
+            @if (!string.IsNullOrEmpty(errorMessage))
+            {
+                <div class="alert alert-danger d-flex align-items-center gap-2 py-2 px-3 small mb-3" role="alert">
+                    <i class="bi bi-exclamation-octagon-fill fs-6"></i>
+                    <div>@errorMessage</div>
+                </div>
+            }
+
+            <EditForm Model="@loginModel" OnValidSubmit="HandleLogin">
+                <DataAnnotationsValidator />
+
+                <div class="mb-3">
+                    <label class="form-label small fw-bold text-secondary">Correo Electrónico Corporativo <span class="text-danger">*</span></label>
+                    <div class="input-group">
+                        <span class="input-group-text bg-light"><i class="bi bi-envelope-fill text-secondary"></i></span>
+                        <InputText type="email" class="form-control" @bind-Value="loginModel.Email" placeholder="usuario@sitel.bo" />
+                    </div>
+                    <ValidationMessage For="@(() => loginModel.Email)" class="text-danger small" />
+                </div>
+
+                <div class="mb-4">
+                    <label class="form-label small fw-bold text-secondary">Contraseña <span class="text-danger">*</span></label>
+                    <div class="input-group">
+                        <span class="input-group-text bg-light"><i class="bi bi-lock-fill text-secondary"></i></span>
+                        <InputText type="@(mostrarPassword ? "text" : "password")" class="form-control" @bind-Value="loginModel.Password" placeholder="••••••••" />
+                        <button type="button" class="btn btn-outline-secondary" @onclick="() => mostrarPassword = !mostrarPassword" title="Mostrar / Ocultar contraseña">
+                            <i class="bi @(mostrarPassword ? "bi-eye-slash-fill" : "bi-eye-fill")"></i>
+                        </button>
+                    </div>
+                    <ValidationMessage For="@(() => loginModel.Password)" class="text-danger small" />
+                </div>
+
+                <button type="submit" class="btn-sitel-primary w-100 justify-content-center py-2" style="font-size: 0.95rem;" disabled="@autenticando">
+                    @if (autenticando)
+                    {
+                        <span class="spinner-border spinner-border-sm me-2" role="status"></span>
+                        <span>Verificando credenciales...</span>
+                    }
+                    else
+                    {
+                        <i class="bi bi-box-arrow-in-right"></i>
+                        <span>Ingresar al Sistema</span>
+                    }
+                </button>
+            </EditForm>
+
+            <!-- Accesos Rápidos por Rol para Evaluación / Pruebas -->
+            <div class="mt-4 pt-3" style="border-top: 1px solid #E2E8F0;">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <span style="font-size: 0.76rem; font-weight: 700; text-transform: uppercase; color: #64748B; letter-spacing: 0.04em;">
+                        <i class="bi bi-lightning-charge-fill text-primary me-1"></i>Acceso Rápido por Rol (Demostración)
+                    </span>
+                </div>
+                <div class="row g-2">
+                    <div class="col-sm-4">
+                        <button type="button" class="btn-sitel-outline w-100 justify-content-center py-2"
+                                disabled="@autenticando"
+                                @onclick='() => IngresoRapidoDemoAsync("admin@sitel.bo", "Admin123*", "Ing. Juan Andrés (Admin)", RolUsuario.Administrador)'>
+                            <i class="bi bi-shield-fill-check"></i> Administrador
+                        </button>
+                    </div>
+                    <div class="col-sm-4">
+                        <button type="button" class="btn-sitel-outline w-100 justify-content-center py-2"
+                                disabled="@autenticando"
+                                @onclick='() => IngresoRapidoDemoAsync("operador@sitel.bo", "Operador123*", "Lic. Valeria Rojas (Operador)", RolUsuario.OperadorLogistico)'>
+                            <i class="bi bi-pc-display-horizontal"></i> Operador
+                        </button>
+                    </div>
+                    <div class="col-sm-4">
+                        <button type="button" class="btn-sitel-outline w-100 justify-content-center py-2"
+                                style="border-color: #93C5FD; background-color: #EFF6FF;"
+                                disabled="@autenticando"
+                                @onclick='() => IngresoRapidoDemoAsync("conductor@sitel.bo", "Conductor123*", "Carlos Andrés Mendoza Vargas", RolUsuario.Conductor)'>
+                            <i class="bi bi-truck"></i> Conductor
+                        </button>
+                    </div>
+                </div>
+                <div class="mt-2 text-center" style="font-size: 0.74rem; color: #94A3B8;">
+                    Admin/Operador redirigen a <code>/</code> (Panel Ejecutivo) • Conductor redirige a <code>/conductor</code> (Vista Móvil RNF02)
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    private LoginModel loginModel = new();
+    private bool mostrarPassword = false;
+    private bool autenticando = false;
+    private string errorMessage = string.Empty;
+
+    private async Task HandleLogin()
+    {
+        autenticando = true;
+        errorMessage = string.Empty;
+
+        try
+        {
+            var resultado = await AuthService.LoginAsync(loginModel.Email, loginModel.Password);
+            if (resultado.Exito)
+            {
+                RedirigirSegunRol(resultado.Rol);
+            }
+            else
+            {
+                errorMessage = resultado.Mensaje;
+            }
+        }
+        finally
+        {
+            autenticando = false;
+        }
+    }
+
+    private async Task IngresoRapidoDemoAsync(string email, string password, string nombre, RolUsuario rol)
+    {
+        loginModel.Email = email;
+        loginModel.Password = password;
+        autenticando = true;
+        errorMessage = string.Empty;
+
+        try
+        {
+            var resultado = await AuthService.LoginAsegurandoCuentaDemoAsync(email, password, nombre, rol);
+            if (resultado.Exito)
+            {
+                RedirigirSegunRol(resultado.Rol);
+            }
+            else
+            {
+                errorMessage = resultado.Mensaje;
+            }
+        }
+        finally
+        {
+            autenticando = false;
+        }
+    }
+
+    private void RedirigirSegunRol(string? rol)
+    {
+        if (string.Equals(rol, nameof(RolUsuario.Conductor), StringComparison.OrdinalIgnoreCase))
+        {
+            Navigation.NavigateTo("/conductor");
+        }
+        else
+        {
+            Navigation.NavigateTo("/");
+        }
+    }
+
+    public class LoginModel
+    {
+        [Required(ErrorMessage = "El correo electrónico es obligatorio.")]
+        [EmailAddress(ErrorMessage = "Ingrese un correo electrónico válido.")]
+        public string Email { get; set; } = string.Empty;
+
+        [Required(ErrorMessage = "La contraseña es obligatoria.")]
+        [MinLength(4, ErrorMessage = "La contraseña debe tener al menos 4 caracteres.")]
+        public string Password { get; set; } = string.Empty;
+    }
+}

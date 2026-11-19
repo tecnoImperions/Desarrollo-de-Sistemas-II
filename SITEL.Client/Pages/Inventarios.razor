@@ -1,0 +1,631 @@
+@page "/inventarios"
+@using System.Net.Http.Json
+@using SITEL.Shared.DTOs
+@using SITEL.Shared.Entities
+@using SITEL.Shared.Enums
+@inject HttpClient Http
+
+<PageTitle>SITEL | Inventario y Control de Carga</PageTitle>
+
+<div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-3">
+    <div>
+        <h2 style="font-weight: 800; margin: 0; font-size: 1.55rem; color: #0F172A;">
+            <i class="bi bi-boxes text-primary me-2"></i>Control de Inventarios, Productos y Mercancía
+        </h2>
+        <p style="color: var(--text-muted); margin: 0.25rem 0 0; font-size: 0.9rem;">
+            Gestión de stock en almacén por categorías (abarrotes, insumos médicos e industriales) vinculado a los despachos.
+        </p>
+    </div>
+    <a href="/envios/nuevo" class="btn-sitel-primary">
+        <i class="bi bi-truck"></i> Despachar Mercancía
+    </a>
+</div>
+
+<!-- Indicadores de Almacén -->
+<div class="row g-3 mb-4">
+    <div class="col-md-3">
+        <div class="sitel-kpi-card">
+            <div class="d-flex justify-content-between align-items-center">
+                <span style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: var(--text-muted);">Ítems en Catálogo (SKU)</span>
+                <i class="bi bi-upc-scan text-primary fs-5"></i>
+            </div>
+            <div style="font-size: 1.65rem; font-weight: 800; color: #0F172A; margin-top: 0.2rem;">@(productos?.Count ?? 0)</div>
+            <div style="font-size: 0.8rem; color: #2563EB; font-weight: 600;">Abarrotes e insumos registrados</div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="sitel-kpi-card" style="border-left-color: #3B82F6;">
+            <div class="d-flex justify-content-between align-items-center">
+                <span style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: var(--text-muted);">Unidades Disponibles</span>
+                <i class="bi bi-box-seam-fill text-primary fs-5"></i>
+            </div>
+            <div style="font-size: 1.65rem; font-weight: 800; color: #0F172A; margin-top: 0.2rem;">@(productos?.Where(p => p != null).Sum(p => p.StockActual) ?? 0)</div>
+            <div style="font-size: 0.8rem; color: var(--text-muted);">Bultos / cajas listas para despacho</div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="sitel-kpi-card" style="border-left-color: #F59E0B;">
+            <div class="d-flex justify-content-between align-items-center">
+                <span style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: var(--text-muted);">Alerta Stock Crítico</span>
+                <i class="bi bi-exclamation-triangle-fill text-warning fs-5"></i>
+            </div>
+            <div style="font-size: 1.65rem; font-weight: 800; color: #B45309; margin-top: 0.2rem;">
+                @(productos?.Count(p => p != null && p.StockActual <= p.StockMinimo && p.StockActual > 0) ?? 0)
+            </div>
+            <div style="font-size: 0.8rem; color: #B45309; font-weight: 600;">Requieren reposición pronta</div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="sitel-kpi-card" style="border-left-color: #EF4444;">
+            <div class="d-flex justify-content-between align-items-center">
+                <span style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: var(--text-muted);">Productos Sin Stock</span>
+                <i class="bi bi-x-octagon-fill text-danger fs-5"></i>
+            </div>
+            <div style="font-size: 1.65rem; font-weight: 800; color: #B91C1C; margin-top: 0.2rem;">
+                @(productos?.Count(p => p != null && p.StockActual == 0) ?? 0)
+            </div>
+            <div style="font-size: 0.8rem; color: var(--text-muted);">Bloqueados para nuevos envíos</div>
+        </div>
+    </div>
+</div>
+
+<div class="row g-4">
+    <!-- Formulario de Producto / Mercancía -->
+    <div class="col-lg-4">
+        <div class="sitel-card">
+            <div class="d-flex justify-content-between align-items-center mb-3 pb-2" style="border-bottom: 1px solid var(--border-color);">
+                <h5 style="font-weight: 700; margin: 0; color: #0F172A; font-size: 1.05rem;">
+                    @if (modoEdicion)
+                    {
+                        <span><i class="bi bi-pencil-square text-primary me-2"></i>Editar Mercancía</span>
+                    }
+                    else
+                    {
+                        <span><i class="bi bi-plus-circle-fill text-primary me-2"></i>Registrar Producto / Carga</span>
+                    }
+                </h5>
+                @if (modoEdicion)
+                {
+                    <button type="button" class="btn btn-sm btn-outline-secondary" @onclick="CancelarEdicion">
+                        <i class="bi bi-x-lg"></i> Cancelar
+                    </button>
+                }
+            </div>
+
+            @if (!string.IsNullOrEmpty(mensaje))
+            {
+                <div class="alert @(esError ? "alert-danger" : "alert-success") py-2 px-3 small mb-3">
+                    <i class="bi @(esError ? "bi-exclamation-octagon-fill" : "bi-check-circle-fill") me-1"></i>@mensaje
+                </div>
+            }
+
+            <EditForm Model="@productoForm" OnValidSubmit="GuardarProductoAsync">
+                <DataAnnotationsValidator />
+
+                <div class="row g-2 mb-3">
+                    <div class="col-7">
+                        <label class="form-label small fw-bold text-secondary">Código SKU <span class="text-danger">*</span></label>
+                        <InputText class="form-control" @bind-Value="productoForm.CodigoSku" placeholder="ABA-ARR-001" />
+                        <ValidationMessage For="@(() => productoForm.CodigoSku)" class="text-danger small" />
+                    </div>
+                    <div class="col-5">
+                        <label class="form-label small fw-bold text-secondary">Unidad</label>
+                        <InputSelect class="form-select" @bind-Value="productoForm.UnidadMedida">
+                            <option value="Cajas">Cajas</option>
+                            <option value="Sacos">Sacos</option>
+                            <option value="Bandejas">Bandejas</option>
+                            <option value="Pallets">Pallets</option>
+                            <option value="Unidades">Unidades</option>
+                        </InputSelect>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label small fw-bold text-secondary">Nombre de la Mercancía <span class="text-danger">*</span></label>
+                    <InputText class="form-control" @bind-Value="productoForm.Nombre" placeholder="Ej. Aceite Vegetal Caja x 12" />
+                    <ValidationMessage For="@(() => productoForm.Nombre)" class="text-danger small" />
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label small fw-bold text-secondary">Categoría Logística</label>
+                    <InputSelect class="form-select" @bind-Value="productoForm.Categoria">
+                        <option value="@CategoriaProducto.Abarrotes">Abarrotes y Alimentos Secos</option>
+                        <option value="@CategoriaProducto.InsumosMedicos">Insumos Médicos y Farmacia</option>
+                        <option value="@CategoriaProducto.InsumosIndustriales">Insumos Industriales</option>
+                        <option value="@CategoriaProducto.BebidasYLacteos">Bebidas y Lácteos</option>
+                        <option value="@CategoriaProducto.LimpiezaHigiene">Limpieza e Higiene</option>
+                        <option value="@CategoriaProducto.MaterialEmpaque">Material de Empaque</option>
+                        <option value="@CategoriaProducto.Otros">Otros</option>
+                    </InputSelect>
+                </div>
+
+                <div class="row g-2 mb-3">
+                    <div class="col-4">
+                        <label class="form-label small fw-bold text-secondary">Stock Actual</label>
+                        <InputNumber class="form-control" @bind-Value="productoForm.StockActual" />
+                    </div>
+                    <div class="col-4">
+                        <label class="form-label small fw-bold text-secondary">Stock Mín.</label>
+                        <InputNumber class="form-control" @bind-Value="productoForm.StockMinimo" />
+                    </div>
+                    <div class="col-4">
+                        <label class="form-label small fw-bold text-secondary">Peso (Kg)</label>
+                        <InputNumber class="form-control" @bind-Value="productoForm.PesoUnitarioKg" />
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label small fw-bold text-secondary">Especificaciones de Carga</label>
+                    <InputTextArea class="form-control" rows="2" @bind-Value="productoForm.Descripcion" placeholder="Condiciones de estiba, embalaje o lote..." />
+                </div>
+
+                <button type="submit" class="btn-sitel-primary w-100 justify-content-center" disabled="@guardando">
+                    @if (guardando)
+                    {
+                        <span><i class="bi bi-arrow-repeat me-1"></i>Guardando...</span>
+                    }
+                    else if (modoEdicion)
+                    {
+                        <span><i class="bi bi-floppy-fill me-1"></i>Actualizar Producto</span>
+                    }
+                    else
+                    {
+                        <span><i class="bi bi-plus-circle-fill me-1"></i>Registrar en Inventario</span>
+                    }
+                </button>
+            </EditForm>
+        </div>
+    </div>
+
+    <!-- Tabla y Filtros de Inventario -->
+    <div class="col-lg-8">
+        <div class="sitel-card mb-3" style="padding: 1rem 1.25rem;">
+            <div class="row g-2 align-items-center">
+                <div class="col-md-5">
+                    <div class="input-group">
+                        <span class="input-group-text bg-light border-end-0"><i class="bi bi-search text-muted"></i></span>
+                        <input type="text" class="form-control border-start-0" placeholder="Buscar por SKU, nombre o descripción..."
+                               @bind="filtroTexto" @bind:event="oninput" />
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <select class="form-select" @bind="filtroCategoria">
+                        <option value="">Todas las categorías</option>
+                        @foreach (var cat in Enum.GetValues<CategoriaProducto>())
+                        {
+                            <option value="@cat.ToString()">@FormatearCategoria(cat)</option>
+                        }
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <select class="form-select" @bind="filtroDisponibilidad">
+                        <option value="">Todo el stock</option>
+                        <option value="disponible">Con stock (&gt; 0)</option>
+                        <option value="critico">Stock crítico</option>
+                        <option value="agotado">Agotados (0)</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="sitel-card" style="padding: 0; overflow: hidden;">
+            @if (cargando)
+            {
+                <div class="text-center py-5">
+                    <div class="spinner-border text-primary" role="status"></div>
+                    <p class="mt-2 mb-0 small text-muted">Consultando existencias en almacén...</p>
+                </div>
+            }
+            else if (!ProductosFiltrados.Any())
+            {
+                <div class="text-center py-5">
+                    <i class="bi bi-box-seam fs-2 text-muted d-block mb-2"></i>
+                    <p class="text-muted mb-0 fw-semibold">No se encontraron productos con los filtros seleccionados.</p>
+                </div>
+            }
+            else
+            {
+                <div class="table-responsive">
+                    <table class="sitel-table">
+                        <thead>
+                            <tr>
+                                <th>SKU</th>
+                                <th>Mercancía / Descripción</th>
+                                <th>Categoría</th>
+                                <th>Peso Unit.</th>
+                                <th>Disponibilidad</th>
+                                <th class="text-end">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var p in ProductosFiltrados)
+                            {
+                                <tr>
+                                    <td>
+                                        <span style="font-family: monospace; font-weight: 700; color: #2563EB;">
+                                            <i class="bi bi-upc me-1"></i>@p.CodigoSku
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <div style="font-weight: 700; color: #0F172A;">@p.Nombre</div>
+                                        @if (!string.IsNullOrWhiteSpace(p.Descripcion))
+                                        {
+                                            <div style="font-size: 0.78rem; color: var(--text-muted);">@p.Descripcion</div>
+                                        }
+                                    </td>
+                                    <td>
+                                        <span class="badge-sitel badge-registrado">
+                                            <i class="bi bi-tag-fill"></i> @FormatearCategoria(p.Categoria)
+                                        </span>
+                                    </td>
+                                    <td style="font-weight: 600;">@p.PesoUnitarioKg.ToString("0.0") Kg</td>
+                                    <td>
+                                        @if (p.StockActual == 0)
+                                        {
+                                            <span class="badge-sitel badge-incidencia">
+                                                <i class="bi bi-x-circle-fill"></i> Agotado (0 @p.UnidadMedida)
+                                            </span>
+                                        }
+                                        else if (p.StockActual <= p.StockMinimo)
+                                        {
+                                            <span class="badge-sitel badge-enruta">
+                                                <i class="bi bi-exclamation-triangle-fill"></i> Bajo: @p.StockActual @p.UnidadMedida
+                                            </span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge-sitel badge-entregado">
+                                                <i class="bi bi-check-circle-fill"></i> @p.StockActual @p.UnidadMedida
+                                            </span>
+                                        }
+                                    </td>
+                                    <td class="text-end" style="white-space: nowrap;">
+                                        <button class="btn-sitel-outline me-1" title="Ajustar / Reponer Stock" @onclick="() => AbrirModalStock(p)">
+                                            <i class="bi bi-arrow-down-up"></i> Stock
+                                        </button>
+                                        <button class="btn btn-sm btn-outline-secondary me-1" style="border-radius: 8px;" title="Editar" @onclick="() => IniciarEdicion(p)">
+                                            <i class="bi bi-pencil-square"></i>
+                                        </button>
+                                        <button class="btn btn-sm btn-outline-danger" style="border-radius: 8px;" title="Eliminar" @onclick="() => productoPorEliminar = p">
+                                            <i class="bi bi-trash3"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<!-- Modal para Ajuste Transaccional de Stock (Entrada / Salida) -->
+@if (productoAjuste != null)
+{
+    <div class="sitel-modal-backdrop" @onclick="CerrarModalStock">
+        <div class="sitel-modal" style="max-width: 500px;" @onclick:stopPropagation="true">
+            <div class="sitel-modal-header">
+                <h5 style="margin: 0; font-size: 1.05rem; font-weight: 700;">
+                    <i class="bi bi-box-seam me-2"></i>Movimiento de Stock en Almacén
+                </h5>
+                <button type="button" class="btn-close btn-close-white" @onclick="CerrarModalStock"></button>
+            </div>
+            <div class="sitel-modal-body">
+                <div class="mb-3 p-3" style="background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 8px;">
+                    <div style="font-weight: 700; color: #0F172A;">@productoAjuste.Nombre</div>
+                    <div style="font-size: 0.84rem; color: #64748B;">
+                        SKU: <strong>@productoAjuste.CodigoSku</strong> | Stock Actual: <strong style="color: #2563EB;">@productoAjuste.StockActual @productoAjuste.UnidadMedida</strong>
+                    </div>
+                </div>
+
+                @if (!string.IsNullOrEmpty(errorModalStock))
+                {
+                    <div class="alert alert-danger py-2 small">
+                        <i class="bi bi-exclamation-octagon-fill me-1"></i>@errorModalStock
+                    </div>
+                }
+
+                <div class="row g-3">
+                    <div class="col-6">
+                        <label class="form-label small fw-bold">Tipo de Operación</label>
+                        <select class="form-select" @bind="tipoOperacionStock">
+                            <option value="entrada">Entrada / Reposición (+)</option>
+                            <option value="salida">Salida / Baja Manual (-)</option>
+                        </select>
+                    </div>
+                    <div class="col-6">
+                        <label class="form-label small fw-bold">Cantidad (@productoAjuste.UnidadMedida)</label>
+                        <input type="number" min="1" class="form-control" @bind="cantidadMovimiento" />
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label small fw-bold">Motivo / Documento de Respaldo</label>
+                        <input type="text" class="form-control" @bind="motivoMovimiento" placeholder="Ej. Ingreso por Nota de Remisión #402" />
+                    </div>
+                </div>
+            </div>
+            <div class="sitel-modal-footer">
+                <button type="button" class="btn btn-outline-secondary" @onclick="CerrarModalStock">Cancelar</button>
+                <button type="button" class="btn-sitel-primary" @onclick="ConfirmarAjusteStockAsync" disabled="@procesandoStock">
+                    <i class="bi bi-check2-circle"></i> @(procesandoStock ? "Actualizando..." : "Confirmar Movimiento")
+                </button>
+            </div>
+        </div>
+    </div>
+}
+
+<!-- Modal de Confirmación de Eliminación -->
+@if (productoPorEliminar != null)
+{
+    <div class="sitel-modal-backdrop" @onclick="() => productoPorEliminar = null">
+        <div class="sitel-modal" style="max-width: 460px;" @onclick:stopPropagation="true">
+            <div class="sitel-modal-header">
+                <h5 style="margin: 0; font-size: 1.05rem; font-weight: 700;">
+                    <i class="bi bi-exclamation-triangle-fill text-warning me-2"></i>Eliminar Mercancía
+                </h5>
+                <button type="button" class="btn-close btn-close-white" @onclick="() => productoPorEliminar = null"></button>
+            </div>
+            <div class="sitel-modal-body">
+                <p class="mb-2">¿Confirmar eliminación del producto <strong>@productoPorEliminar.Nombre</strong> (@productoPorEliminar.CodigoSku)?</p>
+                <p class="small text-muted mb-0">Si el producto ya fue incluido en guías de despacho previas, el sistema impedirá su borrado para proteger la trazabilidad.</p>
+            </div>
+            <div class="sitel-modal-footer">
+                <button type="button" class="btn btn-outline-secondary" @onclick="() => productoPorEliminar = null">Cancelar</button>
+                <button type="button" class="btn btn-danger fw-semibold" @onclick="ConfirmarEliminarProductoAsync">
+                    <i class="bi bi-trash3-fill me-1"></i>Eliminar
+                </button>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    private List<Producto> productos = new();
+    private Producto productoForm = new() { UnidadMedida = "Cajas", StockMinimo = 10, PesoUnitarioKg = 10.0m };
+
+    private string filtroTexto = string.Empty;
+    private string filtroCategoria = string.Empty;
+    private string filtroDisponibilidad = string.Empty;
+
+    private bool cargando = true;
+    private bool guardando = false;
+    private bool modoEdicion = false;
+    private string mensaje = string.Empty;
+    private bool esError = false;
+
+    // Estado para modal de ajuste de stock
+    private Producto? productoAjuste;
+    private string tipoOperacionStock = "entrada";
+    private int cantidadMovimiento = 10;
+    private string motivoMovimiento = "Reposición de inventario en almacén central";
+    private string errorModalStock = string.Empty;
+    private bool procesandoStock = false;
+
+    // Estado para modal de eliminación
+    private Producto? productoPorEliminar;
+
+    private IEnumerable<Producto> ProductosFiltrados => (productos ?? new List<Producto>())
+        .Where(p => p != null && (string.IsNullOrWhiteSpace(filtroTexto) ||
+                    (p.CodigoSku?.Contains(filtroTexto, StringComparison.OrdinalIgnoreCase) ?? false) ||
+                    (p.Nombre?.Contains(filtroTexto, StringComparison.OrdinalIgnoreCase) ?? false) ||
+                    (p.Descripcion?.Contains(filtroTexto, StringComparison.OrdinalIgnoreCase) ?? false)))
+        .Where(p => string.IsNullOrWhiteSpace(filtroCategoria) ||
+                    p.Categoria.ToString().Equals(filtroCategoria, StringComparison.OrdinalIgnoreCase))
+        .Where(p => filtroDisponibilidad switch
+        {
+            "disponible" => p.StockActual > 0,
+            "critico" => p.StockActual > 0 && p.StockActual <= p.StockMinimo,
+            "agotado" => p.StockActual == 0,
+            _ => true
+        });
+
+    protected override async Task OnInitializedAsync()
+    {
+        await CargarProductosAsync();
+    }
+
+    private async Task CargarProductosAsync()
+    {
+        cargando = true;
+        try
+        {
+            var response = await Http.GetAsync("api/productos");
+            if (response.IsSuccessStatusCode)
+            {
+                productos = await response.Content.ReadFromJsonAsync<List<Producto>>() ?? new List<Producto>();
+            }
+            else
+            {
+                productos = new List<Producto>();
+            }
+        }
+        catch (Exception ex)
+        {
+            esError = true;
+            mensaje = $"Error al cargar el inventario: {ex.Message}";
+            productos = new List<Producto>();
+        }
+        finally
+        {
+            cargando = false;
+        }
+    }
+
+    private async Task GuardarProductoAsync()
+    {
+        guardando = true;
+        mensaje = string.Empty;
+
+        try
+        {
+            HttpResponseMessage resp = modoEdicion
+                ? await Http.PutAsJsonAsync($"api/productos/{productoForm.Id}", productoForm)
+                : await Http.PostAsJsonAsync("api/productos", productoForm);
+
+            if (resp.IsSuccessStatusCode)
+            {
+                esError = false;
+                mensaje = modoEdicion ? "Producto actualizado correctamente." : "Nueva mercancía registrada en el almacén.";
+                modoEdicion = false;
+                productoForm = new Producto { UnidadMedida = "Cajas", StockMinimo = 10, PesoUnitarioKg = 10.0m };
+                await CargarProductosAsync();
+            }
+            else
+            {
+                esError = true;
+                mensaje = await LeerErrorSeguroAsync(resp) ?? "No se pudo guardar el producto.";
+            }
+        }
+        catch (Exception ex)
+        {
+            esError = true;
+            mensaje = $"Error de conexión: {ex.Message}";
+        }
+        finally
+        {
+            guardando = false;
+        }
+    }
+
+    private void IniciarEdicion(Producto? p)
+    {
+        if (p == null) return;
+        modoEdicion = true;
+        mensaje = string.Empty;
+        productoForm = new Producto
+        {
+            Id = p.Id,
+            CodigoSku = p.CodigoSku,
+            Nombre = p.Nombre,
+            Descripcion = p.Descripcion,
+            Categoria = p.Categoria,
+            UnidadMedida = p.UnidadMedida,
+            StockActual = p.StockActual,
+            StockMinimo = p.StockMinimo,
+            PesoUnitarioKg = p.PesoUnitarioKg,
+            Activo = p.Activo
+        };
+    }
+
+    private void CancelarEdicion()
+    {
+        modoEdicion = false;
+        productoForm = new Producto { UnidadMedida = "Cajas", StockMinimo = 10, PesoUnitarioKg = 10.0m };
+        mensaje = string.Empty;
+    }
+
+    private void AbrirModalStock(Producto? p)
+    {
+        if (p == null) return;
+        productoAjuste = p;
+        tipoOperacionStock = "entrada";
+        cantidadMovimiento = 10;
+        motivoMovimiento = "Ingreso de lote a almacén";
+        errorModalStock = string.Empty;
+    }
+
+    private void CerrarModalStock()
+    {
+        productoAjuste = null;
+        errorModalStock = string.Empty;
+    }
+
+    private async Task ConfirmarAjusteStockAsync()
+    {
+        if (productoAjuste == null) return;
+        if (cantidadMovimiento <= 0)
+        {
+            errorModalStock = "La cantidad debe ser mayor a cero.";
+            return;
+        }
+
+        procesandoStock = true;
+        errorModalStock = string.Empty;
+
+        try
+        {
+            bool esEntrada = string.Equals(tipoOperacionStock, "entrada", StringComparison.OrdinalIgnoreCase);
+            int delta = esEntrada ? cantidadMovimiento : -cantidadMovimiento;
+            var dto = new AjusteStockDto
+            {
+                ProductoId = productoAjuste.Id,
+                Cantidad = delta,
+                Motivo = string.IsNullOrWhiteSpace(motivoMovimiento) ? "Ajuste operativo" : motivoMovimiento
+            };
+
+            var resp = await Http.PatchAsJsonAsync($"api/productos/{productoAjuste.Id}/stock", dto);
+            if (resp.IsSuccessStatusCode)
+            {
+                esError = false;
+                mensaje = $"Stock de '{productoAjuste.Nombre}' actualizado exitosamente.";
+                productoAjuste = null;
+                await CargarProductosAsync();
+            }
+            else
+            {
+                errorModalStock = await LeerErrorSeguroAsync(resp) ?? "No se pudo realizar el ajuste de stock.";
+            }
+        }
+        catch (Exception ex)
+        {
+            errorModalStock = $"Error: {ex.Message}";
+        }
+        finally
+        {
+            procesandoStock = false;
+        }
+    }
+
+    private async Task ConfirmarEliminarProductoAsync()
+    {
+        if (productoPorEliminar == null) return;
+
+        try
+        {
+            var resp = await Http.DeleteAsync($"api/productos/{productoPorEliminar.Id}");
+            if (resp.IsSuccessStatusCode)
+            {
+                esError = false;
+                mensaje = $"Producto '{productoPorEliminar.Nombre}' eliminado.";
+                productoPorEliminar = null;
+                await CargarProductosAsync();
+            }
+            else
+            {
+                esError = true;
+                mensaje = await LeerErrorSeguroAsync(resp) ?? "No se pudo eliminar el producto.";
+                productoPorEliminar = null;
+            }
+        }
+        catch (Exception ex)
+        {
+            esError = true;
+            mensaje = $"Error al eliminar: {ex.Message}";
+            productoPorEliminar = null;
+        }
+    }
+
+    private static async Task<string?> LeerErrorSeguroAsync(HttpResponseMessage response)
+    {
+        try
+        {
+            var err = await response.Content.ReadFromJsonAsync<ApiMessageResponse>();
+            return err?.Mensaje;
+        }
+        catch
+        {
+            return null;
+        }
+    }
+
+    private static string FormatearCategoria(CategoriaProducto cat) => cat switch
+    {
+        CategoriaProducto.Abarrotes => "Abarrotes",
+        CategoriaProducto.InsumosMedicos => "Insumos Médicos",
+        CategoriaProducto.InsumosIndustriales => "Insumos Industriales",
+        CategoriaProducto.BebidasYLacteos => "Bebidas y Lácteos",
+        CategoriaProducto.LimpiezaHigiene => "Limpieza e Higiene",
+        CategoriaProducto.MaterialEmpaque => "Material Empaque",
+        _ => "Otros"
+    };
+}

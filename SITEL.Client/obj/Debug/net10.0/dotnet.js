@@ -5,7 +5,7 @@ var e=!1;const t=async()=>WebAssembly.validate(new Uint8Array([0,97,115,109,1,0,
   "mainAssemblyName": "SITEL.Client",
   "applicationEnvironment": "Development",
   "resources": {
-    "hash": "sha256-3SFNaHfqaWjxV7u3Vvem+oR6FXLIC1EXNXCOr0wbaAQ=",
+    "hash": "sha256-xoB1dWGxKvXTxo9gQMf6V+KcOjW7I0ZLChnf9s0FNVQ=",
     "jsModuleNative": [
       {
         "name": "dotnet.native.bjoj0wmylw.js"
@@ -96,20 +96,20 @@ var e=!1;const t=async()=>WebAssembly.validate(new Uint8Array([0,97,115,109,1,0,
       },
       {
         "virtualPath": "Microsoft.Extensions.Configuration.wasm",
-        "name": "Microsoft.Extensions.Configuration.od4l74be9l.wasm",
-        "hash": "sha256-lM/45gdE8yKgJGmAViOSmtu7WZrLNd21SuUUKiqmXj8=",
+        "name": "Microsoft.Extensions.Configuration.4xzb2tgfpn.wasm",
+        "hash": "sha256-aN+zVVgOcC/YjuIel3tiKusp/y5Wqsl5+K3dmg8sAcE=",
         "cache": "force-cache"
       },
       {
         "virtualPath": "Microsoft.Extensions.Configuration.Abstractions.wasm",
-        "name": "Microsoft.Extensions.Configuration.Abstractions.orp4hjdrld.wasm",
-        "hash": "sha256-dMheGKfPrKscm1EVf/SuyR4NAb5X5p/kAu0aY+Mm9+0=",
+        "name": "Microsoft.Extensions.Configuration.Abstractions.dkt0lrhzhb.wasm",
+        "hash": "sha256-UxkGKUpxi9Kkhk4Meq/HYvq7c5S+ZkwLIkWXP9oqxZ4=",
         "cache": "force-cache"
       },
       {
         "virtualPath": "Microsoft.Extensions.Configuration.Binder.wasm",
-        "name": "Microsoft.Extensions.Configuration.Binder.8l8hkqeu62.wasm",
-        "hash": "sha256-vOEt0KZYL7B9QkHjbn6erd477UKUz/W2vUyjcNMHX9Y=",
+        "name": "Microsoft.Extensions.Configuration.Binder.33xxarnbkh.wasm",
+        "hash": "sha256-v+t2QltTuagVVXiC5SA8jVZC7EGNzAEt9ZomU3LR1TY=",
         "cache": "force-cache"
       },
       {
@@ -126,26 +126,26 @@ var e=!1;const t=async()=>WebAssembly.validate(new Uint8Array([0,97,115,109,1,0,
       },
       {
         "virtualPath": "Microsoft.Extensions.DependencyInjection.wasm",
-        "name": "Microsoft.Extensions.DependencyInjection.zmc2hy938i.wasm",
-        "hash": "sha256-e3Whwj2DYfhGCf0qHgXTK4xaec8W9n8DWbwz9ISLwAo=",
+        "name": "Microsoft.Extensions.DependencyInjection.erg5qpmwzi.wasm",
+        "hash": "sha256-5l05rgg8oVqDfc2zzdPJBRjCtuQhxx/IeiS7d0LYH2s=",
         "cache": "force-cache"
       },
       {
         "virtualPath": "Microsoft.Extensions.DependencyInjection.Abstractions.wasm",
-        "name": "Microsoft.Extensions.DependencyInjection.Abstractions.9738fya3ak.wasm",
-        "hash": "sha256-y6YkM5ZUSVHGLEZc5LOoYmNyNOZG+Yg9Apfm2CfdWJY=",
+        "name": "Microsoft.Extensions.DependencyInjection.Abstractions.qcrspjdhcw.wasm",
+        "hash": "sha256-em4RsAIrPCoJ6ike3al0kK8tEBj0gGdqzB/8XzI7CCg=",
         "cache": "force-cache"
       },
       {
         "virtualPath": "Microsoft.Extensions.Diagnostics.wasm",
-        "name": "Microsoft.Extensions.Diagnostics.bwv1hcs2nr.wasm",
-        "hash": "sha256-u/gJ0VTBQgVs6lzv2xHw7PYVHTMCN4GOd1sKqfVSACk=",
+        "name": "Microsoft.Extensions.Diagnostics.75h5t5cc0v.wasm",
+        "hash": "sha256-9egDZ1FtXADXdRFRFDyysQhhiCsOuIzGCK1IsNY6PN8=",
         "cache": "force-cache"
       },
       {
         "virtualPath": "Microsoft.Extensions.Diagnostics.Abstractions.wasm",
-        "name": "Microsoft.Extensions.Diagnostics.Abstractions.2q0g56oies.wasm",
-        "hash": "sha256-VptcNKm4/Sy8NL7ogrnyhFf1TNg+HWfbq4hilFY9CTQ=",
+        "name": "Microsoft.Extensions.Diagnostics.Abstractions.qqfo45w47t.wasm",
+        "hash": "sha256-TuIs07Q4QU/agG0C+5FC/2innUyQNr1PtacVCG0ttGE=",
         "cache": "force-cache"
       },
       {
@@ -167,33 +167,39 @@ var e=!1;const t=async()=>WebAssembly.validate(new Uint8Array([0,97,115,109,1,0,
         "cache": "force-cache"
       },
       {
+        "virtualPath": "Microsoft.Extensions.Http.wasm",
+        "name": "Microsoft.Extensions.Http.4odicv7r8b.wasm",
+        "hash": "sha256-TFKHkBMZ0cT1n2sJ3di74h9Yhsrk4G82qcRHfwpESB0=",
+        "cache": "force-cache"
+      },
+      {
         "virtualPath": "Microsoft.Extensions.Logging.wasm",
-        "name": "Microsoft.Extensions.Logging.t2rhe9oehu.wasm",
-        "hash": "sha256-q8pyIvjLAsLl8wQdPTPJYXib6GlGg9ixtBWhRIfoIRw=",
+        "name": "Microsoft.Extensions.Logging.8nh46k57n4.wasm",
+        "hash": "sha256-VNg3w5l6rTgxbZwiAnh51qU4LBExlqrSUJ4hbuFL3vA=",
         "cache": "force-cache"
       },
       {
         "virtualPath": "Microsoft.Extensions.Logging.Abstractions.wasm",
-        "name": "Microsoft.Extensions.Logging.Abstractions.mbxe8zbd50.wasm",
-        "hash": "sha256-MgRw3L5TiMo8xJb+3cgjcGJ6ZzMWP1dWO4Tg1q6uoTQ=",
+        "name": "Microsoft.Extensions.Logging.Abstractions.uiagcgj4ia.wasm",
+        "hash": "sha256-umpF2+HQAYrHpnPcc3hvEkiP3PNL5D893Scpi5DUsiQ=",
         "cache": "force-cache"
       },
       {
         "virtualPath": "Microsoft.Extensions.Options.wasm",
-        "name": "Microsoft.Extensions.Options.3yizehjujs.wasm",
-        "hash": "sha256-q6zxh2puCT0PCxVStfuk6yupLt9PxX+nEt9xLYfUDWw=",
+        "name": "Microsoft.Extensions.Options.ek7g0vlfbn.wasm",
+        "hash": "sha256-TnaeFoA2qFZ4BuNQD+CXc4hW7ei7Cvc8pFQYq2/E0Gs=",
         "cache": "force-cache"
       },
       {
         "virtualPath": "Microsoft.Extensions.Options.ConfigurationExtensions.wasm",
-        "name": "Microsoft.Extensions.Options.ConfigurationExtensions.827atu5p3r.wasm",
-        "hash": "sha256-wLiTzAvjp3WdNPaQx45/UuP7DjguJiUYOwtzFw8smYc=",
+        "name": "Microsoft.Extensions.Options.ConfigurationExtensions.h5dy26od7x.wasm",
+        "hash": "sha256-664mTQTH+VuiiyD5kE4T6F8WgqbcKx0YUxj5s1RCkRY=",
         "cache": "force-cache"
       },
       {
         "virtualPath": "Microsoft.Extensions.Primitives.wasm",
-        "name": "Microsoft.Extensions.Primitives.5af8fxxqx8.wasm",
-        "hash": "sha256-o93FGGlSQ5Wz4dtpwLpY0V5u/Yuy/aLcLJAl6FQr4BE=",
+        "name": "Microsoft.Extensions.Primitives.g4vka36rt5.wasm",
+        "hash": "sha256-cM/UufWLxiaJlDsVBuN/OMe/NFORycCQxB4Hum4gNb8=",
         "cache": "force-cache"
       },
       {
@@ -212,6 +218,12 @@ var e=!1;const t=async()=>WebAssembly.validate(new Uint8Array([0,97,115,109,1,0,
         "virtualPath": "Microsoft.JSInterop.WebAssembly.wasm",
         "name": "Microsoft.JSInterop.WebAssembly.i0zvedq8j9.wasm",
         "hash": "sha256-/nrHNIHcvQjBG2qjCnK0Ca0SwscSDiZcMiT+2Q6H9W0=",
+        "cache": "force-cache"
+      },
+      {
+        "virtualPath": "System.Diagnostics.DiagnosticSource.wasm",
+        "name": "System.Diagnostics.DiagnosticSource.cyv8lyypj3.wasm",
+        "hash": "sha256-PE/yNV8R4nK6lYxzLYmbC+5pwv7NnOocbpJzAgEbpaE=",
         "cache": "force-cache"
       },
       {
@@ -368,12 +380,6 @@ var e=!1;const t=async()=>WebAssembly.validate(new Uint8Array([0,97,115,109,1,0,
         "virtualPath": "System.Diagnostics.Debug.wasm",
         "name": "System.Diagnostics.Debug.faxnhsagf6.wasm",
         "hash": "sha256-ubbfKY2Pxouux+zzDvQAlaCBC0QDPcIoXm5NlOrKwMs=",
-        "cache": "force-cache"
-      },
-      {
-        "virtualPath": "System.Diagnostics.DiagnosticSource.wasm",
-        "name": "System.Diagnostics.DiagnosticSource.o8neuaehsr.wasm",
-        "hash": "sha256-2Cwth9SwX3nN7VkeyJfnWu+f1ck6XsA0u3a4xnwhHdg=",
         "cache": "force-cache"
       },
       {
@@ -1235,6 +1241,12 @@ var e=!1;const t=async()=>WebAssembly.validate(new Uint8Array([0,97,115,109,1,0,
         "cache": "force-cache"
       },
       {
+        "virtualPath": "SITEL.Shared.wasm",
+        "name": "SITEL.Shared.01j5pjin2l.wasm",
+        "hash": "sha256-lLRbHNXrFnlsP+Coplw52LXDWgJKsL36jqCOwccZZKk=",
+        "cache": "force-cache"
+      },
+      {
         "virtualPath": "Microsoft.DotNet.HotReload.WebAssembly.Browser.wasm",
         "name": "Microsoft.DotNet.HotReload.WebAssembly.Browser.yjsbyxld1f.wasm",
         "hash": "sha256-soRu5olxdkLjnkKRXjGIWgaACR+4w7SDDeLcEwhQiMg=",
@@ -1242,16 +1254,22 @@ var e=!1;const t=async()=>WebAssembly.validate(new Uint8Array([0,97,115,109,1,0,
       },
       {
         "virtualPath": "SITEL.Client.wasm",
-        "name": "SITEL.Client.hxec6ycp09.wasm",
-        "hash": "sha256-a5t2HjJShlaYhj2TvGZXr7qt2zavkParmF5WtjQTzPk=",
+        "name": "SITEL.Client.j65h9lqfkv.wasm",
+        "hash": "sha256-e7Ffp9kylWdgKV2Pk9H5sQZRXb727I7Q3uvLrvTHMuc=",
         "cache": "force-cache"
       }
     ],
     "pdb": [
       {
+        "virtualPath": "SITEL.Shared.pdb",
+        "name": "SITEL.Shared.8tg53jd3ji.pdb",
+        "hash": "sha256-pHyL4UaRhcrSLr4UbjUOpFcDrA/20aQ5uIhLijl6S8Y=",
+        "cache": "force-cache"
+      },
+      {
         "virtualPath": "SITEL.Client.pdb",
-        "name": "SITEL.Client.w53besf53a.pdb",
-        "hash": "sha256-xNJ8u71qhCMLD/svrHFWGHpizkH5AgvP+xZOf4N+yZg=",
+        "name": "SITEL.Client.i0onraeauf.pdb",
+        "hash": "sha256-rmPFTIOlgtrpmka9RTkyl30e2p2+DND7+qvFvlCX3Xk=",
         "cache": "force-cache"
       }
     ],

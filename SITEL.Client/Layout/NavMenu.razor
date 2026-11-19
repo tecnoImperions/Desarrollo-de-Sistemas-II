@@ -1,39 +1,89 @@
-﻿<div class="top-row ps-3 navbar navbar-dark">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="">SITEL.Client</a>
-        <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
-            <span class="navbar-toggler-icon"></span>
-        </button>
+<div class="top-row ps-3 navbar navbar-dark" style="background-color: #0F172A; border-bottom: 1px solid rgba(255,255,255,0.08);">
+    <div class="container-fluid py-2">
+        <a class="navbar-brand d-flex align-items-center gap-2" href="" style="font-weight: 800; font-size: 1.15rem; color: #FFFFFF; letter-spacing: 0.02em;">
+            <span style="background: #2563EB; padding: 0.25rem 0.55rem; border-radius: 8px; font-size: 1rem; display: inline-flex; align-items: center;">
+                <i class="bi bi-box-seam-fill text-white"></i>
+            </span>
+            <span>SITEL <span style="color: #60A5FA; font-weight: 600;">Logistics</span></span>
+        </a>
     </div>
 </div>
 
-<div class="@NavMenuCssClass nav-scrollable" @onclick="ToggleNavMenu">
-    <nav class="nav flex-column">
+<input type="checkbox" title="Navigation menu" class="navbar-toggler" />
+
+<div class="nav-scrollable" onclick="document.querySelector('.navbar-toggler')?.click()">
+    <nav class="flex-column py-2">
+        <!-- Panel Ejecutivo -->
+        <div class="nav-item px-3 mt-2 mb-1">
+            <span style="font-size: 0.68rem; text-transform: uppercase; color: #94A3B8; font-weight: 700; letter-spacing: 0.06em;">Monitoreo</span>
+        </div>
         <div class="nav-item px-3">
             <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Home
+                <i class="bi bi-speedometer2"></i>
+                <span>Panel Ejecutivo</span>
+            </NavLink>
+        </div>
+
+        <!-- Despachos y Trazabilidad -->
+        <div class="nav-item px-3 mt-3 mb-1">
+            <span style="font-size: 0.68rem; text-transform: uppercase; color: #94A3B8; font-weight: 700; letter-spacing: 0.06em;">Despachos y Rutas</span>
+        </div>
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="mis-envios">
+                <i class="bi bi-truck"></i>
+                <span>Gestión de Despachos</span>
             </NavLink>
         </div>
         <div class="nav-item px-3">
-            <NavLink class="nav-link" href="counter">
-                <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> Counter
+            <NavLink class="nav-link" href="envios/nuevo">
+                <i class="bi bi-plus-circle-fill"></i>
+                <span>Registrar Despacho</span>
+            </NavLink>
+        </div>
+
+        <!-- Inventarios, Clientes y Flota -->
+        <div class="nav-item px-3 mt-3 mb-1">
+            <span style="font-size: 0.68rem; text-transform: uppercase; color: #94A3B8; font-weight: 700; letter-spacing: 0.06em;">Catálogos y Almacén</span>
+        </div>
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="inventarios">
+                <i class="bi bi-boxes"></i>
+                <span>Inventario y Carga</span>
             </NavLink>
         </div>
         <div class="nav-item px-3">
-            <NavLink class="nav-link" href="weather">
-                <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Weather
+            <NavLink class="nav-link" href="clientes">
+                <i class="bi bi-people-fill"></i>
+                <span>Directorio de Clientes</span>
+            </NavLink>
+        </div>
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="flota-rutas">
+                <i class="bi bi-signpost-split-fill"></i>
+                <span>Conductores y Rutas</span>
+            </NavLink>
+        </div>
+
+        <!-- Operación en Campo / Móvil -->
+        <div class="nav-item px-3 mt-3 mb-1">
+            <span style="font-size: 0.68rem; text-transform: uppercase; color: #94A3B8; font-weight: 700; letter-spacing: 0.06em;">Operación en Campo</span>
+        </div>
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="conductor">
+                <i class="bi bi-phone-fill"></i>
+                <span>Vista Móvil Conductor</span>
+            </NavLink>
+        </div>
+
+        <!-- Seguridad y Acceso -->
+        <div class="nav-item px-3 mt-3 mb-1">
+            <span style="font-size: 0.68rem; text-transform: uppercase; color: #94A3B8; font-weight: 700; letter-spacing: 0.06em;">Seguridad</span>
+        </div>
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="login">
+                <i class="bi bi-shield-lock-fill"></i>
+                <span>Acceso / Cambiar Rol</span>
             </NavLink>
         </div>
     </nav>
 </div>
-
-@code {
-    private bool collapseNavMenu = true;
-
-    private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
-
-    private void ToggleNavMenu()
-    {
-        collapseNavMenu = !collapseNavMenu;
-    }
-}

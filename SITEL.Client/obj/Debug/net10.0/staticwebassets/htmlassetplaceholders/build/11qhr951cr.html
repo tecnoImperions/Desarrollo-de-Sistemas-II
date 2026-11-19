@@ -1,13 +1,13 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="es">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>SITEL.Client</title>
+    <title>SITEL — Sistema de Trazabilidad Logística</title>
     <base href="/" />
-    <link href="_framework/dotnet.js7nmzco44.js" rel="preload" as="script" fetchpriority="high" crossorigin="anonymous" integrity="sha256-M4mnNm+PtNVYo69lsjEGS+FLJeVxzKt3pTP3w9Mv0X0=" />
+    <link href="_framework/dotnet.30p8t68f6p.js" rel="preload" as="script" fetchpriority="high" crossorigin="anonymous" integrity="sha256-bXo6ApzMmESQfL35doDonUGe0vl9h8BZ67P2TPdU5eM=" />
     <link rel="stylesheet" href="lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
     <link rel="stylesheet" href="css/app.css" />
     <link rel="icon" type="image/png" href="favicon.png" />
     <link href="SITEL.Client.styles.css" rel="stylesheet" />
@@ -15,7 +15,7 @@
   "imports": {
     "./_framework/Microsoft.DotNet.HotReload.WebAssembly.Browser.lib.module.js": "./_framework/Microsoft.DotNet.HotReload.WebAssembly.Browser.h26gum5wpt.lib.module.js",
     "./_framework/blazor.webassembly.js": "./_framework/blazor.webassembly.w3qd1tpl0e.js",
-    "./_framework/dotnet.js": "./_framework/dotnet.js7nmzco44.js",
+    "./_framework/dotnet.js": "./_framework/dotnet.30p8t68f6p.js",
     "./_framework/dotnet.native.js": "./_framework/dotnet.native.bjoj0wmylw.js",
     "./_framework/dotnet.runtime.js": "./_framework/dotnet.runtime.5nc8i5dl74.js",
     "./lib/bootstrap/dist/js/bootstrap.bundle.min.js": "./lib/bootstrap/dist/js/bootstrap.bundle.min.493y06b0oq.js",
@@ -31,8 +31,8 @@
     "./_framework/Microsoft.DotNet.HotReload.WebAssembly.Browser.lib.module.js": "sha256-uci2zD6fL4ReH1fQNtYea6eaxPIY5IPd+b63HwPTYUQ=",
     "./_framework/blazor.webassembly.js": "sha256-lDXsDYFgm62F+YUvxES7IOTCXYpiHpU3uR45YdC6mq4=",
     "./_framework/blazor.webassembly.w3qd1tpl0e.js": "sha256-lDXsDYFgm62F+YUvxES7IOTCXYpiHpU3uR45YdC6mq4=",
-    "./_framework/dotnet.js": "sha256-M4mnNm+PtNVYo69lsjEGS+FLJeVxzKt3pTP3w9Mv0X0=",
-    "./_framework/dotnet.js7nmzco44.js": "sha256-M4mnNm+PtNVYo69lsjEGS+FLJeVxzKt3pTP3w9Mv0X0=",
+    "./_framework/dotnet.30p8t68f6p.js": "sha256-bXo6ApzMmESQfL35doDonUGe0vl9h8BZ67P2TPdU5eM=",
+    "./_framework/dotnet.js": "sha256-bXo6ApzMmESQfL35doDonUGe0vl9h8BZ67P2TPdU5eM=",
     "./_framework/dotnet.native.bjoj0wmylw.js": "sha256-CZ0IVZkLTIvee7n1yVvOitlJWNdj/YjaFgpMgliIM64=",
     "./_framework/dotnet.native.js": "sha256-CZ0IVZkLTIvee7n1yVvOitlJWNdj/YjaFgpMgliIM64=",
     "./_framework/dotnet.runtime.5nc8i5dl74.js": "sha256-/3dBg9sj1yLD3h0PDMHnNUXWs/2zWwIMEzom1Xz3Q40=",
@@ -52,22 +52,22 @@
   }
 }</script>
 </head>
-
 <body>
     <div id="app">
-        <svg class="loading-progress">
-            <circle r="40%" cx="50%" cy="50%" />
-            <circle r="40%" cx="50%" cy="50%" />
-        </svg>
-        <div class="loading-progress-text"></div>
+        <div style="display: flex; justify-content: center; align-items: center; height: 100vh; font-family: 'Inter', sans-serif; background-color: #F8FAFC; color: #0F172A;">
+            <div style="text-align: center;">
+                <div class="spinner-border text-primary mb-3" role="status"></div>
+                <h4 style="font-weight: 800; margin-bottom: 0.35rem; color: #0F172A;">Cargando SITEL Logistics...</h4>
+                <p style="color: #64748B; font-size: 0.9rem; margin: 0;">Sincronizando módulos de Inventarios, Clientes y Despachos</p>
+            </div>
+        </div>
     </div>
 
     <div id="blazor-error-ui">
-        An unhandled error has occurred.
-        <a href="." class="reload">Reload</a>
+        Ha ocurrido un error inesperado en la interfaz.
+        <a href="." class="reload">Recargar</a>
         <span class="dismiss">🗙</span>
     </div>
     <script src="_framework/blazor.webassembly.w3qd1tpl0e.js"></script>
 </body>
-
 </html>

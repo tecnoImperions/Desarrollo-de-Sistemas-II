@@ -1,0 +1,839 @@
+@page "/mis-envios"
+@using System.Net.Http.Json
+@using SITEL.Shared.DTOs
+@using SITEL.Shared.Entities
+@using SITEL.Shared.Enums
+@inject HttpClient Http
+
+<PageTitle>SITEL | Gestión de Despachos y Trazabilidad</PageTitle>
+
+<div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-3">
+    <div>
+        <h2 style="font-weight: 800; margin: 0; font-size: 1.55rem; color: #0F172A;">
+            <i class="bi bi-truck text-primary me-2"></i>Gestión y Trazabilidad de Despachos
+        </h2>
+        <p style="color: var(--text-muted); margin: 0.25rem 0 0; font-size: 0.9rem;">
+            Control operativo de guías (RN01), asignación de conductor y ruta (RF02) y flujo transaccional de estados (RF03).
+        </p>
+    </div>
+    <div class="d-flex gap-2">
+        <button class="btn-sitel-outline" @onclick="CargarDatosAsync">
+            <i class="bi bi-arrow-clockwise"></i> Sincronizar
+        </button>
+        <a href="/envios/nuevo" class="btn-sitel-primary">
+            <i class="bi bi-plus-circle-fill"></i> Registrar Despacho
+        </a>
+    </div>
+</div>
+
+@if (!string.IsNullOrEmpty(mensajeGlobal))
+{
+    <div class="alert @(esErrorGlobal ? "alert-danger" : "alert-success") alert-dismissible fade show py-2 px-3 mb-4" role="alert">
+        <i class="bi @(esErrorGlobal ? "bi-exclamation-octagon-fill" : "bi-check-circle-fill") me-1"></i>
+        <strong>@(esErrorGlobal ? "Error:" : "Operación Exitosa:")</strong> @mensajeGlobal
+        <button type="button" class="btn-close" @onclick="() => mensajeGlobal = string.Empty"></button>
+    </div>
+}
+
+<!-- KPIs Operativos -->
+<div class="row g-3 mb-4">
+    <div class="col-6 col-lg-3">
+        <div class="sitel-kpi-card">
+            <div class="d-flex justify-content-between align-items-center">
+                <span style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: var(--text-muted);">Total Guías Emitidas</span>
+                <i class="bi bi-upc-scan text-primary fs-5"></i>
+            </div>
+            <div style="font-size: 1.65rem; font-weight: 800; color: #0F172A; margin-top: 0.2rem;">@(envios?.Count ?? 0)</div>
+            <div style="font-size: 0.78rem; color: #2563EB; font-weight: 600;">Trazabilidad activa RN01</div>
+        </div>
+    </div>
+    <div class="col-6 col-lg-3">
+        <div class="sitel-kpi-card" style="border-left-color: #F59E0B;">
+            <div class="d-flex justify-content-between align-items-center">
+                <span style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: var(--text-muted);">En Tránsito / Asignados</span>
+                <i class="bi bi-truck-front-fill text-warning fs-5"></i>
+            </div>
+            <div style="font-size: 1.65rem; font-weight: 800; color: #B45309; margin-top: 0.2rem;">
+                @(envios?.Count(e => e != null && !e.Anulado && (e.EstadoActual == EstadoEnvio.Asignado || e.EstadoActual == EstadoEnvio.EnRuta || e.EstadoActual == EstadoEnvio.EnDestino)) ?? 0)
+            </div>
+            <div style="font-size: 0.78rem; color: var(--text-muted);">Flota en operación RF02</div>
+        </div>
+    </div>
+    <div class="col-6 col-lg-3">
+        <div class="sitel-kpi-card" style="border-left-color: #10B981;">
+            <div class="d-flex justify-content-between align-items-center">
+                <span style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: var(--text-muted);">Despachos Entregados</span>
+                <i class="bi bi-check2-all text-success fs-5"></i>
+            </div>
+            <div style="font-size: 1.65rem; font-weight: 800; color: #15803D; margin-top: 0.2rem;">
+                @(envios?.Count(e => e != null && !e.Anulado && e.EstadoActual == EstadoEnvio.Entregado) ?? 0)
+            </div>
+            <div style="font-size: 0.78rem; color: #15803D; font-weight: 600;">Conformidad registrada</div>
+        </div>
+    </div>
+    <div class="col-6 col-lg-3">
+        <div class="sitel-kpi-card" style="border-left-color: #EF4444;">
+            <div class="d-flex justify-content-between align-items-center">
+                <span style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: var(--text-muted);">Con Incidencia / Retraso</span>
+                <i class="bi bi-exclamation-diamond-fill text-danger fs-5"></i>
+            </div>
+            <div style="font-size: 1.65rem; font-weight: 800; color: #B91C1C; margin-top: 0.2rem;">
+                @(envios?.Count(e => e != null && !e.Anulado && (e.EstadoActual == EstadoEnvio.ConIncidencia || e.EstadoActual == EstadoEnvio.Retrasado)) ?? 0)
+            </div>
+            <div style="font-size: 0.78rem; color: var(--text-muted);">Atención prioritaria</div>
+        </div>
+    </div>
+</div>
+
+<!-- Barra de Búsqueda y Filtros -->
+<div class="sitel-card mb-4" style="padding: 1rem 1.25rem;">
+    <div class="row g-3 align-items-center">
+        <div class="col-md-6">
+            <div class="input-group">
+                <span class="input-group-text bg-light border-end-0"><i class="bi bi-search text-muted"></i></span>
+                <input type="text" class="form-control border-start-0"
+                       placeholder="Buscar por Nº de Guía, Cliente, Destinatario o Descripción de Carga..."
+                       @bind="filtroTexto" @bind:event="oninput" />
+            </div>
+        </div>
+        <div class="col-md-4">
+            <select class="form-select" @bind="filtroEstado">
+                <option value="">Todos los estados operativos (RF03)</option>
+                <option value="Registrado">Registrado</option>
+                <option value="Asignado">Asignado</option>
+                <option value="EnRuta">En Ruta</option>
+                <option value="EnDestino">En Destino</option>
+                <option value="Entregado">Entregado</option>
+                <option value="ConIncidencia">Con Incidencia</option>
+                <option value="Anulado">Anulados</option>
+            </select>
+        </div>
+        <div class="col-md-2 text-md-end">
+            <span style="font-size: 0.85rem; color: var(--text-muted); font-weight: 700;">
+                <i class="bi bi-list-check me-1"></i>@EnviosFiltrados.Count() despacho(s)
+            </span>
+        </div>
+    </div>
+</div>
+
+<!-- Tabla Principal de Despachos -->
+<div class="sitel-card" style="padding: 0; overflow: hidden;">
+    @if (cargando)
+    {
+        <div class="text-center py-5">
+            <div class="spinner-border text-primary" role="status"></div>
+            <p class="mt-2 mb-0 small text-muted">Cargando despachos y trazabilidad...</p>
+        </div>
+    }
+    else if (!EnviosFiltrados.Any())
+    {
+        <div class="text-center py-5 px-3">
+            <i class="bi bi-truck fs-2 text-muted d-block mb-2"></i>
+            <p style="color: var(--text-muted); font-weight: 600; margin-bottom: 0.5rem;">No se encontraron despachos con los filtros actuales.</p>
+            <a href="/envios/nuevo" class="btn-sitel-primary mt-2">
+                <i class="bi bi-plus-circle"></i> Crear Primer Despacho
+            </a>
+        </div>
+    }
+    else
+    {
+        <div class="table-responsive">
+            <table class="sitel-table">
+                <thead>
+                    <tr>
+                        <th>Nº Guía (RN01)</th>
+                        <th>Cliente / Destino</th>
+                        <th>Descripción de Carga</th>
+                        <th>Conductor y Ruta (RF02)</th>
+                        <th>Estado (RF03)</th>
+                        <th>Registro / Est.</th>
+                        <th class="text-end">Operaciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var envio in EnviosFiltrados)
+                    {
+                        <tr style="@(envio.Anulado ? "opacity: 0.65;" : "")">
+                            <td>
+                                <span style="font-family: monospace; font-weight: 800; color: #2563EB; font-size: 0.92rem;">
+                                    <i class="bi bi-upc-scan me-1"></i>@envio.Guia
+                                </span>
+                                @if (envio.DetallesCarga != null && envio.DetallesCarga.Any())
+                                {
+                                    <div style="font-size: 0.74rem; color: #15803D; font-weight: 600;">
+                                        <i class="bi bi-boxes me-1"></i>@envio.DetallesCarga.Sum(d => d?.Cantidad ?? 0) unid. inventario
+                                    </div>
+                                }
+                            </td>
+                            <td>
+                                <div style="font-weight: 700; color: #0F172A;">@(envio.Cliente?.NombreRazonSocial ?? envio.Destinatario)</div>
+                                <div style="font-size: 0.78rem; color: var(--text-muted);">
+                                    <i class="bi bi-geo-alt-fill text-primary me-1"></i>@envio.DireccionEntrega
+                                </div>
+                            </td>
+                            <td style="max-width: 240px;">
+                                <div style="font-weight: 500; color: #334155;">@envio.DescripcionCarga</div>
+                            </td>
+                            <td>
+                                @if (envio.Conductor != null && !string.IsNullOrWhiteSpace(envio.Conductor.Nombres) && !envio.Conductor.Nombres.Contains("Sin Asignar", StringComparison.OrdinalIgnoreCase))
+                                {
+                                    <div style="font-weight: 600; color: #0F172A;">
+                                        <i class="bi bi-person-Vcard text-primary me-1"></i>@envio.Conductor.Nombres @envio.Conductor.Apellidos
+                                    </div>
+                                    <div style="font-size: 0.78rem; color: #2563EB;">
+                                        <i class="bi bi-signpost-split me-1"></i>@(envio.Ruta?.Nombre ?? "Ruta asignada")
+                                    </div>
+                                }
+                                else
+                                {
+                                    <span class="badge-sitel badge-enruta">
+                                        <i class="bi bi-hourglass-split"></i> Pendiente RF02
+                                    </span>
+                                }
+                            </td>
+                            <td>
+                                @if (envio.Anulado)
+                                {
+                                    <span class="badge-sitel badge-anulado">
+                                        <i class="bi bi-x-circle-fill"></i> Anulado
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span class="badge-sitel @ObtenerClaseBadge(envio.EstadoActual)">
+                                        <i class="bi bi-circle-fill" style="font-size: 0.5rem;"></i> @FormatearEstado(envio.EstadoActual)
+                                    </span>
+                                }
+                            </td>
+                            <td style="font-size: 0.8rem; color: var(--text-muted); white-space: nowrap;">
+                                <div><i class="bi bi-calendar-event me-1"></i><strong>Reg:</strong> @envio.FechaRegistro.ToString("dd/MM/yyyy HH:mm")</div>
+                                <div><i class="bi bi-calendar-check me-1"></i><strong>Est:</strong> @envio.FechaEstimada.ToString("dd/MM/yyyy")</div>
+                            </td>
+                            <td class="text-end" style="white-space: nowrap;">
+                                <button class="btn-sitel-outline me-1" title="Ver Historial y Trazabilidad" @onclick="() => AbrirModalDetalle(envio)">
+                                    <i class="bi bi-clock-history"></i> Trazabilidad
+                                </button>
+                                @if (!envio.Anulado && envio.EstadoActual != EstadoEnvio.Entregado)
+                                {
+                                    <button class="btn-sitel-outline me-1" title="Asignar Conductor y Ruta (RF02)" @onclick="() => AbrirModalAsignar(envio)">
+                                        <i class="bi bi-signpost-2"></i> RF02
+                                    </button>
+                                    <button class="btn btn-sm btn-primary me-1" style="background-color: #2563EB; border-radius: 8px; font-weight: 600; font-size: 0.8rem;"
+                                            title="Cambiar Estado Operativo (RF03)" @onclick="() => AbrirModalEstado(envio)">
+                                        <i class="bi bi-arrow-repeat"></i> Estado
+                                    </button>
+                                    <button class="btn btn-sm btn-outline-danger" style="border-radius: 8px; font-size: 0.8rem;"
+                                            title="Anular Despacho y Reponer Stock" @onclick="() => AbrirModalAnular(envio)">
+                                        <i class="bi bi-slash-circle"></i>
+                                    </button>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</div>
+
+<!-- MODAL 1: Asignación de Conductor y Ruta (RF02) -->
+@if (envioAsignacion != null)
+{
+    <div class="sitel-modal-backdrop" @onclick="() => envioAsignacion = null">
+        <div class="sitel-modal" style="max-width: 540px;" @onclick:stopPropagation="true">
+            <div class="sitel-modal-header">
+                <h5 style="margin: 0; font-size: 1.05rem; font-weight: 700;">
+                    <i class="bi bi-signpost-2-fill me-2"></i>Asignar Conductor y Ruta (RF02) — @envioAsignacion.Guia
+                </h5>
+                <button type="button" class="btn-close btn-close-white" @onclick="() => envioAsignacion = null"></button>
+            </div>
+            <div class="sitel-modal-body">
+                @if (!string.IsNullOrEmpty(errorModal))
+                {
+                    <div class="alert alert-danger py-2 small">
+                        <i class="bi bi-exclamation-octagon-fill me-1"></i>@errorModal
+                    </div>
+                }
+
+                <div class="mb-3">
+                    <label class="form-label small fw-bold">Conductor Responsable <span class="text-danger">*</span></label>
+                    <select class="form-select" @bind="dtoAsignacion.ConductorId">
+                        <option value="0">-- Seleccione un conductor habilitado --</option>
+                        @foreach (var c in conductores.Where(x => x != null && !x.Nombres.Contains("Sin Asignar", StringComparison.OrdinalIgnoreCase)))
+                        {
+                            <option value="@c.Id">@c.Nombres @c.Apellidos — Lic: @c.Licencia (Tel: @c.Telefono)</option>
+                        }
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label small fw-bold">Ruta Logística Asignada <span class="text-danger">*</span></label>
+                    <select class="form-select" @bind="dtoAsignacion.RutaId">
+                        <option value="0">-- Seleccione una ruta --</option>
+                        @foreach (var r in rutas.Where(x => x != null && !x.Nombre.Contains("Pendiente", StringComparison.OrdinalIgnoreCase)))
+                        {
+                            <option value="@r.Id">@r.Nombre (@r.Origen → @r.Destino | @r.DistanciaKm Km)</option>
+                        }
+                    </select>
+                </div>
+
+                <div class="row g-2 mb-3">
+                    <div class="col-6">
+                        <label class="form-label small fw-bold">Ubicación de Despacho</label>
+                        <input type="text" class="form-control" @bind="dtoAsignacion.Ubicacion" />
+                    </div>
+                    <div class="col-6">
+                        <label class="form-label small fw-bold">Fecha Estimada Entrega</label>
+                        <input type="date" class="form-control" @bind="dtoAsignacion.FechaEstimada" />
+                    </div>
+                </div>
+
+                <div class="mb-2">
+                    <label class="form-label small fw-bold">Observaciones de Hoja de Ruta</label>
+                    <textarea class="form-control" rows="2" @bind="dtoAsignacion.Observaciones"></textarea>
+                </div>
+            </div>
+            <div class="sitel-modal-footer">
+                <button type="button" class="btn btn-outline-secondary" @onclick="() => envioAsignacion = null">Cancelar</button>
+                <button type="button" class="btn-sitel-primary" @onclick="ConfirmarAsignacionAsync" disabled="@procesandoModal">
+                    <i class="bi bi-check2-circle"></i> @(procesandoModal ? "Guardando..." : "Confirmar Asignación RF02")
+                </button>
+            </div>
+        </div>
+    </div>
+}
+
+<!-- MODAL 2: Actualización de Estado en el Flujo (RF03) -->
+@if (envioCambioEstado != null)
+{
+    <div class="sitel-modal-backdrop" @onclick="() => envioCambioEstado = null">
+        <div class="sitel-modal" style="max-width: 560px;" @onclick:stopPropagation="true">
+            <div class="sitel-modal-header">
+                <h5 style="margin: 0; font-size: 1.05rem; font-weight: 700;">
+                    <i class="bi bi-arrow-repeat me-2"></i>Actualizar Estado Operativo (RF03) — @envioCambioEstado.Guia
+                </h5>
+                <button type="button" class="btn-close btn-close-white" @onclick="() => envioCambioEstado = null"></button>
+            </div>
+            <div class="sitel-modal-body">
+                <div class="mb-3 p-2 px-3 d-flex justify-content-between align-items-center" style="background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 8px;">
+                    <span class="small text-muted fw-semibold">Estado Actual:</span>
+                    <span class="badge-sitel @ObtenerClaseBadge(envioCambioEstado.EstadoActual)">@FormatearEstado(envioCambioEstado.EstadoActual)</span>
+                </div>
+
+                @if (!string.IsNullOrEmpty(errorModal))
+                {
+                    <div class="alert alert-danger py-2 small">
+                        <i class="bi bi-exclamation-octagon-fill me-1"></i>@errorModal
+                    </div>
+                }
+
+                <div class="row g-3 mb-3">
+                    <div class="col-md-6">
+                        <label class="form-label small fw-bold">Nuevo Estado del Flujo (RF03) <span class="text-danger">*</span></label>
+                        <select class="form-select" @bind="dtoEstado.NuevoEstado">
+                            <option value="@EstadoEnvio.Asignado">1. Asignado</option>
+                            <option value="@EstadoEnvio.EnRuta">2. En Ruta (En Tránsito)</option>
+                            <option value="@EstadoEnvio.EnDestino">3. En Destino (Punto de Entrega)</option>
+                            <option value="@EstadoEnvio.Entregado">4. Entregado (Cierre Conforme)</option>
+                            <option value="@EstadoEnvio.ConIncidencia">Con Incidencia</option>
+                            <option value="@EstadoEnvio.Retrasado">Retrasado</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label small fw-bold">Ubicación / Punto de Control <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" @bind="dtoEstado.Ubicacion" placeholder="Ej. Retén Km 17 / Almacén Cliente" />
+                    </div>
+                </div>
+
+                @if (dtoEstado.NuevoEstado == EstadoEnvio.Entregado)
+                {
+                    <div class="p-3 mb-3" style="background: #F0FDF4; border: 1px solid #BBF7D0; border-radius: 8px;">
+                        <label class="form-label small fw-bold text-success">
+                            <i class="bi bi-person-check-fill me-1"></i>Nombre y Cargo de Quien Recibe la Mercancía <span class="text-danger">*</span>
+                        </label>
+                        <input type="text" class="form-control" @bind="dtoEstado.ReceptorNombre" placeholder="Ej. Lic. Roberto Peña (Jefe de Almacén)" />
+                    </div>
+                }
+
+                @if (dtoEstado.NuevoEstado == EstadoEnvio.ConIncidencia)
+                {
+                    <div class="p-3 mb-3" style="background: #FEF2F2; border: 1px solid #FECACA; border-radius: 8px;">
+                        <div class="mb-2">
+                            <label class="form-label small fw-bold text-danger">
+                                <i class="bi bi-exclamation-triangle-fill me-1"></i>Motivo de la Incidencia <span class="text-danger">*</span>
+                            </label>
+                            <select class="form-select" @bind="dtoEstado.MotivoIncidencia">
+                                <option value="@MotivoIncidencia.DireccionErronea">Dirección Errónea o Inubicada</option>
+                                <option value="@MotivoIncidencia.DestinatarioAusente">Destinatario Ausente en Punto de Entrega</option>
+                                <option value="@MotivoIncidencia.Dano">Daño o Merma en Mercancía</option>
+                                <option value="@MotivoIncidencia.Otro">Otro Motivo Operativo / Bloqueo</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="form-label small fw-bold text-danger">Descripción Detallada del Incidente <span class="text-danger">*</span></label>
+                            <textarea class="form-control" rows="2" @bind="dtoEstado.DescripcionIncidencia" placeholder="Detalle lo sucedido para el registro de auditoría..."></textarea>
+                        </div>
+                    </div>
+                }
+
+                <div>
+                    <label class="form-label small fw-bold">Observaciones de Trazabilidad</label>
+                    <textarea class="form-control" rows="2" @bind="dtoEstado.Observaciones" placeholder="Notas adicionales del operador o conductor..."></textarea>
+                </div>
+            </div>
+            <div class="sitel-modal-footer">
+                <button type="button" class="btn btn-outline-secondary" @onclick="() => envioCambioEstado = null">Cancelar</button>
+                <button type="button" class="btn-sitel-primary" @onclick="ConfirmarCambioEstadoAsync" disabled="@procesandoModal">
+                    <i class="bi bi-floppy-fill"></i> @(procesandoModal ? "Procesando Transacción..." : "Guardar Nuevo Estado")
+                </button>
+            </div>
+        </div>
+    </div>
+}
+
+<!-- MODAL 3: Detalle de Trazabilidad, Carga e Incidencias -->
+@if (envioDetalle != null)
+{
+    <div class="sitel-modal-backdrop" @onclick="() => envioDetalle = null">
+        <div class="sitel-modal" style="max-width: 680px;" @onclick:stopPropagation="true">
+            <div class="sitel-modal-header">
+                <div>
+                    <h5 style="margin: 0; font-size: 1.08rem; font-weight: 700;">
+                        <i class="bi bi-clock-history me-2"></i>Expediente de Trazabilidad — @envioDetalle.Guia
+                    </h5>
+                    <div style="font-size: 0.78rem; color: #94A3B8;">Cliente: @(envioDetalle.Cliente?.NombreRazonSocial ?? envioDetalle.Destinatario)</div>
+                </div>
+                <button type="button" class="btn-close btn-close-white" @onclick="() => envioDetalle = null"></button>
+            </div>
+            <div class="sitel-modal-body">
+                <!-- Resumen general -->
+                <div class="row g-2 mb-3 p-3" style="background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 10px; font-size: 0.85rem;">
+                    <div class="col-md-6">
+                        <div><strong>Destinatario:</strong> @envioDetalle.Destinatario</div>
+                        <div><strong>Dirección:</strong> @envioDetalle.DireccionEntrega</div>
+                        <div><strong>Carga:</strong> @envioDetalle.DescripcionCarga</div>
+                    </div>
+                    <div class="col-md-6">
+                        <div><strong>Conductor:</strong> @(envioDetalle.Conductor != null ? $"{envioDetalle.Conductor.Nombres} {envioDetalle.Conductor.Apellidos}" : "Sin asignar")</div>
+                        <div><strong>Ruta:</strong> @(envioDetalle.Ruta?.Nombre ?? "Sin ruta")</div>
+                        @if (envioDetalle.EstadoActual == EstadoEnvio.Entregado)
+                        {
+                            <div class="text-success fw-bold">
+                                <i class="bi bi-patch-check-fill me-1"></i>Recibido por: @envioDetalle.ReceptorNombre (@envioDetalle.FechaEntrega.ToString("dd/MM/yyyy HH:mm"))
+                            </div>
+                        }
+                    </div>
+                </div>
+
+                <!-- Mercancía de Inventario Asociada -->
+                @if (envioDetalle.DetallesCarga != null && envioDetalle.DetallesCarga.Any())
+                {
+                    <h6 style="font-weight: 700; font-size: 0.9rem; color: #0F172A; margin-bottom: 0.5rem;">
+                        <i class="bi bi-boxes text-primary me-1"></i>Ítems de Inventario Despachados
+                    </h6>
+                    <div class="table-responsive mb-3">
+                        <table class="sitel-table" style="font-size: 0.82rem;">
+                            <thead>
+                                <tr>
+                                    <th>SKU</th>
+                                    <th>Producto</th>
+                                    <th>Cantidad</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var det in envioDetalle.DetallesCarga.Where(d => d != null))
+                                {
+                                    <tr>
+                                        <td style="font-family: monospace; font-weight: 700; color: #2563EB;">@(det.Producto?.CodigoSku ?? "-")</td>
+                                        <td>@(det.Producto?.Nombre ?? $"Producto #{det.ProductoId}")</td>
+                                        <td class="fw-bold">@det.Cantidad @(det.Producto?.UnidadMedida ?? "Unid.")</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
+
+                <!-- Incidencias registradas -->
+                @if (envioDetalle.Incidencias != null && envioDetalle.Incidencias.Any())
+                {
+                    <h6 style="font-weight: 700; font-size: 0.9rem; color: #B91C1C; margin-bottom: 0.5rem;">
+                        <i class="bi bi-exclamation-triangle-fill me-1"></i>Incidencias Reportadas
+                    </h6>
+                    @foreach (var inc in envioDetalle.Incidencias.Where(i => i != null).OrderByDescending(i => i.FechaHora))
+                    {
+                        <div class="alert alert-danger py-2 px-3 small mb-2">
+                            <strong>[@inc.FechaHora.ToString("dd/MM/yyyy HH:mm")] @inc.Motivo:</strong> @inc.Descripcion
+                        </div>
+                    }
+                }
+
+                <!-- Línea de Tiempo de Estados -->
+                <h6 style="font-weight: 700; font-size: 0.9rem; color: #0F172A; margin-top: 1rem; margin-bottom: 0.75rem;">
+                    <i class="bi bi-clock-history text-primary me-1"></i>Historial Cronológico de Estados
+                </h6>
+                @if (envioDetalle.HistorialEstados == null || !envioDetalle.HistorialEstados.Any())
+                {
+                    <p class="small text-muted">Sin eventos registrados.</p>
+                }
+                else
+                {
+                    <div class="sitel-timeline">
+                        @foreach (var h in envioDetalle.HistorialEstados.Where(x => x != null).OrderByDescending(x => x.FechaHora))
+                        {
+                            <div class="sitel-timeline-item">
+                                <div class="sitel-timeline-dot"></div>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <span class="badge-sitel @ObtenerClaseBadge(h.Estado)">@FormatearEstado(h.Estado)</span>
+                                    <span style="font-size: 0.78rem; color: var(--text-muted); font-weight: 600;">@h.FechaHora.ToString("dd/MM/yyyy HH:mm:ss")</span>
+                                </div>
+                                <div style="font-size: 0.85rem; font-weight: 600; color: #0F172A; margin-top: 0.25rem;">
+                                    <i class="bi bi-geo-alt-fill text-primary me-1"></i>@h.Ubicacion
+                                </div>
+                                <div style="font-size: 0.83rem; color: #334155;">@h.Observaciones</div>
+                                <div style="font-size: 0.74rem; color: var(--text-muted);">
+                                    <i class="bi bi-person-badge me-1"></i>Registrado por: @h.RegistradoPor
+                                </div>
+                            </div>
+                        }
+                    </div>
+                }
+            </div>
+            <div class="sitel-modal-footer">
+                <button type="button" class="btn-sitel-primary" @onclick="() => envioDetalle = null">Cerrar Expediente</button>
+            </div>
+        </div>
+    </div>
+}
+
+<!-- MODAL 4: Confirmación de Anulación de Despacho -->
+@if (envioPorAnular != null)
+{
+    <div class="sitel-modal-backdrop" @onclick="() => envioPorAnular = null">
+        <div class="sitel-modal" style="max-width: 480px;" @onclick:stopPropagation="true">
+            <div class="sitel-modal-header">
+                <h5 style="margin: 0; font-size: 1.05rem; font-weight: 700;">
+                    <i class="bi bi-slash-circle-fill text-danger me-2"></i>Anular Guía de Despacho — @envioPorAnular.Guia
+                </h5>
+                <button type="button" class="btn-close btn-close-white" @onclick="() => envioPorAnular = null"></button>
+            </div>
+            <div class="sitel-modal-body">
+                <p class="small text-secondary mb-3">
+                    Al anular este despacho, se registrará la baja auditable y <strong>se restituirá automáticamente el stock</strong> de las mercancías asociadas en el inventario.
+                </p>
+
+                @if (!string.IsNullOrEmpty(errorModal))
+                {
+                    <div class="alert alert-danger py-2 small">
+                        <i class="bi bi-exclamation-octagon-fill me-1"></i>@errorModal
+                    </div>
+                }
+
+                <div class="mb-3">
+                    <label class="form-label small fw-bold">Motivo de Anulación <span class="text-danger">*</span></label>
+                    <textarea class="form-control" rows="2" @bind="dtoAnulacion.MotivoAnulacion" placeholder="Indique la razón operativa o solicitud del cliente..."></textarea>
+                </div>
+                <div>
+                    <label class="form-label small fw-bold">Autorizado Por <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" @bind="dtoAnulacion.AutorizadoPor" />
+                </div>
+            </div>
+            <div class="sitel-modal-footer">
+                <button type="button" class="btn btn-outline-secondary" @onclick="() => envioPorAnular = null">Cancelar</button>
+                <button type="button" class="btn btn-danger fw-semibold" @onclick="ConfirmarAnulacionAsync" disabled="@procesandoModal">
+                    <i class="bi bi-slash-circle me-1"></i>@(procesandoModal ? "Anulando..." : "Confirmar Anulación")
+                </button>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    private List<Envio> envios = new();
+    private List<Conductor> conductores = new();
+    private List<Ruta> rutas = new();
+
+    private string filtroTexto = string.Empty;
+    private string filtroEstado = string.Empty;
+    private bool cargando = true;
+
+    private string mensajeGlobal = string.Empty;
+    private bool esErrorGlobal = false;
+
+    // Modales
+    private Envio? envioAsignacion;
+    private AsignarDespachoDto dtoAsignacion = new();
+
+    private Envio? envioCambioEstado;
+    private ActualizarEstadoEnvioDto dtoEstado = new();
+
+    private Envio? envioDetalle;
+
+    private Envio? envioPorAnular;
+    private AnularEnvioDto dtoAnulacion = new();
+
+    private string errorModal = string.Empty;
+    private bool procesandoModal = false;
+
+    private IEnumerable<Envio> EnviosFiltrados => (envios ?? new List<Envio>())
+        .Where(e => e != null && (string.IsNullOrWhiteSpace(filtroTexto) ||
+                    (e.Guia?.Contains(filtroTexto, StringComparison.OrdinalIgnoreCase) ?? false) ||
+                    (e.Cliente?.NombreRazonSocial?.Contains(filtroTexto, StringComparison.OrdinalIgnoreCase) ?? false) ||
+                    (e.Destinatario?.Contains(filtroTexto, StringComparison.OrdinalIgnoreCase) ?? false) ||
+                    (e.DescripcionCarga?.Contains(filtroTexto, StringComparison.OrdinalIgnoreCase) ?? false)))
+        .Where(e =>
+        {
+            if (string.IsNullOrWhiteSpace(filtroEstado)) return true;
+            if (filtroEstado == "Anulado") return e.Anulado;
+            return !e.Anulado && e.EstadoActual.ToString().Equals(filtroEstado, StringComparison.OrdinalIgnoreCase);
+        });
+
+    protected override async Task OnInitializedAsync()
+    {
+        await CargarDatosAsync();
+    }
+
+    private async Task CargarDatosAsync()
+    {
+        cargando = true;
+        try
+        {
+            envios = await ObtenerListaSeguraAsync<Envio>("api/envios");
+            conductores = await ObtenerListaSeguraAsync<Conductor>("api/conductores");
+            rutas = await ObtenerListaSeguraAsync<Ruta>("api/rutas");
+        }
+        catch (Exception ex)
+        {
+            esErrorGlobal = true;
+            mensajeGlobal = $"Error al sincronizar los despachos: {ex.Message}";
+        }
+        finally
+        {
+            cargando = false;
+        }
+    }
+
+    private async Task<List<T>> ObtenerListaSeguraAsync<T>(string url)
+    {
+        try
+        {
+            var response = await Http.GetAsync(url);
+            if (response.IsSuccessStatusCode)
+            {
+                var lista = await response.Content.ReadFromJsonAsync<List<T>>();
+                return lista ?? new List<T>();
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.Error.WriteLine($"[SITEL MisEnvios] Aviso al consultar {url}: {ex.Message}");
+        }
+        return new List<T>();
+    }
+
+    private void AbrirModalAsignar(Envio? e)
+    {
+        if (e == null) return;
+        errorModal = string.Empty;
+        envioAsignacion = e;
+        dtoAsignacion = new AsignarDespachoDto
+        {
+            ConductorId = e.ConductorId,
+            RutaId = e.RutaId,
+            FechaEstimada = e.FechaEstimada,
+            Ubicacion = "Centro de Distribución SITEL",
+            Observaciones = "Asignación operativa de unidad y ruta (RF02)."
+        };
+    }
+
+    private async Task ConfirmarAsignacionAsync()
+    {
+        if (envioAsignacion == null) return;
+        if (dtoAsignacion.ConductorId <= 0 || dtoAsignacion.RutaId <= 0)
+        {
+            errorModal = "Seleccione un conductor y una ruta válidos.";
+            return;
+        }
+
+        procesandoModal = true;
+        errorModal = string.Empty;
+
+        try
+        {
+            var resp = await Http.PutAsJsonAsync($"api/envios/{envioAsignacion.Id}/asignar", dtoAsignacion);
+            if (resp.IsSuccessStatusCode)
+            {
+                esErrorGlobal = false;
+                mensajeGlobal = $"Conductor y ruta asignados correctamente a la guía {envioAsignacion.Guia}.";
+                envioAsignacion = null;
+                await CargarDatosAsync();
+            }
+            else
+            {
+                errorModal = await LeerErrorSeguroAsync(resp) ?? "Error al asignar conductor y ruta.";
+            }
+        }
+        catch (Exception ex)
+        {
+            errorModal = $"Error: {ex.Message}";
+        }
+        finally
+        {
+            procesandoModal = false;
+        }
+    }
+
+    private void AbrirModalEstado(Envio? e)
+    {
+        if (e == null) return;
+        errorModal = string.Empty;
+        envioCambioEstado = e;
+
+        var siguienteEstado = e.EstadoActual switch
+        {
+            EstadoEnvio.Registrado => EstadoEnvio.Asignado,
+            EstadoEnvio.Asignado => EstadoEnvio.EnRuta,
+            EstadoEnvio.EnRuta => EstadoEnvio.EnDestino,
+            EstadoEnvio.EnDestino => EstadoEnvio.Entregado,
+            _ => EstadoEnvio.EnRuta
+        };
+
+        dtoEstado = new ActualizarEstadoEnvioDto
+        {
+            NuevoEstado = siguienteEstado,
+            Ubicacion = siguienteEstado == EstadoEnvio.Entregado ? e.DireccionEntrega : (e.Ruta?.Destino ?? "Punto de control en ruta"),
+            ReceptorNombre = e.Destinatario,
+            MotivoIncidencia = MotivoIncidencia.Otro,
+            Observaciones = string.Empty
+        };
+    }
+
+    private async Task ConfirmarCambioEstadoAsync()
+    {
+        if (envioCambioEstado == null) return;
+        if (string.IsNullOrWhiteSpace(dtoEstado.Ubicacion))
+        {
+            errorModal = "La ubicación actual del reporte es obligatoria.";
+            return;
+        }
+
+        procesandoModal = true;
+        errorModal = string.Empty;
+
+        try
+        {
+            var resp = await Http.PutAsJsonAsync($"api/envios/{envioCambioEstado.Id}/estado", dtoEstado);
+            if (resp.IsSuccessStatusCode)
+            {
+                esErrorGlobal = false;
+                mensajeGlobal = $"El estado de la guía {envioCambioEstado.Guia} pasó a '{FormatearEstado(dtoEstado.NuevoEstado)}'.";
+                envioCambioEstado = null;
+                await CargarDatosAsync();
+            }
+            else
+            {
+                errorModal = await LeerErrorSeguroAsync(resp) ?? "No se pudo actualizar el estado del despacho.";
+            }
+        }
+        catch (Exception ex)
+        {
+            errorModal = $"Error: {ex.Message}";
+        }
+        finally
+        {
+            procesandoModal = false;
+        }
+    }
+
+    private void AbrirModalDetalle(Envio? e)
+    {
+        if (e == null) return;
+        envioDetalle = e;
+    }
+
+    private void AbrirModalAnular(Envio? e)
+    {
+        if (e == null) return;
+        errorModal = string.Empty;
+        envioPorAnular = e;
+        dtoAnulacion = new AnularEnvioDto
+        {
+            MotivoAnulacion = string.Empty,
+            AutorizadoPor = "Administrador Logístico SITEL"
+        };
+    }
+
+    private async Task ConfirmarAnulacionAsync()
+    {
+        if (envioPorAnular == null) return;
+        if (string.IsNullOrWhiteSpace(dtoAnulacion.MotivoAnulacion))
+        {
+            errorModal = "Debe ingresar el motivo de la anulación.";
+            return;
+        }
+
+        procesandoModal = true;
+        errorModal = string.Empty;
+
+        try
+        {
+            var resp = await Http.PutAsJsonAsync($"api/envios/{envioPorAnular.Id}/anular", dtoAnulacion);
+            if (resp.IsSuccessStatusCode)
+            {
+                esErrorGlobal = false;
+                mensajeGlobal = $"La guía {envioPorAnular.Guia} fue anulada y el stock retornó al almacén.";
+                envioPorAnular = null;
+                await CargarDatosAsync();
+            }
+            else
+            {
+                errorModal = await LeerErrorSeguroAsync(resp) ?? "No se pudo anular el despacho.";
+            }
+        }
+        catch (Exception ex)
+        {
+            errorModal = $"Error: {ex.Message}";
+        }
+        finally
+        {
+            procesandoModal = false;
+        }
+    }
+
+    private static async Task<string?> LeerErrorSeguroAsync(HttpResponseMessage response)
+    {
+        try
+        {
+            var err = await response.Content.ReadFromJsonAsync<ApiMessageResponse>();
+            return err?.Mensaje;
+        }
+        catch
+        {
+            return null;
+        }
+    }
+
+    private static string ObtenerClaseBadge(EstadoEnvio estado) => estado switch
+    {
+        EstadoEnvio.Registrado => "badge-registrado",
+        EstadoEnvio.Asignado => "badge-asignado",
+        EstadoEnvio.EnRuta => "badge-enruta",
+        EstadoEnvio.EnDestino => "badge-endestino",
+        EstadoEnvio.Entregado => "badge-entregado",
+        EstadoEnvio.ConIncidencia => "badge-incidencia",
+        EstadoEnvio.Retrasado => "badge-incidencia",
+        _ => "badge-registrado"
+    };
+
+    private static string FormatearEstado(EstadoEnvio estado) => estado switch
+    {
+        EstadoEnvio.Registrado => "Registrado",
+        EstadoEnvio.Asignado => "Asignado",
+        EstadoEnvio.EnRuta => "En Ruta",
+        EstadoEnvio.EnDestino => "En Destino",
+        EstadoEnvio.Entregado => "Entregado",
+        EstadoEnvio.ConIncidencia => "Con Incidencia",
+        EstadoEnvio.Retrasado => "Retrasado",
+        _ => estado.ToString()
+    };
+}

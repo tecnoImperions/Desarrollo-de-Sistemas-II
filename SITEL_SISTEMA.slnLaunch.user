@@ -1,0 +1,15 @@
+[
+  {
+    "Name": "Nuevo perfil",
+    "Projects": [
+      {
+        "Path": "SITEL.Client\\SITEL.Client.csproj",
+        "Action": "Start"
+      },
+      {
+        "Path": "SITEL.Server\\SITEL.Server.csproj",
+        "Action": "Start"
+      }
+    ]
+  }
+]

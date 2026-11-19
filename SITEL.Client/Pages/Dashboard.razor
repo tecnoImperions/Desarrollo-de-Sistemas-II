@@ -1,0 +1,18 @@
+@page "/dashboard"
+@inject NavigationManager Navigation
+
+<Home />
+
+@code {
+    private string filtroEstado = string.Empty;
+
+    private void Logout()
+    {
+        Navigation.NavigateTo("/login");
+    }
+
+    private void VerDetalle(string guia)
+    {
+        Navigation.NavigateTo("/mis-envios");
+    }
+}

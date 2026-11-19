@@ -7,18 +7,94 @@
       "RelativeMoniker": "D:0:0:{382602FA-FCE9-471A-D535-DDEF385FAFCE}|SITEL.Server\\SITEL.Server.csproj|solutionrelative:sitel.server\\controllers\\usuarioscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
+      "AbsoluteMoniker": "D:0:0:{B67DE15C-C4EB-53D3-FB0B-C9A75F59B239}|SITEL.Client\\SITEL.Client.csproj|c:\\users\\juan andres\\source\\repos\\sitel_sistema\\sitel.client\\layout\\mainlayout.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{B67DE15C-C4EB-53D3-FB0B-C9A75F59B239}|SITEL.Client\\SITEL.Client.csproj|solutionrelative:sitel.client\\layout\\mainlayout.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B67DE15C-C4EB-53D3-FB0B-C9A75F59B239}|SITEL.Client\\SITEL.Client.csproj|c:\\users\\juan andres\\source\\repos\\sitel_sistema\\sitel.client\\wwwroot\\css\\app.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}",
+      "RelativeMoniker": "D:0:0:{B67DE15C-C4EB-53D3-FB0B-C9A75F59B239}|SITEL.Client\\SITEL.Client.csproj|solutionrelative:sitel.client\\wwwroot\\css\\app.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B67DE15C-C4EB-53D3-FB0B-C9A75F59B239}|SITEL.Client\\SITEL.Client.csproj|c:\\users\\juan andres\\source\\repos\\sitel_sistema\\sitel.client\\layout\\navmenu.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{B67DE15C-C4EB-53D3-FB0B-C9A75F59B239}|SITEL.Client\\SITEL.Client.csproj|solutionrelative:sitel.client\\layout\\navmenu.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B67DE15C-C4EB-53D3-FB0B-C9A75F59B239}|SITEL.Client\\SITEL.Client.csproj|c:\\users\\juan andres\\source\\repos\\sitel_sistema\\sitel.client\\wwwroot\\index.html||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{B67DE15C-C4EB-53D3-FB0B-C9A75F59B239}|SITEL.Client\\SITEL.Client.csproj|solutionrelative:sitel.client\\wwwroot\\index.html||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B67DE15C-C4EB-53D3-FB0B-C9A75F59B239}|SITEL.Client\\SITEL.Client.csproj|c:\\users\\juan andres\\source\\repos\\sitel_sistema\\sitel.client\\pages\\misenvios.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{B67DE15C-C4EB-53D3-FB0B-C9A75F59B239}|SITEL.Client\\SITEL.Client.csproj|solutionrelative:sitel.client\\pages\\misenvios.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CFA2B7E4-6CAA-160A-9070-069B25160152}|SITEL.Shared\\SITEL.Shared.csproj|c:\\users\\juan andres\\source\\repos\\sitel_sistema\\sitel.shared\\entities\\conductor.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CFA2B7E4-6CAA-160A-9070-069B25160152}|SITEL.Shared\\SITEL.Shared.csproj|solutionrelative:sitel.shared\\entities\\conductor.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B67DE15C-C4EB-53D3-FB0B-C9A75F59B239}|SITEL.Client\\SITEL.Client.csproj|c:\\users\\juan andres\\source\\repos\\sitel_sistema\\sitel.client\\pages\\envionuevo.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{B67DE15C-C4EB-53D3-FB0B-C9A75F59B239}|SITEL.Client\\SITEL.Client.csproj|solutionrelative:sitel.client\\pages\\envionuevo.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B67DE15C-C4EB-53D3-FB0B-C9A75F59B239}|SITEL.Client\\SITEL.Client.csproj|c:\\users\\juan andres\\source\\repos\\sitel_sistema\\sitel.client\\pages\\clientes.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{B67DE15C-C4EB-53D3-FB0B-C9A75F59B239}|SITEL.Client\\SITEL.Client.csproj|solutionrelative:sitel.client\\pages\\clientes.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{382602FA-FCE9-471A-D535-DDEF385FAFCE}|SITEL.Server\\SITEL.Server.csproj|c:\\users\\juan andres\\source\\repos\\sitel_sistema\\sitel.server\\controllers\\envioscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{382602FA-FCE9-471A-D535-DDEF385FAFCE}|SITEL.Server\\SITEL.Server.csproj|solutionrelative:sitel.server\\controllers\\envioscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{382602FA-FCE9-471A-D535-DDEF385FAFCE}|SITEL.Server\\SITEL.Server.csproj|c:\\users\\juan andres\\source\\repos\\sitel_sistema\\sitel.server\\controllers\\clientescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{382602FA-FCE9-471A-D535-DDEF385FAFCE}|SITEL.Server\\SITEL.Server.csproj|solutionrelative:sitel.server\\controllers\\clientescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CFA2B7E4-6CAA-160A-9070-069B25160152}|SITEL.Shared\\SITEL.Shared.csproj|c:\\users\\juan andres\\source\\repos\\sitel_sistema\\sitel.shared\\entities\\envio.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CFA2B7E4-6CAA-160A-9070-069B25160152}|SITEL.Shared\\SITEL.Shared.csproj|solutionrelative:sitel.shared\\entities\\envio.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CFA2B7E4-6CAA-160A-9070-069B25160152}|SITEL.Shared\\SITEL.Shared.csproj|c:\\users\\juan andres\\source\\repos\\sitel_sistema\\sitel.shared\\entities\\cliente.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CFA2B7E4-6CAA-160A-9070-069B25160152}|SITEL.Shared\\SITEL.Shared.csproj|solutionrelative:sitel.shared\\entities\\cliente.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B67DE15C-C4EB-53D3-FB0B-C9A75F59B239}|SITEL.Client\\SITEL.Client.csproj|c:\\users\\juan andres\\source\\repos\\sitel_sistema\\sitel.client\\pages\\conductormobile.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{B67DE15C-C4EB-53D3-FB0B-C9A75F59B239}|SITEL.Client\\SITEL.Client.csproj|solutionrelative:sitel.client\\pages\\conductormobile.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B67DE15C-C4EB-53D3-FB0B-C9A75F59B239}|SITEL.Client\\SITEL.Client.csproj|c:\\users\\juan andres\\source\\repos\\sitel_sistema\\sitel.client\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B67DE15C-C4EB-53D3-FB0B-C9A75F59B239}|SITEL.Client\\SITEL.Client.csproj|solutionrelative:sitel.client\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{382602FA-FCE9-471A-D535-DDEF385FAFCE}|SITEL.Server\\SITEL.Server.csproj|c:\\users\\juan andres\\source\\repos\\sitel_sistema\\sitel.server\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{382602FA-FCE9-471A-D535-DDEF385FAFCE}|SITEL.Server\\SITEL.Server.csproj|solutionrelative:sitel.server\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B67DE15C-C4EB-53D3-FB0B-C9A75F59B239}|SITEL.Client\\SITEL.Client.csproj|c:\\users\\juan andres\\source\\repos\\sitel_sistema\\sitel.client\\pages\\loginpage.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{B67DE15C-C4EB-53D3-FB0B-C9A75F59B239}|SITEL.Client\\SITEL.Client.csproj|solutionrelative:sitel.client\\pages\\loginpage.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B67DE15C-C4EB-53D3-FB0B-C9A75F59B239}|SITEL.Client\\SITEL.Client.csproj|c:\\users\\juan andres\\source\\repos\\sitel_sistema\\sitel.client\\services\\authservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B67DE15C-C4EB-53D3-FB0B-C9A75F59B239}|SITEL.Client\\SITEL.Client.csproj|solutionrelative:sitel.client\\services\\authservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B67DE15C-C4EB-53D3-FB0B-C9A75F59B239}|SITEL.Client\\SITEL.Client.csproj|c:\\users\\juan andres\\source\\repos\\sitel_sistema\\sitel.client\\services\\tokenhandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B67DE15C-C4EB-53D3-FB0B-C9A75F59B239}|SITEL.Client\\SITEL.Client.csproj|solutionrelative:sitel.client\\services\\tokenhandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B67DE15C-C4EB-53D3-FB0B-C9A75F59B239}|SITEL.Client\\SITEL.Client.csproj|c:\\users\\juan andres\\source\\repos\\sitel_sistema\\sitel.client\\pages\\dashboard.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{B67DE15C-C4EB-53D3-FB0B-C9A75F59B239}|SITEL.Client\\SITEL.Client.csproj|solutionrelative:sitel.client\\pages\\dashboard.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B67DE15C-C4EB-53D3-FB0B-C9A75F59B239}|SITEL.Client\\SITEL.Client.csproj|c:\\users\\juan andres\\source\\repos\\sitel_sistema\\sitel.client\\pages\\weather.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{B67DE15C-C4EB-53D3-FB0B-C9A75F59B239}|SITEL.Client\\SITEL.Client.csproj|solutionrelative:sitel.client\\pages\\weather.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B67DE15C-C4EB-53D3-FB0B-C9A75F59B239}|SITEL.Client\\SITEL.Client.csproj|c:\\users\\juan andres\\source\\repos\\sitel_sistema\\sitel.client\\services\\apiservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B67DE15C-C4EB-53D3-FB0B-C9A75F59B239}|SITEL.Client\\SITEL.Client.csproj|solutionrelative:sitel.client\\services\\apiservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Juan Andres\\AppData\\Roaming\\Microsoft\\UserSecrets\\368ba984-c7b9-4d64-abcc-5dc75e1a884d\\secrets.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Juan Andres\\.copilot\\plans\\plan-corregir-vulnerabilidades-de-paquete-nuget.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}|MarkdownSecurePreview"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{382602FA-FCE9-471A-D535-DDEF385FAFCE}|SITEL.Server\\SITEL.Server.csproj|c:\\users\\juan andres\\source\\repos\\sitel_sistema\\sitel.server\\controllers\\clientescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{382602FA-FCE9-471A-D535-DDEF385FAFCE}|SITEL.Server\\SITEL.Server.csproj|solutionrelative:sitel.server\\controllers\\clientescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{CFA2B7E4-6CAA-160A-9070-069B25160152}|SITEL.Shared\\SITEL.Shared.csproj|c:\\users\\juan andres\\source\\repos\\sitel_sistema\\sitel.shared\\entities\\usuario.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -37,20 +113,8 @@
       "RelativeMoniker": "D:0:0:{CFA2B7E4-6CAA-160A-9070-069B25160152}|SITEL.Shared\\SITEL.Shared.csproj|solutionrelative:sitel.shared\\entities\\historialestado.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{CFA2B7E4-6CAA-160A-9070-069B25160152}|SITEL.Shared\\SITEL.Shared.csproj|c:\\users\\juan andres\\source\\repos\\sitel_sistema\\sitel.shared\\entities\\envio.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{CFA2B7E4-6CAA-160A-9070-069B25160152}|SITEL.Shared\\SITEL.Shared.csproj|solutionrelative:sitel.shared\\entities\\envio.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{CFA2B7E4-6CAA-160A-9070-069B25160152}|SITEL.Shared\\SITEL.Shared.csproj|c:\\users\\juan andres\\source\\repos\\sitel_sistema\\sitel.shared\\entities\\ruta.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{CFA2B7E4-6CAA-160A-9070-069B25160152}|SITEL.Shared\\SITEL.Shared.csproj|solutionrelative:sitel.shared\\entities\\ruta.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{CFA2B7E4-6CAA-160A-9070-069B25160152}|SITEL.Shared\\SITEL.Shared.csproj|c:\\users\\juan andres\\source\\repos\\sitel_sistema\\sitel.shared\\entities\\conductor.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{CFA2B7E4-6CAA-160A-9070-069B25160152}|SITEL.Shared\\SITEL.Shared.csproj|solutionrelative:sitel.shared\\entities\\conductor.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{CFA2B7E4-6CAA-160A-9070-069B25160152}|SITEL.Shared\\SITEL.Shared.csproj|c:\\users\\juan andres\\source\\repos\\sitel_sistema\\sitel.shared\\entities\\cliente.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{CFA2B7E4-6CAA-160A-9070-069B25160152}|SITEL.Shared\\SITEL.Shared.csproj|solutionrelative:sitel.shared\\entities\\cliente.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{382602FA-FCE9-471A-D535-DDEF385FAFCE}|SITEL.Server\\SITEL.Server.csproj|c:\\users\\juan andres\\source\\repos\\sitel_sistema\\sitel.server\\migrations\\20261113134619_migracioninicialsitel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -73,10 +137,6 @@
       "RelativeMoniker": "D:0:0:{CFA2B7E4-6CAA-160A-9070-069B25160152}|SITEL.Shared\\SITEL.Shared.csproj|solutionrelative:sitel.shared\\enums\\rolusuario.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{CFA2B7E4-6CAA-160A-9070-069B25160152}|SITEL.Shared\\SITEL.Shared.csproj|c:\\users\\juan andres\\source\\repos\\sitel_sistema\\sitel.shared\\class1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{CFA2B7E4-6CAA-160A-9070-069B25160152}|SITEL.Shared\\SITEL.Shared.csproj|solutionrelative:sitel.shared\\class1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{382602FA-FCE9-471A-D535-DDEF385FAFCE}|SITEL.Server\\SITEL.Server.csproj|c:\\users\\juan andres\\source\\repos\\sitel_sistema\\sitel.server\\data\\appdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{382602FA-FCE9-471A-D535-DDEF385FAFCE}|SITEL.Server\\SITEL.Server.csproj|solutionrelative:sitel.server\\data\\appdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -92,69 +152,91 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 5,
+          "SelectedChildIndex": 7,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "secrets.json",
-              "DocumentMoniker": "C:\\Users\\Juan Andres\\AppData\\Roaming\\Microsoft\\UserSecrets\\368ba984-c7b9-4d64-abcc-5dc75e1a884d\\secrets.json",
-              "RelativeDocumentMoniker": "..\\..\\..\\AppData\\Roaming\\Microsoft\\UserSecrets\\368ba984-c7b9-4d64-abcc-5dc75e1a884d\\secrets.json",
-              "ToolTip": "C:\\Users\\Juan Andres\\AppData\\Roaming\\Microsoft\\UserSecrets\\368ba984-c7b9-4d64-abcc-5dc75e1a884d\\secrets.json",
-              "RelativeToolTip": "..\\..\\..\\AppData\\Roaming\\Microsoft\\UserSecrets\\368ba984-c7b9-4d64-abcc-5dc75e1a884d\\secrets.json",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAABAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2026-11-16T12:00:07.404Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "plan-corregir-vulnerabilidades-de-paquete-nuget.md [Versi\u00F3n preliminar]",
-              "DocumentMoniker": "C:\\Users\\Juan Andres\\.copilot\\plans\\plan-corregir-vulnerabilidades-de-paquete-nuget.md",
-              "RelativeDocumentMoniker": "..\\..\\..\\.copilot\\plans\\plan-corregir-vulnerabilidades-de-paquete-nuget.md",
-              "ToolTip": "C:\\Users\\Juan Andres\\.copilot\\plans\\plan-corregir-vulnerabilidades-de-paquete-nuget.md [Versi\u00F3n preliminar]",
-              "RelativeToolTip": "..\\..\\..\\.copilot\\plans\\plan-corregir-vulnerabilidades-de-paquete-nuget.md [Versi\u00F3n preliminar]",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001818|",
-              "WhenOpened": "2026-11-15T13:52:37.411Z",
-              "EditorCaption": " [Versi\u00F3n preliminar]"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "Program.cs",
-              "DocumentMoniker": "C:\\Users\\Juan Andres\\source\\repos\\SITEL_SISTEMA\\SITEL.Server\\Program.cs",
-              "RelativeDocumentMoniker": "SITEL.Server\\Program.cs",
-              "ToolTip": "C:\\Users\\Juan Andres\\source\\repos\\SITEL_SISTEMA\\SITEL.Server\\Program.cs",
-              "RelativeToolTip": "SITEL.Server\\Program.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAACgAAAAKAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-11-13T13:25:41.116Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
               "DocumentIndex": 8,
-              "Title": "HistorialEstado.cs",
-              "DocumentMoniker": "C:\\Users\\Juan Andres\\source\\repos\\SITEL_SISTEMA\\SITEL.Shared\\Entities\\HistorialEstado.cs",
-              "RelativeDocumentMoniker": "SITEL.Shared\\Entities\\HistorialEstado.cs",
-              "ToolTip": "C:\\Users\\Juan Andres\\source\\repos\\SITEL_SISTEMA\\SITEL.Shared\\Entities\\HistorialEstado.cs",
-              "RelativeToolTip": "SITEL.Shared\\Entities\\HistorialEstado.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAABAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-11-13T13:40:05.831Z"
+              "Title": "Clientes.razor",
+              "DocumentMoniker": "C:\\Users\\Juan Andres\\source\\repos\\SITEL_SISTEMA\\SITEL.Client\\Pages\\Clientes.razor",
+              "RelativeDocumentMoniker": "SITEL.Client\\Pages\\Clientes.razor",
+              "ToolTip": "C:\\Users\\Juan Andres\\source\\repos\\SITEL_SISTEMA\\SITEL.Client\\Pages\\Clientes.razor",
+              "RelativeToolTip": "SITEL.Client\\Pages\\Clientes.razor",
+              "ViewState": "AgIAAFwAAAAAAAAAAAAkwIgAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-11-17T13:48:19.575Z"
             },
             {
               "$type": "Document",
               "DocumentIndex": 5,
-              "Title": "Usuario.cs",
-              "DocumentMoniker": "C:\\Users\\Juan Andres\\source\\repos\\SITEL_SISTEMA\\SITEL.Shared\\Entities\\Usuario.cs",
-              "RelativeDocumentMoniker": "SITEL.Shared\\Entities\\Usuario.cs",
-              "ToolTip": "C:\\Users\\Juan Andres\\source\\repos\\SITEL_SISTEMA\\SITEL.Shared\\Entities\\Usuario.cs",
-              "RelativeToolTip": "SITEL.Shared\\Entities\\Usuario.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAABAAAAAAAAAA==",
+              "Title": "MisEnvios.razor",
+              "DocumentMoniker": "C:\\Users\\Juan Andres\\source\\repos\\SITEL_SISTEMA\\SITEL.Client\\Pages\\MisEnvios.razor",
+              "RelativeDocumentMoniker": "SITEL.Client\\Pages\\MisEnvios.razor",
+              "ToolTip": "C:\\Users\\Juan Andres\\source\\repos\\SITEL_SISTEMA\\SITEL.Client\\Pages\\MisEnvios.razor",
+              "RelativeToolTip": "SITEL.Client\\Pages\\MisEnvios.razor",
+              "ViewState": "AgIAAEEAAAAAAAAAAAAkwEkAAACeAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-11-17T13:43:12.405Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "EnvioNuevo.razor",
+              "DocumentMoniker": "C:\\Users\\Juan Andres\\source\\repos\\SITEL_SISTEMA\\SITEL.Client\\Pages\\EnvioNuevo.razor",
+              "RelativeDocumentMoniker": "SITEL.Client\\Pages\\EnvioNuevo.razor",
+              "ToolTip": "C:\\Users\\Juan Andres\\source\\repos\\SITEL_SISTEMA\\SITEL.Client\\Pages\\EnvioNuevo.razor",
+              "RelativeToolTip": "SITEL.Client\\Pages\\EnvioNuevo.razor",
+              "ViewState": "AgIAAEkAAAAAAAAAAAAkwHUAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-11-17T13:42:29.229Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "app.css",
+              "DocumentMoniker": "C:\\Users\\Juan Andres\\source\\repos\\SITEL_SISTEMA\\SITEL.Client\\wwwroot\\css\\app.css",
+              "RelativeDocumentMoniker": "SITEL.Client\\wwwroot\\css\\app.css",
+              "ToolTip": "C:\\Users\\Juan Andres\\source\\repos\\SITEL_SISTEMA\\SITEL.Client\\wwwroot\\css\\app.css",
+              "RelativeToolTip": "SITEL.Client\\wwwroot\\css\\app.css",
+              "ViewState": "AgIAAD8AAAAAAAAAAAAUwGwAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
+              "WhenOpened": "2026-11-16T12:23:23.903Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "Envio.cs",
+              "DocumentMoniker": "C:\\Users\\Juan Andres\\source\\repos\\SITEL_SISTEMA\\SITEL.Shared\\Entities\\Envio.cs",
+              "RelativeDocumentMoniker": "SITEL.Shared\\Entities\\Envio.cs",
+              "ToolTip": "C:\\Users\\Juan Andres\\source\\repos\\SITEL_SISTEMA\\SITEL.Shared\\Entities\\Envio.cs",
+              "RelativeToolTip": "SITEL.Shared\\Entities\\Envio.cs",
+              "ViewState": "AgIAAA0AAAAAAAAAAAAkwBoAAAAyAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-11-13T13:38:45.461Z"
+              "WhenOpened": "2026-11-13T13:39:50.475Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "ClientesController.cs",
+              "DocumentMoniker": "C:\\Users\\Juan Andres\\source\\repos\\SITEL_SISTEMA\\SITEL.Server\\Controllers\\ClientesController.cs",
+              "RelativeDocumentMoniker": "SITEL.Server\\Controllers\\ClientesController.cs",
+              "ToolTip": "C:\\Users\\Juan Andres\\source\\repos\\SITEL_SISTEMA\\SITEL.Server\\Controllers\\ClientesController.cs",
+              "RelativeToolTip": "SITEL.Server\\Controllers\\ClientesController.cs",
+              "ViewState": "AgIAAAcAAAAAAAAAAAAkwDMAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-11-13T13:53:43.81Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "EnviosController.cs",
+              "DocumentMoniker": "C:\\Users\\Juan Andres\\source\\repos\\SITEL_SISTEMA\\SITEL.Server\\Controllers\\EnviosController.cs",
+              "RelativeDocumentMoniker": "SITEL.Server\\Controllers\\EnviosController.cs",
+              "ToolTip": "C:\\Users\\Juan Andres\\source\\repos\\SITEL_SISTEMA\\SITEL.Server\\Controllers\\EnviosController.cs",
+              "RelativeToolTip": "SITEL.Server\\Controllers\\EnviosController.cs",
+              "ViewState": "AgIAAAkAAAAAAAAAAAAkwDUAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-11-17T13:41:27.99Z"
             },
             {
               "$type": "Document",
@@ -164,22 +246,34 @@
               "RelativeDocumentMoniker": "SITEL.Server\\Controllers\\UsuariosController.cs",
               "ToolTip": "C:\\Users\\Juan Andres\\source\\repos\\SITEL_SISTEMA\\SITEL.Server\\Controllers\\UsuariosController.cs",
               "RelativeToolTip": "SITEL.Server\\Controllers\\UsuariosController.cs",
-              "ViewState": "AgIAAFIAAAAAAAAAAAAQwGwAAAABAAAAAAAAAA==",
+              "ViewState": "AgIAAAUAAAAAAAAAAADgv0gAAAArAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-11-15T12:43:44.159Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "ClientesController.cs",
-              "DocumentMoniker": "C:\\Users\\Juan Andres\\source\\repos\\SITEL_SISTEMA\\SITEL.Server\\Controllers\\ClientesController.cs",
-              "RelativeDocumentMoniker": "SITEL.Server\\Controllers\\ClientesController.cs",
-              "ToolTip": "C:\\Users\\Juan Andres\\source\\repos\\SITEL_SISTEMA\\SITEL.Server\\Controllers\\ClientesController.cs",
-              "RelativeToolTip": "SITEL.Server\\Controllers\\ClientesController.cs",
-              "ViewState": "AgIAAAgAAAAAAAAAAAAYwBgAAAAAAAAAAAAAAA==",
+              "DocumentIndex": 1,
+              "Title": "MainLayout.razor",
+              "DocumentMoniker": "C:\\Users\\Juan Andres\\source\\repos\\SITEL_SISTEMA\\SITEL.Client\\Layout\\MainLayout.razor",
+              "RelativeDocumentMoniker": "SITEL.Client\\Layout\\MainLayout.razor",
+              "ToolTip": "C:\\Users\\Juan Andres\\source\\repos\\SITEL_SISTEMA\\SITEL.Client\\Layout\\MainLayout.razor",
+              "RelativeToolTip": "SITEL.Client\\Layout\\MainLayout.razor",
+              "ViewState": "AgIAAAsAAAAAAAAAAAAuwIQAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-11-17T14:11:52.972Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "Conductor.cs",
+              "DocumentMoniker": "C:\\Users\\Juan Andres\\source\\repos\\SITEL_SISTEMA\\SITEL.Shared\\Entities\\Conductor.cs",
+              "RelativeDocumentMoniker": "SITEL.Shared\\Entities\\Conductor.cs",
+              "ToolTip": "C:\\Users\\Juan Andres\\source\\repos\\SITEL_SISTEMA\\SITEL.Shared\\Entities\\Conductor.cs",
+              "RelativeToolTip": "SITEL.Shared\\Entities\\Conductor.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-11-13T13:53:43.81Z"
+              "WhenOpened": "2026-11-13T13:39:16.099Z"
             },
             {
               "$type": "Document",
@@ -195,19 +289,187 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 11,
-              "Title": "Conductor.cs",
-              "DocumentMoniker": "C:\\Users\\Juan Andres\\source\\repos\\SITEL_SISTEMA\\SITEL.Shared\\Entities\\Conductor.cs",
-              "RelativeDocumentMoniker": "SITEL.Shared\\Entities\\Conductor.cs",
-              "ToolTip": "C:\\Users\\Juan Andres\\source\\repos\\SITEL_SISTEMA\\SITEL.Shared\\Entities\\Conductor.cs",
-              "RelativeToolTip": "SITEL.Shared\\Entities\\Conductor.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAABAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-11-13T13:39:16.099Z"
+              "DocumentIndex": 13,
+              "Title": "ConductorMobile.razor",
+              "DocumentMoniker": "C:\\Users\\Juan Andres\\source\\repos\\SITEL_SISTEMA\\SITEL.Client\\Pages\\ConductorMobile.razor",
+              "RelativeDocumentMoniker": "SITEL.Client\\Pages\\ConductorMobile.razor",
+              "ToolTip": "C:\\Users\\Juan Andres\\source\\repos\\SITEL_SISTEMA\\SITEL.Client\\Pages\\ConductorMobile.razor",
+              "RelativeToolTip": "SITEL.Client\\Pages\\ConductorMobile.razor",
+              "ViewState": "AgIAAF0AAAAAAAAAAAAowG8AAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-11-16T12:26:26.451Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
+              "DocumentIndex": 4,
+              "Title": "index.html",
+              "DocumentMoniker": "C:\\Users\\Juan Andres\\source\\repos\\SITEL_SISTEMA\\SITEL.Client\\wwwroot\\index.html",
+              "RelativeDocumentMoniker": "SITEL.Client\\wwwroot\\index.html",
+              "ToolTip": "C:\\Users\\Juan Andres\\source\\repos\\SITEL_SISTEMA\\SITEL.Client\\wwwroot\\index.html",
+              "RelativeToolTip": "SITEL.Client\\wwwroot\\index.html",
+              "ViewState": "AgIAAAgAAAAAAAAAAAAgwB8AAAAHAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001512|",
+              "WhenOpened": "2026-11-17T14:04:08.936Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "NavMenu.razor",
+              "DocumentMoniker": "C:\\Users\\Juan Andres\\source\\repos\\SITEL_SISTEMA\\SITEL.Client\\Layout\\NavMenu.razor",
+              "RelativeDocumentMoniker": "SITEL.Client\\Layout\\NavMenu.razor",
+              "ToolTip": "C:\\Users\\Juan Andres\\source\\repos\\SITEL_SISTEMA\\SITEL.Client\\Layout\\NavMenu.razor",
+              "RelativeToolTip": "SITEL.Client\\Layout\\NavMenu.razor",
+              "ViewState": "AgIAACAAAAAAAAAAAAAqwCcAAAA2AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-11-17T14:05:09.351Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 21,
+              "Title": "ApiService.cs",
+              "DocumentMoniker": "C:\\Users\\Juan Andres\\source\\repos\\SITEL_SISTEMA\\SITEL.Client\\Services\\ApiService.cs",
+              "RelativeDocumentMoniker": "SITEL.Client\\Services\\ApiService.cs",
+              "ToolTip": "C:\\Users\\Juan Andres\\source\\repos\\SITEL_SISTEMA\\SITEL.Client\\Services\\ApiService.cs",
+              "RelativeToolTip": "SITEL.Client\\Services\\ApiService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-11-16T12:25:18.217Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 16,
+              "Title": "LoginPage.razor",
+              "DocumentMoniker": "C:\\Users\\Juan Andres\\source\\repos\\SITEL_SISTEMA\\SITEL.Client\\Pages\\LoginPage.razor",
+              "RelativeDocumentMoniker": "SITEL.Client\\Pages\\LoginPage.razor",
+              "ToolTip": "C:\\Users\\Juan Andres\\source\\repos\\SITEL_SISTEMA\\SITEL.Client\\Pages\\LoginPage.razor",
+              "RelativeToolTip": "SITEL.Client\\Pages\\LoginPage.razor",
+              "ViewState": "AgIAAGQAAAAAAAAAAAAgwIcAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-11-16T12:25:44.051Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 17,
+              "Title": "AuthService.cs",
+              "DocumentMoniker": "C:\\Users\\Juan Andres\\source\\repos\\SITEL_SISTEMA\\SITEL.Client\\Services\\AuthService.cs",
+              "RelativeDocumentMoniker": "SITEL.Client\\Services\\AuthService.cs",
+              "ToolTip": "C:\\Users\\Juan Andres\\source\\repos\\SITEL_SISTEMA\\SITEL.Client\\Services\\AuthService.cs",
+              "RelativeToolTip": "SITEL.Client\\Services\\AuthService.cs",
+              "ViewState": "AgIAAC8AAAAAAAAAAAA0wD0AAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-11-16T12:24:56.24Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 20,
+              "Title": "Weather.razor",
+              "DocumentMoniker": "C:\\Users\\Juan Andres\\source\\repos\\SITEL_SISTEMA\\SITEL.Client\\Pages\\Weather.razor",
+              "RelativeDocumentMoniker": "SITEL.Client\\Pages\\Weather.razor",
+              "ToolTip": "C:\\Users\\Juan Andres\\source\\repos\\SITEL_SISTEMA\\SITEL.Client\\Pages\\Weather.razor",
+              "RelativeToolTip": "SITEL.Client\\Pages\\Weather.razor",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-11-16T12:27:58.741Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\Juan Andres\\source\\repos\\SITEL_SISTEMA\\SITEL.Client\\Program.cs",
+              "RelativeDocumentMoniker": "SITEL.Client\\Program.cs",
+              "ToolTip": "C:\\Users\\Juan Andres\\source\\repos\\SITEL_SISTEMA\\SITEL.Client\\Program.cs",
+              "RelativeToolTip": "SITEL.Client\\Program.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACAAAAAhAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-11-16T12:29:23.976Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 19,
+              "Title": "Dashboard.razor",
+              "DocumentMoniker": "C:\\Users\\Juan Andres\\source\\repos\\SITEL_SISTEMA\\SITEL.Client\\Pages\\Dashboard.razor",
+              "RelativeDocumentMoniker": "SITEL.Client\\Pages\\Dashboard.razor",
+              "ToolTip": "C:\\Users\\Juan Andres\\source\\repos\\SITEL_SISTEMA\\SITEL.Client\\Pages\\Dashboard.razor",
+              "RelativeToolTip": "SITEL.Client\\Pages\\Dashboard.razor",
+              "ViewState": "AgIAAFsAAAAAAAAAAAAgwG0AAAAdAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-11-16T12:27:52.827Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 18,
+              "Title": "TokenHandler.cs",
+              "DocumentMoniker": "C:\\Users\\Juan Andres\\source\\repos\\SITEL_SISTEMA\\SITEL.Client\\Services\\TokenHandler.cs",
+              "RelativeDocumentMoniker": "SITEL.Client\\Services\\TokenHandler.cs",
+              "ToolTip": "C:\\Users\\Juan Andres\\source\\repos\\SITEL_SISTEMA\\SITEL.Client\\Services\\TokenHandler.cs",
+              "RelativeToolTip": "SITEL.Client\\Services\\TokenHandler.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAB4AAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-11-16T12:29:01.461Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 22,
+              "Title": "secrets.json",
+              "DocumentMoniker": "C:\\Users\\Juan Andres\\AppData\\Roaming\\Microsoft\\UserSecrets\\368ba984-c7b9-4d64-abcc-5dc75e1a884d\\secrets.json",
+              "RelativeDocumentMoniker": "..\\..\\..\\AppData\\Roaming\\Microsoft\\UserSecrets\\368ba984-c7b9-4d64-abcc-5dc75e1a884d\\secrets.json",
+              "ToolTip": "C:\\Users\\Juan Andres\\AppData\\Roaming\\Microsoft\\UserSecrets\\368ba984-c7b9-4d64-abcc-5dc75e1a884d\\secrets.json",
+              "RelativeToolTip": "..\\..\\..\\AppData\\Roaming\\Microsoft\\UserSecrets\\368ba984-c7b9-4d64-abcc-5dc75e1a884d\\secrets.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2026-11-16T12:00:07.404Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 23,
+              "Title": "plan-corregir-vulnerabilidades-de-paquete-nuget.md [Versi\u00F3n preliminar]",
+              "DocumentMoniker": "C:\\Users\\Juan Andres\\.copilot\\plans\\plan-corregir-vulnerabilidades-de-paquete-nuget.md",
+              "RelativeDocumentMoniker": "..\\..\\..\\.copilot\\plans\\plan-corregir-vulnerabilidades-de-paquete-nuget.md",
+              "ToolTip": "C:\\Users\\Juan Andres\\.copilot\\plans\\plan-corregir-vulnerabilidades-de-paquete-nuget.md [Versi\u00F3n preliminar]",
+              "RelativeToolTip": "..\\..\\..\\.copilot\\plans\\plan-corregir-vulnerabilidades-de-paquete-nuget.md [Versi\u00F3n preliminar]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001818|",
+              "WhenOpened": "2026-11-15T13:52:37.411Z",
+              "EditorCaption": " [Versi\u00F3n preliminar]"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 15,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\Juan Andres\\source\\repos\\SITEL_SISTEMA\\SITEL.Server\\Program.cs",
+              "RelativeDocumentMoniker": "SITEL.Server\\Program.cs",
+              "ToolTip": "C:\\Users\\Juan Andres\\source\\repos\\SITEL_SISTEMA\\SITEL.Server\\Program.cs",
+              "RelativeToolTip": "SITEL.Server\\Program.cs",
+              "ViewState": "AgIAABIAAAAAAAAAAAAswCEAAAAaAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-11-13T13:25:41.116Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 27,
+              "Title": "HistorialEstado.cs",
+              "DocumentMoniker": "C:\\Users\\Juan Andres\\source\\repos\\SITEL_SISTEMA\\SITEL.Shared\\Entities\\HistorialEstado.cs",
+              "RelativeDocumentMoniker": "SITEL.Shared\\Entities\\HistorialEstado.cs",
+              "ToolTip": "C:\\Users\\Juan Andres\\source\\repos\\SITEL_SISTEMA\\SITEL.Shared\\Entities\\HistorialEstado.cs",
+              "RelativeToolTip": "SITEL.Shared\\Entities\\HistorialEstado.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-11-13T13:40:05.831Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 24,
+              "Title": "Usuario.cs",
+              "DocumentMoniker": "C:\\Users\\Juan Andres\\source\\repos\\SITEL_SISTEMA\\SITEL.Shared\\Entities\\Usuario.cs",
+              "RelativeDocumentMoniker": "SITEL.Shared\\Entities\\Usuario.cs",
+              "ToolTip": "C:\\Users\\Juan Andres\\source\\repos\\SITEL_SISTEMA\\SITEL.Shared\\Entities\\Usuario.cs",
+              "RelativeToolTip": "SITEL.Shared\\Entities\\Usuario.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-11-13T13:38:45.461Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 28,
               "Title": "Ruta.cs",
               "DocumentMoniker": "C:\\Users\\Juan Andres\\source\\repos\\SITEL_SISTEMA\\SITEL.Shared\\Entities\\Ruta.cs",
               "RelativeDocumentMoniker": "SITEL.Shared\\Entities\\Ruta.cs",
@@ -219,19 +481,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
-              "Title": "Envio.cs",
-              "DocumentMoniker": "C:\\Users\\Juan Andres\\source\\repos\\SITEL_SISTEMA\\SITEL.Shared\\Entities\\Envio.cs",
-              "RelativeDocumentMoniker": "SITEL.Shared\\Entities\\Envio.cs",
-              "ToolTip": "C:\\Users\\Juan Andres\\source\\repos\\SITEL_SISTEMA\\SITEL.Shared\\Entities\\Envio.cs",
-              "RelativeToolTip": "SITEL.Shared\\Entities\\Envio.cs",
-              "ViewState": "AgIAAAoAAAAAAAAAAAAgwCYAAAABAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-11-13T13:39:50.475Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 26,
               "Title": "Incidencia.cs",
               "DocumentMoniker": "C:\\Users\\Juan Andres\\source\\repos\\SITEL_SISTEMA\\SITEL.Shared\\Entities\\Incidencia.cs",
               "RelativeDocumentMoniker": "SITEL.Shared\\Entities\\Incidencia.cs",
@@ -243,7 +493,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 13,
+              "DocumentIndex": 29,
               "Title": "20261113134619_MigracionInicialSITEL.cs",
               "DocumentMoniker": "C:\\Users\\Juan Andres\\source\\repos\\SITEL_SISTEMA\\SITEL.Server\\Migrations\\20261113134619_MigracionInicialSITEL.cs",
               "RelativeDocumentMoniker": "SITEL.Server\\Migrations\\20261113134619_MigracionInicialSITEL.cs",
@@ -255,7 +505,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 14,
+              "DocumentIndex": 30,
               "Title": "appsettings.json",
               "DocumentMoniker": "C:\\Users\\Juan Andres\\source\\repos\\SITEL_SISTEMA\\SITEL.Server\\appsettings.json",
               "RelativeDocumentMoniker": "SITEL.Server\\appsettings.json",
@@ -267,7 +517,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 25,
               "Title": "launchSettings.json",
               "DocumentMoniker": "C:\\Users\\Juan Andres\\source\\repos\\SITEL_SISTEMA\\SITEL.Server\\Properties\\launchSettings.json",
               "RelativeDocumentMoniker": "SITEL.Server\\Properties\\launchSettings.json",
@@ -279,7 +529,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 15,
+              "DocumentIndex": 31,
               "Title": "MotivoIncidencia.cs",
               "DocumentMoniker": "C:\\Users\\Juan Andres\\source\\repos\\SITEL_SISTEMA\\SITEL.Shared\\Enums\\MotivoIncidencia.cs",
               "RelativeDocumentMoniker": "SITEL.Shared\\Enums\\MotivoIncidencia.cs",
@@ -291,7 +541,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 16,
+              "DocumentIndex": 32,
               "Title": "EstadoEnvio.cs",
               "DocumentMoniker": "C:\\Users\\Juan Andres\\source\\repos\\SITEL_SISTEMA\\SITEL.Shared\\Enums\\EstadoEnvio.cs",
               "RelativeDocumentMoniker": "SITEL.Shared\\Enums\\EstadoEnvio.cs",
@@ -303,7 +553,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 17,
+              "DocumentIndex": 33,
               "Title": "RolUsuario.cs",
               "DocumentMoniker": "C:\\Users\\Juan Andres\\source\\repos\\SITEL_SISTEMA\\SITEL.Shared\\Enums\\RolUsuario.cs",
               "RelativeDocumentMoniker": "SITEL.Shared\\Enums\\RolUsuario.cs",
@@ -315,19 +565,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 18,
-              "Title": "Class1.cs",
-              "DocumentMoniker": "C:\\Users\\Juan Andres\\source\\repos\\SITEL_SISTEMA\\SITEL.Shared\\Class1.cs",
-              "RelativeDocumentMoniker": "SITEL.Shared\\Class1.cs",
-              "ToolTip": "C:\\Users\\Juan Andres\\source\\repos\\SITEL_SISTEMA\\SITEL.Shared\\Class1.cs",
-              "RelativeToolTip": "SITEL.Shared\\Class1.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAABAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-11-13T13:36:14.175Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 19,
+              "DocumentIndex": 34,
               "Title": "AppDbContext.cs",
               "DocumentMoniker": "C:\\Users\\Juan Andres\\source\\repos\\SITEL_SISTEMA\\SITEL.Server\\Data\\AppDbContext.cs",
               "RelativeDocumentMoniker": "SITEL.Server\\Data\\AppDbContext.cs",
@@ -339,7 +577,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 20,
+              "DocumentIndex": 35,
               "Title": "SITEL.Server.csproj",
               "DocumentMoniker": "C:\\Users\\Juan Andres\\source\\repos\\SITEL_SISTEMA\\SITEL.Server\\SITEL.Server.csproj",
               "RelativeDocumentMoniker": "SITEL.Server\\SITEL.Server.csproj",

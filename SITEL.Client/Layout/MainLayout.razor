@@ -1,16 +1,132 @@
-﻿@inherits LayoutComponentBase
-<div class="page">
-    <div class="sidebar">
-        <NavMenu />
-    </div>
+@inherits LayoutComponentBase
+@using SITEL.Client.Services
+@inject AuthService Auth
+@inject NavigationManager Navigation
 
-    <main>
-        <div class="top-row px-4">
-            <a href="https://learn.microsoft.com/aspnet/core/" target="_blank">About</a>
+@if (VerificarEstadoLayout() && EsRutaLogin)
+{
+    <!-- Vista de pantalla completa para /login -->
+    <div style="min-height: 100vh; background-color: #0F172A;">
+        @Body
+    </div>
+}
+else
+{
+    <div class="sitel-shell">
+        <div class="sitel-sidebar">
+            <NavMenu />
         </div>
 
-        <article class="content px-4">
-            @Body
-        </article>
-    </main>
-</div>
+        <div class="sitel-main">
+            <div class="sitel-topbar">
+                <div class="d-flex align-items-center gap-2">
+                    <i class="bi bi-shield-check" style="color: #2563EB; font-size: 1.15rem;"></i>
+                    <span style="font-weight: 700; font-size: 1rem; color: #0F172A; letter-spacing: -0.01em;">
+                        SITEL — Sistema de Trazabilidad Logística
+                    </span>
+                </div>
+                <div class="d-flex align-items-center gap-3">
+                    <span style="font-size: 0.82rem; color: #334155; font-weight: 600;" class="d-none d-md-inline">
+                        <i class="bi bi-person-circle me-1 text-primary"></i>@sesionActual.NombreCompleto
+                    </span>
+                    <span style="font-size: 0.76rem; font-weight: 700; color: #1D4ED8; background: #DBEAFE; border: 1px solid #BFDBFE; padding: 0.25rem 0.7rem; border-radius: 999px;">
+                        <i class="bi bi-award-fill me-1"></i>@FormatearRol(sesionActual.Rol)
+                    </span>
+
+                    @if (sesionActual.Autenticado)
+                    {
+                        <button type="button" class="btn btn-sm btn-outline-danger d-flex align-items-center gap-1"
+                                style="border-radius: 8px; font-weight: 600; font-size: 0.8rem;"
+                                title="Cerrar Sesión" @onclick="CerrarSesionAsync">
+                            <i class="bi bi-box-arrow-right"></i>
+                            <span class="d-none d-sm-inline">Salir</span>
+                        </button>
+                    }
+                    else
+                    {
+                        <a href="/login" class="btn-sitel-primary py-1 px-3" style="font-size: 0.8rem;">
+                            <i class="bi bi-box-arrow-in-right"></i> Iniciar Sesión
+                        </a>
+                    }
+                </div>
+            </div>
+
+            <div class="sitel-content">
+                <ErrorBoundary @ref="errorBoundary">
+                    <ChildContent>
+                        @Body
+                    </ChildContent>
+                    <ErrorContent Context="ex">
+                        <div class="sitel-card" style="border-left: 4px solid #EF4444;">
+                            <div class="d-flex align-items-center gap-2 mb-2 text-danger">
+                                <i class="bi bi-exclamation-triangle-fill fs-5"></i>
+                                <h5 class="m-0 fw-bold">Se interceptó una excepción controlada en el componente</h5>
+                            </div>
+                            <p class="small text-secondary mb-3">
+                                Detalle técnico: <code>@ex.Message</code>
+                            </p>
+                            <button class="btn-sitel-primary" @onclick="RecuperarEstado">
+                                <i class="bi bi-arrow-clockwise"></i> Reintentar Carga del Módulo
+                            </button>
+                        </div>
+                    </ErrorContent>
+                </ErrorBoundary>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    private ErrorBoundary? errorBoundary;
+    private SesionActualDto sesionActual = new()
+    {
+        NombreCompleto = "Operador Corporativo",
+        Rol = "OperadorLogistico"
+    };
+    private string ultimaUrlVerificada = string.Empty;
+
+    private bool EsRutaLogin =>
+        Navigation.Uri.Contains("/login", StringComparison.OrdinalIgnoreCase);
+
+    private bool VerificarEstadoLayout()
+    {
+        if (!string.Equals(ultimaUrlVerificada, Navigation.Uri, StringComparison.OrdinalIgnoreCase))
+        {
+            ultimaUrlVerificada = Navigation.Uri;
+            errorBoundary?.Recover();
+            _ = SincronizarSesionAsync();
+        }
+        return true;
+    }
+
+    private async Task SincronizarSesionAsync()
+    {
+        try
+        {
+            sesionActual = await Auth.ObtenerSesionActualAsync();
+            await InvokeAsync(StateHasChanged);
+        }
+        catch { }
+    }
+
+    private async Task CerrarSesionAsync()
+    {
+        await Auth.LogoutAsync();
+        ultimaUrlVerificada = string.Empty;
+        Navigation.NavigateTo("/login");
+    }
+
+    private void RecuperarEstado()
+    {
+        errorBoundary?.Recover();
+    }
+
+    private static string FormatearRol(string? rol) => rol switch
+    {
+        "Administrador" => "Administrador",
+        "OperadorLogistico" => "Operador Logístico",
+        "Conductor" => "Conductor de Flota",
+        "Cliente" => "Cliente",
+        _ => "Operador Logístico"
+    };
+}

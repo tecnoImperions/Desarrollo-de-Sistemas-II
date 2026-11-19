@@ -1,0 +1,473 @@
+@page "/flota-rutas"
+@using System.Net.Http.Json
+@using SITEL.Shared.DTOs
+@using SITEL.Shared.Entities
+@inject HttpClient Http
+
+<PageTitle>SITEL | Gestión de Conductores y Rutas</PageTitle>
+
+<div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-3">
+    <div>
+        <h2 style="font-weight: 800; margin: 0; font-size: 1.55rem; color: #0F172A;">
+            <i class="bi bi-signpost-split-fill text-primary me-2"></i>Catálogo de Flota (Conductores) y Rutas Logísticas
+        </h2>
+        <p style="color: var(--text-muted); margin: 0.25rem 0 0; font-size: 0.9rem;">
+            Administración dinámica de personal de transporte y corredores viales para la asignación RF02.
+        </p>
+    </div>
+    <div class="d-flex gap-2">
+        <button class="btn-sitel-outline" @onclick="AbrirModalNuevoConductor">
+            <i class="bi bi-person-plus-fill"></i> Nuevo Conductor
+        </button>
+        <button class="btn-sitel-primary" @onclick="AbrirModalNuevaRuta">
+            <i class="bi bi-signpost-2-fill"></i> Nueva Ruta
+        </button>
+    </div>
+</div>
+
+@if (!string.IsNullOrEmpty(mensajeAlerta))
+{
+    <div class="alert @(esError ? "alert-danger" : "alert-success") alert-dismissible fade show py-2 px-3 mb-4">
+        <i class="bi @(esError ? "bi-exclamation-octagon-fill" : "bi-check-circle-fill") me-1"></i>@mensajeAlerta
+        <button type="button" class="btn-close" @onclick="() => mensajeAlerta = string.Empty"></button>
+    </div>
+}
+
+<!-- KPIs de Flota y Rutas -->
+<div class="row g-3 mb-4">
+    <div class="col-md-4">
+        <div class="sitel-kpi-card">
+            <div class="d-flex justify-content-between align-items-center">
+                <span style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: var(--text-muted);">Conductores Habilitados</span>
+                <i class="bi bi-person-vcard-fill text-primary fs-5"></i>
+            </div>
+            <div style="font-size: 1.65rem; font-weight: 800; color: #0F172A; margin-top: 0.2rem;">
+                @ConductoresReales.Count()
+            </div>
+            <div style="font-size: 0.8rem; color: #15803D; font-weight: 600;">
+                @ConductoresReales.Count(c => c.Disponible) disponibles para despacho inmediato
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="sitel-kpi-card" style="border-left-color: #3B82F6;">
+            <div class="d-flex justify-content-between align-items-center">
+                <span style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: var(--text-muted);">Rutas Operativas</span>
+                <i class="bi bi-map-fill text-primary fs-5"></i>
+            </div>
+            <div style="font-size: 1.65rem; font-weight: 800; color: #0F172A; margin-top: 0.2rem;">
+                @RutasReales.Count()
+            </div>
+            <div style="font-size: 0.8rem; color: var(--text-muted);">Corredores urbanos e interdepartamentales</div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="sitel-kpi-card" style="border-left-color: #10B981;">
+            <div class="d-flex justify-content-between align-items-center">
+                <span style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: var(--text-muted);">Cobertura Total Registrada</span>
+                <i class="bi bi-speedometer2 text-success fs-5"></i>
+            </div>
+            <div style="font-size: 1.65rem; font-weight: 800; color: #0F172A; margin-top: 0.2rem;">
+                @RutasReales.Sum(r => r.DistanciaKm).ToString("0.0") Km
+            </div>
+            <div style="font-size: 0.8rem; color: var(--text-muted);">Red vial activa en SITEL</div>
+        </div>
+    </div>
+</div>
+
+<div class="row g-4">
+    <!-- Columna Izquierda: Conductores -->
+    <div class="col-lg-6">
+        <div class="sitel-card" style="padding: 0; overflow: hidden;">
+            <div class="d-flex justify-content-between align-items-center p-3 px-4" style="border-bottom: 1px solid var(--border-color);">
+                <h5 style="font-weight: 700; margin: 0; font-size: 1rem; color: #0F172A;">
+                    <i class="bi bi-person-badge-fill text-primary me-2"></i>Plantilla de Conductores
+                </h5>
+                <button class="btn-sitel-outline py-1 px-2" @onclick="AbrirModalNuevoConductor">
+                    <i class="bi bi-plus-lg"></i> Añadir
+                </button>
+            </div>
+
+            @if (cargando)
+            {
+                <div class="text-center py-5">
+                    <div class="spinner-border text-primary" role="status"></div>
+                </div>
+            }
+            else if (!ConductoresReales.Any())
+            {
+                <div class="text-center py-4">
+                    <p class="small text-muted mb-0">No hay conductores registrados.</p>
+                </div>
+            }
+            else
+            {
+                <div class="table-responsive">
+                    <table class="sitel-table">
+                        <thead>
+                            <tr>
+                                <th>Conductor / Documento</th>
+                                <th>Licencia / Tel.</th>
+                                <th>Estado</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var c in ConductoresReales)
+                            {
+                                <tr>
+                                    <td>
+                                        <div style="font-weight: 700; color: #0F172A;">@c.Nombres @c.Apellidos</div>
+                                        <div style="font-size: 0.76rem; color: #64748B;">
+                                            <i class="bi bi-card-heading me-1"></i>CI: @c.Documento
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span class="badge-sitel badge-registrado">@c.Licencia</span>
+                                        <div style="font-size: 0.76rem; color: #334155; margin-top: 0.15rem;">
+                                            <i class="bi bi-telephone me-1"></i>@c.Telefono
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <button type="button" class="btn btn-sm p-0 border-0" title="Cambiar disponibilidad"
+                                                @onclick="() => CambiarDisponibilidadConductorAsync(c.Id)">
+                                            @if (c.Disponible)
+                                            {
+                                                <span class="badge-sitel badge-entregado">
+                                                    <i class="bi bi-check-circle-fill"></i> Disponible
+                                                </span>
+                                            }
+                                            else
+                                            {
+                                                <span class="badge-sitel badge-enruta">
+                                                    <i class="bi bi-truck"></i> En Turno / Ocupado
+                                                </span>
+                                            }
+                                        </button>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+        </div>
+    </div>
+
+    <!-- Columna Derecha: Rutas Logísticas -->
+    <div class="col-lg-6">
+        <div class="sitel-card" style="padding: 0; overflow: hidden;">
+            <div class="d-flex justify-content-between align-items-center p-3 px-4" style="border-bottom: 1px solid var(--border-color);">
+                <h5 style="font-weight: 700; margin: 0; font-size: 1rem; color: #0F172A;">
+                    <i class="bi bi-signpost-split-fill text-primary me-2"></i>Corredores y Rutas Logísticas
+                </h5>
+                <button class="btn-sitel-outline py-1 px-2" @onclick="AbrirModalNuevaRuta">
+                    <i class="bi bi-plus-lg"></i> Añadir
+                </button>
+            </div>
+
+            @if (cargando)
+            {
+                <div class="text-center py-5">
+                    <div class="spinner-border text-primary" role="status"></div>
+                </div>
+            }
+            else if (!RutasReales.Any())
+            {
+                <div class="text-center py-4">
+                    <p class="small text-muted mb-0">No hay rutas registradas.</p>
+                </div>
+            }
+            else
+            {
+                <div class="table-responsive">
+                    <table class="sitel-table">
+                        <thead>
+                            <tr>
+                                <th>Nombre de Ruta</th>
+                                <th>Trayecto (Origen → Destino)</th>
+                                <th>Distancia</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var r in RutasReales)
+                            {
+                                <tr>
+                                    <td style="font-weight: 700; color: #0F172A;">@r.Nombre</td>
+                                    <td>
+                                        <div style="font-size: 0.82rem; color: #334155;">
+                                            <i class="bi bi-geo-fill text-primary me-1"></i>@r.Origen
+                                        </div>
+                                        <div style="font-size: 0.82rem; color: #15803D; font-weight: 600;">
+                                            <i class="bi bi-arrow-return-right me-1"></i>@r.Destino
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span class="badge-sitel badge-asignado">@r.DistanciaKm.ToString("0.0") Km</span>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<!-- MODAL 1: Alta de Nuevo Conductor -->
+@if (mostrarModalConductor)
+{
+    <div class="sitel-modal-backdrop" @onclick="() => mostrarModalConductor = false">
+        <div class="sitel-modal" style="max-width: 500px;" @onclick:stopPropagation="true">
+            <div class="sitel-modal-header">
+                <h5 style="margin: 0; font-size: 1.05rem; font-weight: 700;">
+                    <i class="bi bi-person-plus-fill me-2"></i>Registrar Nuevo Conductor
+                </h5>
+                <button type="button" class="btn-close btn-close-white" @onclick="() => mostrarModalConductor = false"></button>
+            </div>
+            <div class="sitel-modal-body">
+                @if (!string.IsNullOrEmpty(errorModal))
+                {
+                    <div class="alert alert-danger py-2 small">@errorModal</div>
+                }
+
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label class="form-label small fw-bold">Nombres <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" @bind="nuevoConductor.Nombres" placeholder="Ej. Fernando" />
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label small fw-bold">Apellidos <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" @bind="nuevoConductor.Apellidos" placeholder="Ej. Gutiérrez Roca" />
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label small fw-bold">Documento CI <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" @bind="nuevoConductor.Documento" placeholder="Ej. 6829104 SC" />
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label small fw-bold">Categoría Licencia <span class="text-danger">*</span></label>
+                        <select class="form-select" @bind="nuevoConductor.Licencia">
+                            <option value="Cat. C - Pesados">Cat. C - Pesados</option>
+                            <option value="Cat. B - Camiones">Cat. B - Camiones</option>
+                            <option value="Cat. A - Furgones">Cat. A - Furgones</option>
+                        </select>
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label small fw-bold">Teléfono Móvil de Contacto <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" @bind="nuevoConductor.Telefono" placeholder="Ej. 71099887" />
+                    </div>
+                </div>
+            </div>
+            <div class="sitel-modal-footer">
+                <button type="button" class="btn btn-outline-secondary" @onclick="() => mostrarModalConductor = false">Cancelar</button>
+                <button type="button" class="btn-sitel-primary" @onclick="GuardarConductorAsync" disabled="@guardandoModal">
+                    <i class="bi bi-floppy-fill"></i> @(guardandoModal ? "Guardando..." : "Guardar Conductor")
+                </button>
+            </div>
+        </div>
+    </div>
+}
+
+<!-- MODAL 2: Alta de Nueva Ruta Logística -->
+@if (mostrarModalRuta)
+{
+    <div class="sitel-modal-backdrop" @onclick="() => mostrarModalRuta = false">
+        <div class="sitel-modal" style="max-width: 500px;" @onclick:stopPropagation="true">
+            <div class="sitel-modal-header">
+                <h5 style="margin: 0; font-size: 1.05rem; font-weight: 700;">
+                    <i class="bi bi-signpost-2-fill me-2"></i>Registrar Nueva Ruta Logística
+                </h5>
+                <button type="button" class="btn-close btn-close-white" @onclick="() => mostrarModalRuta = false"></button>
+            </div>
+            <div class="sitel-modal-body">
+                @if (!string.IsNullOrEmpty(errorModal))
+                {
+                    <div class="alert alert-danger py-2 small">@errorModal</div>
+                }
+
+                <div class="row g-3">
+                    <div class="col-12">
+                        <label class="form-label small fw-bold">Nombre de la Ruta / Corredor <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" @bind="nuevaRuta.Nombre" placeholder="Ej. Corredor Este — Cotoca / Pailón" />
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label small fw-bold">Punto de Origen <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" @bind="nuevaRuta.Origen" placeholder="Ej. Almacén Central SCZ" />
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label small fw-bold">Punto de Destino <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" @bind="nuevaRuta.Destino" placeholder="Ej. Zona Industrial Cotoca" />
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label small fw-bold">Distancia Estimada (Km) <span class="text-danger">*</span></label>
+                        <input type="number" step="0.5" min="0.5" class="form-control" @bind="nuevaRuta.DistanciaKm" />
+                    </div>
+                </div>
+            </div>
+            <div class="sitel-modal-footer">
+                <button type="button" class="btn btn-outline-secondary" @onclick="() => mostrarModalRuta = false">Cancelar</button>
+                <button type="button" class="btn-sitel-primary" @onclick="GuardarRutaAsync" disabled="@guardandoModal">
+                    <i class="bi bi-floppy-fill"></i> @(guardandoModal ? "Guardando..." : "Guardar Ruta")
+                </button>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    private List<Conductor> conductores = new();
+    private List<Ruta> rutas = new();
+    private bool cargando = true;
+
+    private string mensajeAlerta = string.Empty;
+    private bool esError = false;
+
+    // Modales
+    private bool mostrarModalConductor = false;
+    private bool mostrarModalRuta = false;
+    private bool guardandoModal = false;
+    private string errorModal = string.Empty;
+
+    private Conductor nuevoConductor = new() { Licencia = "Cat. C - Pesados", Disponible = true };
+    private Ruta nuevaRuta = new() { Origen = "Almacén Central SCZ", DistanciaKm = 15.0m };
+
+    private IEnumerable<Conductor> ConductoresReales =>
+        conductores.Where(c => c != null && !c.Nombres.Contains("Sin Asignar", StringComparison.OrdinalIgnoreCase));
+
+    private IEnumerable<Ruta> RutasReales =>
+        rutas.Where(r => r != null && !r.Nombre.Contains("Pendiente", StringComparison.OrdinalIgnoreCase));
+
+    protected override async Task OnInitializedAsync()
+    {
+        await CargarCatalogosAsync();
+    }
+
+    private async Task CargarCatalogosAsync()
+    {
+        cargando = true;
+        try
+        {
+            var r1 = await Http.GetAsync("api/conductores");
+            if (r1.IsSuccessStatusCode)
+                conductores = await r1.Content.ReadFromJsonAsync<List<Conductor>>() ?? new();
+
+            var r2 = await Http.GetAsync("api/rutas");
+            if (r2.IsSuccessStatusCode)
+                rutas = await r2.Content.ReadFromJsonAsync<List<Ruta>>() ?? new();
+        }
+        catch (Exception ex)
+        {
+            esError = true;
+            mensajeAlerta = $"Error al cargar catálogos: {ex.Message}";
+        }
+        finally
+        {
+            cargando = false;
+        }
+    }
+
+    private void AbrirModalNuevoConductor()
+    {
+        errorModal = string.Empty;
+        nuevoConductor = new Conductor { Licencia = "Cat. C - Pesados", Disponible = true };
+        mostrarModalConductor = true;
+    }
+
+    private void AbrirModalNuevaRuta()
+    {
+        errorModal = string.Empty;
+        nuevaRuta = new Ruta { Origen = "Almacén Central SCZ", DistanciaKm = 20.0m };
+        mostrarModalRuta = true;
+    }
+
+    private async Task GuardarConductorAsync()
+    {
+        if (string.IsNullOrWhiteSpace(nuevoConductor.Nombres) ||
+            string.IsNullOrWhiteSpace(nuevoConductor.Apellidos) ||
+            string.IsNullOrWhiteSpace(nuevoConductor.Documento))
+        {
+            errorModal = "Complete los nombres, apellidos y documento CI del conductor.";
+            return;
+        }
+
+        guardandoModal = true;
+        errorModal = string.Empty;
+
+        try
+        {
+            var resp = await Http.PostAsJsonAsync("api/conductores", nuevoConductor);
+            if (resp.IsSuccessStatusCode)
+            {
+                esError = false;
+                mensajeAlerta = $"Conductor '{nuevoConductor.Nombres} {nuevoConductor.Apellidos}' registrado y habilitado para despachos.";
+                mostrarModalConductor = false;
+                await CargarCatalogosAsync();
+            }
+            else
+            {
+                var err = await resp.Content.ReadFromJsonAsync<ApiMessageResponse>();
+                errorModal = err?.Mensaje ?? "No se pudo registrar el conductor.";
+            }
+        }
+        catch (Exception ex)
+        {
+            errorModal = $"Error: {ex.Message}";
+        }
+        finally
+        {
+            guardandoModal = false;
+        }
+    }
+
+    private async Task GuardarRutaAsync()
+    {
+        if (string.IsNullOrWhiteSpace(nuevaRuta.Nombre) ||
+            string.IsNullOrWhiteSpace(nuevaRuta.Origen) ||
+            string.IsNullOrWhiteSpace(nuevaRuta.Destino))
+        {
+            errorModal = "El nombre, origen y destino de la ruta son obligatorios.";
+            return;
+        }
+
+        guardandoModal = true;
+        errorModal = string.Empty;
+
+        try
+        {
+            var resp = await Http.PostAsJsonAsync("api/rutas", nuevaRuta);
+            if (resp.IsSuccessStatusCode)
+            {
+                esError = false;
+                mensajeAlerta = $"Ruta '{nuevaRuta.Nombre}' registrada y disponible en selectores.";
+                mostrarModalRuta = false;
+                await CargarCatalogosAsync();
+            }
+            else
+            {
+                var err = await resp.Content.ReadFromJsonAsync<ApiMessageResponse>();
+                errorModal = err?.Mensaje ?? "No se pudo registrar la ruta.";
+            }
+        }
+        catch (Exception ex)
+        {
+            errorModal = $"Error: {ex.Message}";
+        }
+        finally
+        {
+            guardandoModal = false;
+        }
+    }
+
+    private async Task CambiarDisponibilidadConductorAsync(int conductorId)
+    {
+        try
+        {
+            var resp = await Http.PatchAsync($"api/conductores/{conductorId}/disponibilidad", null);
+            if (resp.IsSuccessStatusCode)
+            {
+                await CargarCatalogosAsync();
+            }
+        }
+        catch { }
+    }
+}
