@@ -302,6 +302,32 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "SITEL.Server.Controllers.EnviosController",
+    "Method": "RastrearPorGuia",
+    "RelativePath": "api/Envios/rastreo/{guia}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "guia",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "SITEL.Shared.DTOs.RastreoEnvioDto",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
     "ContainingType": "SITEL.Server.Controllers.ProductosController",
     "Method": "GetProductos",
     "RelativePath": "api/Productos",

@@ -202,4 +202,28 @@ namespace SITEL.Shared.DTOs
             set => _autorizadoPor = string.IsNullOrWhiteSpace(value) ? "Administrador SITEL" : value;
         }
     }
+
+    /// <summary>
+    /// DTO público para consulta de rastreo por guía (RF04). No expone datos sensibles.
+    /// </summary>
+    public class RastreoEnvioDto
+    {
+        public string Guia { get; set; } = string.Empty;
+        public string EstadoActual { get; set; } = string.Empty;
+        public bool Anulado { get; set; }
+        public string Origen { get; set; } = string.Empty;
+        public string Destino { get; set; } = string.Empty;
+        public DateTime FechaRegistro { get; set; }
+        public DateTime FechaEstimada { get; set; }
+        public DateTime? FechaEntrega { get; set; }
+        public List<RastreoHistorialItemDto> Historial { get; set; } = new();
+    }
+
+    public class RastreoHistorialItemDto
+    {
+        public string Estado { get; set; } = string.Empty;
+        public string Ubicacion { get; set; } = string.Empty;
+        public string Observaciones { get; set; } = string.Empty;
+        public DateTime FechaHora { get; set; }
+    }
 }

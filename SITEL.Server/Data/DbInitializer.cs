@@ -66,7 +66,10 @@ BEGIN
         [AutorizadoPor] = ISNULL([AutorizadoPor], N'');
 END;";
 
-                await context.Database.ExecuteSqlRawAsync(ensureInventoryTablesSql);
+                if (context.Database.IsRelational())
+                {
+                    await context.Database.ExecuteSqlRawAsync(ensureInventoryTablesSql);
+                }
 
                 // 2. Seed Usuarios por Rol (con BCrypt) para pruebas inmediatas de Login y Redirección
                 if (!await context.Usuarios.AnyAsync(u => u.Email == "admin@sitel.bo"))

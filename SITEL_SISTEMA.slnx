@@ -2,4 +2,7 @@
   <Project Path="SITEL.Client/SITEL.Client.csproj" />
   <Project Path="SITEL.Server/SITEL.Server.csproj" />
   <Project Path="SITEL.Shared/SITEL.Shared.csproj" />
+  <Project Path="SITEL.UnitTests/SITEL.UnitTests.csproj" />
+  <Project Path="SITEL.IntegrationTests/SITEL.IntegrationTests.csproj" />
+  <Project Path="SITEL.UITests/SITEL.UITests.csproj" />
 </Solution>

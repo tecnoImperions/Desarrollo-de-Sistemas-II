@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SITEL.Server.Data;
@@ -42,6 +43,57 @@ namespace SITEL.Server.Controllers
             catch (Exception ex)
             {
                 return StatusCode(500, new { mensaje = "Error al consultar los despachos registrados.", detalle = ex.Message });
+            }
+        }
+
+        // GET: api/envios/rastreo/SIT-20261122-1234 (RF04: Consulta pública de rastreo sin datos sensibles)
+        [AllowAnonymous]
+        [HttpGet("rastreo/{guia}")]
+        public async Task<ActionResult<RastreoEnvioDto>> RastrearPorGuia(string guia)
+        {
+            if (string.IsNullOrWhiteSpace(guia))
+                return BadRequest(new { mensaje = "Debe ingresar un número de guía válido." });
+
+            var guiaNormalizada = guia.Trim().ToUpperInvariant();
+
+            try
+            {
+                var envio = await _context.Envios
+                    .AsNoTracking()
+                    .Include(e => e.Ruta)
+                    .Include(e => e.HistorialEstados)
+                    .FirstOrDefaultAsync(e => e.Guia.ToUpper() == guiaNormalizada);
+
+                if (envio == null)
+                    return NotFound(new { mensaje = $"No se encontró ningún envío con la guía '{guiaNormalizada}'." });
+
+                var respuesta = new RastreoEnvioDto
+                {
+                    Guia = envio.Guia,
+                    EstadoActual = envio.Anulado ? "Anulado" : envio.EstadoActual.ToString(),
+                    Anulado = envio.Anulado,
+                    Origen = envio.Ruta?.Origen ?? "Almacén Central",
+                    Destino = envio.Ruta?.Destino ?? "Por definir",
+                    FechaRegistro = envio.FechaRegistro,
+                    FechaEstimada = envio.FechaEstimada,
+                    FechaEntrega = envio.FechaEntrega > DateTime.MinValue ? envio.FechaEntrega : null,
+                    Historial = envio.HistorialEstados
+                        .OrderByDescending(h => h.FechaHora)
+                        .Select(h => new RastreoHistorialItemDto
+                        {
+                            Estado = h.Estado.ToString(),
+                            Ubicacion = h.Ubicacion,
+                            Observaciones = h.Observaciones,
+                            FechaHora = h.FechaHora
+                        })
+                        .ToList()
+                };
+
+                return Ok(respuesta);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { mensaje = "Error al consultar el rastreo del envío.", detalle = ex.Message });
             }
         }
 
