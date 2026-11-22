@@ -1,6 +1,8 @@
+@using SITEL.Client.Services
+
 <div class="top-row ps-3 navbar navbar-dark" style="background-color: #0F172A; border-bottom: 1px solid rgba(255,255,255,0.08);">
     <div class="container-fluid py-2">
-        <a class="navbar-brand d-flex align-items-center gap-2" href="" style="font-weight: 800; font-size: 1.15rem; color: #FFFFFF; letter-spacing: 0.02em;">
+        <a class="navbar-brand d-flex align-items-center gap-2" href="@ControlAcceso.RutaInicio(Rol)" style="font-weight: 800; font-size: 1.15rem; color: #FFFFFF; letter-spacing: 0.02em;">
             <span style="background: #2563EB; padding: 0.25rem 0.55rem; border-radius: 8px; font-size: 1rem; display: inline-flex; align-items: center;">
                 <i class="bi bi-box-seam-fill text-white"></i>
             </span>
@@ -13,77 +15,113 @@
 
 <div class="nav-scrollable" onclick="document.querySelector('.navbar-toggler')?.click()">
     <nav class="flex-column py-2">
-        <!-- Panel Ejecutivo -->
-        <div class="nav-item px-3 mt-2 mb-1">
-            <span style="font-size: 0.68rem; text-transform: uppercase; color: #94A3B8; font-weight: 700; letter-spacing: 0.06em;">Monitoreo</span>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <i class="bi bi-speedometer2"></i>
-                <span>Panel Ejecutivo</span>
-            </NavLink>
-        </div>
+        @* Filtrado del menú por rol (ControlAcceso): Administrador = todo; Operador = panel, despachos, inventario, clientes; Conductor = solo /conductor *@
 
-        <!-- Despachos y Trazabilidad -->
-        <div class="nav-item px-3 mt-3 mb-1">
-            <span style="font-size: 0.68rem; text-transform: uppercase; color: #94A3B8; font-weight: 700; letter-spacing: 0.06em;">Despachos y Rutas</span>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="mis-envios">
-                <i class="bi bi-truck"></i>
-                <span>Gestión de Despachos</span>
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="envios/nuevo">
-                <i class="bi bi-plus-circle-fill"></i>
-                <span>Registrar Despacho</span>
-            </NavLink>
-        </div>
+        @if (Ver(""))
+        {
+            <!-- Panel Ejecutivo -->
+            <div class="nav-item px-3 mt-2 mb-1">
+                <span style="font-size: 0.68rem; text-transform: uppercase; color: #94A3B8; font-weight: 700; letter-spacing: 0.06em;">Monitoreo</span>
+            </div>
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="" Match="NavLinkMatch.All" data-menu="panel">
+                    <i class="bi bi-speedometer2"></i>
+                    <span>Panel Ejecutivo</span>
+                </NavLink>
+            </div>
+        }
 
-        <!-- Inventarios, Clientes y Flota -->
-        <div class="nav-item px-3 mt-3 mb-1">
-            <span style="font-size: 0.68rem; text-transform: uppercase; color: #94A3B8; font-weight: 700; letter-spacing: 0.06em;">Catálogos y Almacén</span>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="inventarios">
-                <i class="bi bi-boxes"></i>
-                <span>Inventario y Carga</span>
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="clientes">
-                <i class="bi bi-people-fill"></i>
-                <span>Directorio de Clientes</span>
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="flota-rutas">
-                <i class="bi bi-signpost-split-fill"></i>
-                <span>Conductores y Rutas</span>
-            </NavLink>
-        </div>
+        @if (Ver("mis-envios") || Ver("envios/nuevo"))
+        {
+            <!-- Despachos y Trazabilidad -->
+            <div class="nav-item px-3 mt-3 mb-1">
+                <span style="font-size: 0.68rem; text-transform: uppercase; color: #94A3B8; font-weight: 700; letter-spacing: 0.06em;">Despachos y Rutas</span>
+            </div>
+            @if (Ver("mis-envios"))
+            {
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="mis-envios" data-menu="despachos">
+                        <i class="bi bi-truck"></i>
+                        <span>Gestión de Despachos</span>
+                    </NavLink>
+                </div>
+            }
+            @if (Ver("envios/nuevo"))
+            {
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="envios/nuevo" data-menu="registrar-despacho">
+                        <i class="bi bi-plus-circle-fill"></i>
+                        <span>Registrar Despacho</span>
+                    </NavLink>
+                </div>
+            }
+        }
 
-        <!-- Operación en Campo / Móvil -->
-        <div class="nav-item px-3 mt-3 mb-1">
-            <span style="font-size: 0.68rem; text-transform: uppercase; color: #94A3B8; font-weight: 700; letter-spacing: 0.06em;">Operación en Campo</span>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="conductor">
-                <i class="bi bi-phone-fill"></i>
-                <span>Vista Móvil Conductor</span>
-            </NavLink>
-        </div>
+        @if (Ver("inventarios") || Ver("clientes") || Ver("flota-rutas"))
+        {
+            <!-- Inventarios, Clientes y Flota -->
+            <div class="nav-item px-3 mt-3 mb-1">
+                <span style="font-size: 0.68rem; text-transform: uppercase; color: #94A3B8; font-weight: 700; letter-spacing: 0.06em;">Catálogos y Almacén</span>
+            </div>
+            @if (Ver("inventarios"))
+            {
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="inventarios" data-menu="inventario">
+                        <i class="bi bi-boxes"></i>
+                        <span>Inventario y Carga</span>
+                    </NavLink>
+                </div>
+            }
+            @if (Ver("clientes"))
+            {
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="clientes" data-menu="clientes">
+                        <i class="bi bi-people-fill"></i>
+                        <span>Directorio de Clientes</span>
+                    </NavLink>
+                </div>
+            }
+            @if (Ver("flota-rutas"))
+            {
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="flota-rutas" data-menu="flota">
+                        <i class="bi bi-signpost-split-fill"></i>
+                        <span>Conductores y Rutas</span>
+                    </NavLink>
+                </div>
+            }
+        }
 
-        <!-- Seguridad y Acceso -->
+        @if (Ver("conductor"))
+        {
+            <!-- Operación en Campo / Móvil -->
+            <div class="nav-item px-3 mt-3 mb-1">
+                <span style="font-size: 0.68rem; text-transform: uppercase; color: #94A3B8; font-weight: 700; letter-spacing: 0.06em;">Operación en Campo</span>
+            </div>
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="conductor" data-menu="conductor">
+                    <i class="bi bi-phone-fill"></i>
+                    <span>Vista Móvil Conductor</span>
+                </NavLink>
+            </div>
+        }
+
+        <!-- Seguridad y Acceso (visible para todos los roles) -->
         <div class="nav-item px-3 mt-3 mb-1">
             <span style="font-size: 0.68rem; text-transform: uppercase; color: #94A3B8; font-weight: 700; letter-spacing: 0.06em;">Seguridad</span>
         </div>
         <div class="nav-item px-3">
-            <NavLink class="nav-link" href="login">
+            <NavLink class="nav-link" href="login" data-menu="login">
                 <i class="bi bi-shield-lock-fill"></i>
                 <span>Acceso / Cambiar Rol</span>
             </NavLink>
         </div>
     </nav>
 </div>
+
+@code {
+    /// <summary>Rol de la sesión actual (Administrador, OperadorLogistico, Conductor).</summary>
+    [Parameter] public string? Rol { get; set; }
+
+    private bool Ver(string ruta) => ControlAcceso.PuedeAcceder(Rol, ruta);
+}

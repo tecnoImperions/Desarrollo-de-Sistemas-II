@@ -1,20 +1,41 @@
 @inherits LayoutComponentBase
+@implements IDisposable
+@using Microsoft.AspNetCore.Components.Routing
 @using SITEL.Client.Services
 @inject AuthService Auth
 @inject NavigationManager Navigation
 
-@if (VerificarEstadoLayout() && EsRutaLogin)
+@if (!sesionVerificada)
 {
-    <!-- Vista de pantalla completa para /login -->
-    <div style="min-height: 100vh; background-color: #0F172A;">
+    <!-- Verificando sesión (evita mostrar contenido protegido antes de validar RNF01) -->
+    <div style="min-height: 100vh; display: flex; align-items: center; justify-content: center; background-color: #0F172A;">
+        <div class="spinner-border text-light" role="status">
+            <span class="visually-hidden">Verificando sesión...</span>
+        </div>
+    </div>
+}
+else if (EsRutaPublica)
+{
+    <!-- Vista de pantalla completa sin menú lateral para /login y /rastreo -->
+    <div class="sitel-public-shell" style="min-height: 100vh; background-color: #0F172A;">
         @Body
+    </div>
+}
+else if (!sesionActual.Autenticado || !ControlAcceso.PuedeAcceder(sesionActual.Rol, RutaActual))
+{
+    <!-- Sin sesión o sin permiso: se está redirigiendo (RNF01) -->
+    <div class="sitel-redirect" style="min-height: 100vh; display: flex; align-items: center; justify-content: center; background-color: #0F172A; color: #CBD5E1;">
+        <div class="text-center">
+            <div class="spinner-border text-light mb-2" role="status"></div>
+            <div style="font-size: 0.85rem;">Redirigiendo al acceso seguro...</div>
+        </div>
     </div>
 }
 else
 {
     <div class="sitel-shell">
         <div class="sitel-sidebar">
-            <NavMenu />
+            <NavMenu Rol="@sesionActual.Rol" />
         </div>
 
         <div class="sitel-main">
@@ -33,21 +54,12 @@ else
                         <i class="bi bi-award-fill me-1"></i>@FormatearRol(sesionActual.Rol)
                     </span>
 
-                    @if (sesionActual.Autenticado)
-                    {
-                        <button type="button" class="btn btn-sm btn-outline-danger d-flex align-items-center gap-1"
-                                style="border-radius: 8px; font-weight: 600; font-size: 0.8rem;"
-                                title="Cerrar Sesión" @onclick="CerrarSesionAsync">
-                            <i class="bi bi-box-arrow-right"></i>
-                            <span class="d-none d-sm-inline">Salir</span>
-                        </button>
-                    }
-                    else
-                    {
-                        <a href="/login" class="btn-sitel-primary py-1 px-3" style="font-size: 0.8rem;">
-                            <i class="bi bi-box-arrow-in-right"></i> Iniciar Sesión
-                        </a>
-                    }
+                    <button type="button" class="btn btn-sm btn-outline-danger d-flex align-items-center gap-1"
+                            style="border-radius: 8px; font-weight: 600; font-size: 0.8rem;"
+                            title="Cerrar Sesión" @onclick="CerrarSesionAsync">
+                        <i class="bi bi-box-arrow-right"></i>
+                        <span class="d-none d-sm-inline">Salir</span>
+                    </button>
                 </div>
             </div>
 
@@ -78,47 +90,76 @@ else
 
 @code {
     private ErrorBoundary? errorBoundary;
-    private SesionActualDto sesionActual = new()
-    {
-        NombreCompleto = "Operador Corporativo",
-        Rol = "OperadorLogistico"
-    };
-    private string ultimaUrlVerificada = string.Empty;
+    private SesionActualDto sesionActual = new();
+    private bool sesionVerificada;
 
-    private bool EsRutaLogin =>
-        Navigation.Uri.Contains("/login", StringComparison.OrdinalIgnoreCase);
+    private string RutaActual => ControlAcceso.NormalizarRuta(Navigation.ToBaseRelativePath(Navigation.Uri));
 
-    private bool VerificarEstadoLayout()
+    private bool EsRutaPublica => ControlAcceso.EsRutaPublica(RutaActual);
+
+    protected override async Task OnInitializedAsync()
     {
-        if (!string.Equals(ultimaUrlVerificada, Navigation.Uri, StringComparison.OrdinalIgnoreCase))
-        {
-            ultimaUrlVerificada = Navigation.Uri;
-            errorBoundary?.Recover();
-            _ = SincronizarSesionAsync();
-        }
-        return true;
+        Navigation.LocationChanged += AlCambiarUbicacion;
+        Auth.OnAuthStateChanged += AlCambiarSesion;
+        await SincronizarYAplicarAccesoAsync();
     }
 
-    private async Task SincronizarSesionAsync()
+    private void AlCambiarUbicacion(object? sender, LocationChangedEventArgs e)
+    {
+        errorBoundary?.Recover();
+        _ = InvokeAsync(SincronizarYAplicarAccesoAsync);
+    }
+
+    private void AlCambiarSesion() => _ = InvokeAsync(SincronizarYAplicarAccesoAsync);
+
+    /// <summary>
+    /// RNF01: valida la sesión en cada navegación. Sin sesión → /login.
+    /// Con sesión pero sin permiso para la ruta → ruta de inicio de su rol.
+    /// </summary>
+    private async Task SincronizarYAplicarAccesoAsync()
     {
         try
         {
             sesionActual = await Auth.ObtenerSesionActualAsync();
-            await InvokeAsync(StateHasChanged);
         }
-        catch { }
+        catch
+        {
+            sesionActual = new SesionActualDto();
+        }
+
+        sesionVerificada = true;
+
+        var ruta = RutaActual;
+        if (!ControlAcceso.EsRutaPublica(ruta))
+        {
+            if (!sesionActual.Autenticado)
+            {
+                Navigation.NavigateTo("/login", replace: true);
+            }
+            else if (!ControlAcceso.PuedeAcceder(sesionActual.Rol, ruta))
+            {
+                Navigation.NavigateTo(ControlAcceso.RutaInicio(sesionActual.Rol), replace: true);
+            }
+        }
+
+        StateHasChanged();
     }
 
     private async Task CerrarSesionAsync()
     {
         await Auth.LogoutAsync();
-        ultimaUrlVerificada = string.Empty;
         Navigation.NavigateTo("/login");
     }
 
     private void RecuperarEstado()
     {
         errorBoundary?.Recover();
+    }
+
+    public void Dispose()
+    {
+        Navigation.LocationChanged -= AlCambiarUbicacion;
+        Auth.OnAuthStateChanged -= AlCambiarSesion;
     }
 
     private static string FormatearRol(string? rol) => rol switch
