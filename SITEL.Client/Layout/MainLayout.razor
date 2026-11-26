@@ -17,7 +17,7 @@
 else if (EsRutaPublica)
 {
     <!-- Vista de pantalla completa sin menú lateral para /login y /rastreo -->
-    <div class="sitel-public-shell" style="min-height: 100vh; background-color: #0F172A;">
+    <div class="sitel-public-shell">
         @Body
     </div>
 }
@@ -29,6 +29,41 @@ else if (!sesionActual.Autenticado || !ControlAcceso.PuedeAcceder(sesionActual.R
             <div class="spinner-border text-light mb-2" role="status"></div>
             <div style="font-size: 0.85rem;">Redirigiendo al acceso seguro...</div>
         </div>
+    </div>
+}
+else if (string.Equals(sesionActual.Rol, "Conductor", StringComparison.OrdinalIgnoreCase))
+{
+    <!-- Shell móvil para el Conductor: barra superior SITEL Móvil + contenido -->
+    <div class="sitel-mobile-shell">
+        <header class="sitel-mobile-topbar">
+            <div class="d-flex align-items-center gap-2">
+                <span style="background: #2563EB; padding: 0.25rem 0.5rem; border-radius: 8px; display: inline-flex; align-items: center;">
+                    <i class="bi bi-box-seam-fill text-white"></i>
+                </span>
+                <span style="font-weight: 800; font-size: 1rem;">SITEL <span style="color: #60A5FA; font-weight: 600;">Móvil</span></span>
+            </div>
+            <button type="button" class="btn btn-sm btn-outline-light d-flex align-items-center gap-1"
+                    style="border-radius: 8px; font-weight: 600; font-size: 0.78rem; min-height: 36px;"
+                    title="Cerrar Sesión" @onclick="CerrarSesionAsync">
+                <i class="bi bi-box-arrow-right"></i>
+                <span>Salir</span>
+            </button>
+        </header>
+
+        <main class="sitel-mobile-content">
+            <ErrorBoundary @ref="errorBoundary">
+                <ChildContent>
+                    @Body
+                </ChildContent>
+                <ErrorContent Context="ex">
+                    <div class="sitel-card m-3" style="border-left: 4px solid #EF4444;">
+                        <h6 class="fw-bold text-danger mb-2">Error en vista móvil</h6>
+                        <p class="small text-secondary mb-3"><code>@ex.Message</code></p>
+                        <button class="btn-sitel-primary w-100 justify-content-center" @onclick="RecuperarEstado">Reintentar</button>
+                    </div>
+                </ErrorContent>
+            </ErrorBoundary>
+        </main>
     </div>
 }
 else

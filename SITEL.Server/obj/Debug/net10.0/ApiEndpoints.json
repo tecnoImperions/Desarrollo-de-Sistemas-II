@@ -143,8 +143,8 @@
     "Order": 0,
     "Parameters": [
       {
-        "Name": "conductor",
-        "Type": "SITEL.Shared.Entities.Conductor",
+        "Name": "dto",
+        "Type": "SITEL.Shared.DTOs.CrearConductorDto",
         "IsRequired": false
       }
     ],
@@ -300,6 +300,32 @@
       }
     ],
     "ReturnTypes": []
+  },
+  {
+    "ContainingType": "SITEL.Server.Controllers.EnviosController",
+    "Method": "GetEnviosPorConductor",
+    "RelativePath": "api/Envios/conductor/{conductorId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "conductorId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[SITEL.Shared.Entities.Envio, SITEL.Shared, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
   },
   {
     "ContainingType": "SITEL.Server.Controllers.EnviosController",
@@ -524,7 +550,7 @@
     "Parameters": [],
     "ReturnTypes": [
       {
-        "Type": "System.Collections.Generic.IEnumerable\u00601[[SITEL.Shared.Entities.Usuario, SITEL.Shared, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[SITEL.Shared.DTOs.UsuarioRespuestaDto, SITEL.Shared, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -559,14 +585,14 @@
     "Order": 0,
     "Parameters": [
       {
-        "Name": "usuario",
-        "Type": "SITEL.Shared.Entities.Usuario",
+        "Name": "dto",
+        "Type": "SITEL.Shared.DTOs.RegistroUsuarioDto",
         "IsRequired": true
       }
     ],
     "ReturnTypes": [
       {
-        "Type": "SITEL.Shared.Entities.Usuario",
+        "Type": "SITEL.Shared.DTOs.UsuarioRespuestaDto",
         "MediaTypes": [
           "text/plain",
           "application/json",

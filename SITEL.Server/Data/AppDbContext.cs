@@ -53,6 +53,20 @@ namespace SITEL.Server.Data
                 .WithMany()
                 .HasForeignKey(d => d.ProductoId)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            // Relación 1 a 1 opcional: Conductor <-> Usuario
+            modelBuilder.Entity<Conductor>()
+                .HasOne(c => c.Usuario)
+                .WithOne(u => u.Conductor)
+                .HasForeignKey<Conductor>(c => c.UsuarioId)
+                .OnDelete(DeleteBehavior.SetNull);
+
+            // Relación 1 a 1 opcional: Cliente <-> Usuario
+            modelBuilder.Entity<Cliente>()
+                .HasOne(c => c.Usuario)
+                .WithOne(u => u.Cliente)
+                .HasForeignKey<Cliente>(c => c.UsuarioId)
+                .OnDelete(DeleteBehavior.SetNull);
         }
     }
 }

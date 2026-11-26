@@ -57,7 +57,12 @@ using (var scope = app.Services.CreateScope())
     await DbInitializer.InitializeAsync(dbContext);
 }
 
-app.UseHttpsRedirection();
+if (!app.Environment.IsDevelopment())
+{
+    app.UseHttpsRedirection();
+}
+
+app.MapStaticAssets();
 
 app.UseCors("SitelCorsPolicy");
 
@@ -65,6 +70,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+app.MapFallbackToFile("index.html");
 
 app.Run();
 

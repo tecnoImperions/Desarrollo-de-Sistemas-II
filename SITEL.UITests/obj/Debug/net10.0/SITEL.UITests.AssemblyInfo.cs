@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("SITEL.UITests")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+cbd904a275950c42d2f0541ef5b18708cc7805a3")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+fdf82ec61a6613faa65df828b62e4c040295d135")]
 [assembly: System.Reflection.AssemblyProductAttribute("SITEL.UITests")]
 [assembly: System.Reflection.AssemblyTitleAttribute("SITEL.UITests")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

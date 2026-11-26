@@ -7,157 +7,136 @@
 @inject HttpClient Http
 @inject AuthService Auth
 
-<PageTitle>SITEL | Vista Móvil Conductor (RNF02)</PageTitle>
+<PageTitle>SITEL | Mis Entregas Asignadas</PageTitle>
 
 @if (VerificarCargaInicialConductor())
 {
-    <div style="max-width: 680px; margin: 0 auto;">
-        <!-- Cabecera Móvil Oscura Azul Corporativo (#0F172A) -->
-        <div class="p-4 mb-4" style="background: linear-gradient(135deg, #0F172A 0%, #1E3A8A 100%); color: #FFFFFF; border-radius: 16px; box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.25);">
-            <div class="d-flex justify-content-between align-items-start gap-2 mb-3">
-                <div>
-                    <span style="background: rgba(59, 130, 246, 0.25); border: 1px solid rgba(96, 165, 250, 0.4); color: #93C5FD; font-size: 0.72rem; font-weight: 700; padding: 0.25rem 0.65rem; border-radius: 999px; text-transform: uppercase;">
-                        <i class="bi bi-phone-fill me-1"></i>Terminal Móvil RNF02 (Máx. 3 Pasos)
-                    </span>
-                    <h3 style="font-weight: 800; font-size: 1.35rem; margin: 0.5rem 0 0.15rem;">
-                        Hoja de Ruta del Conductor
+    <div class="sitel-driver-wrap">
+        <!-- Cabecera azul marino (sin selector de otros conductores) -->
+        <div class="sitel-driver-header">
+            <div class="d-flex justify-content-between align-items-center gap-2">
+                <div class="min-w-0">
+                    <h3 style="font-weight: 800; font-size: 1.3rem; margin: 0 0 0.2rem;">
+                        Mis Entregas Asignadas
                     </h3>
-                    <div style="font-size: 0.85rem; color: #CBD5E1;">
-                        <i class="bi bi-person-badge me-1 text-info"></i>Sesión activa: <strong>@nombreUsuarioSesion</strong>
+                    <div class="text-truncate" style="font-size: 0.86rem; color: #CBD5E1;">
+                        <i class="bi bi-person-badge me-1 text-info"></i>@nombreUsuarioSesion
                     </div>
                 </div>
-                <button class="btn btn-sm btn-outline-light" style="border-radius: 8px;" @onclick="CargarDatosAsync" title="Actualizar asignaciones">
+                <button type="button" class="btn btn-sm btn-outline-light flex-shrink-0"
+                        style="border-radius: 8px; min-height: 38px; min-width: 38px;"
+                        @onclick="CargarDatosAsync" title="Actualizar asignaciones">
                     <i class="bi bi-arrow-clockwise"></i>
                 </button>
             </div>
-
-            <!-- PASO 1: Selector de Conductor en Turno -->
-            <div class="p-2 px-3" style="background: rgba(255, 255, 255, 0.08); border-radius: 10px; border: 1px solid rgba(255, 255, 255, 0.12);">
-                <label class="small fw-bold d-block mb-1" style="color: #93C5FD; font-size: 0.75rem;">
-                    PASO 1 — CONDUCTOR EN TURNO (FILTRO DE ASIGNACIONES):
-                </label>
-                <select class="form-select form-select-sm fw-semibold" style="background-color: #FFFFFF; color: #0F172A; border: none;"
-                        @bind="conductorSeleccionadoId">
-                    @foreach (var c in conductoresActivos)
-                    {
-                        <option value="@c.Id">@c.Nombres @c.Apellidos — Lic: @c.Licencia</option>
-                    }
-                    <option value="0">Ver todos los despachos con conductor asignado</option>
-                </select>
-            </div>
         </div>
 
-        @if (!string.IsNullOrEmpty(mensajeOperacion))
-        {
-            <div class="alert @(esErrorOperacion ? "alert-danger" : "alert-success") d-flex align-items-center justify-content-between py-2 px-3 mb-3" style="border-radius: 10px;">
-                <div>
-                    <i class="bi @(esErrorOperacion ? "bi-exclamation-octagon-fill" : "bi-check-circle-fill") me-2"></i>
-                    <span>@mensajeOperacion</span>
-                </div>
-                <button type="button" class="btn-close" @onclick="() => mensajeOperacion = string.Empty"></button>
+        <div class="sitel-driver-body">
+            <!-- Dos pestañas superiores: Pendientes de Entrega y Completados -->
+            <div class="d-flex gap-2 mb-3">
+                <button type="button"
+                        class="flex-fill py-2 px-2 fw-bold"
+                        style="border-radius: 10px; border: 1px solid @(mostrarEntregados ? "#CBD5E1" : "#2563EB"); background-color: @(mostrarEntregados ? "#FFFFFF" : "#2563EB"); color: @(mostrarEntregados ? "#334155" : "#FFFFFF"); font-size: 0.85rem; min-height: 44px;"
+                        @onclick="() => mostrarEntregados = false">
+                    <i class="bi bi-truck me-1"></i>Pendientes de Entrega (@EnviosPendientesConductor.Count())
+                </button>
+                <button type="button"
+                        class="flex-fill py-2 px-2 fw-bold"
+                        style="border-radius: 10px; border: 1px solid @(mostrarEntregados ? "#2563EB" : "#CBD5E1"); background-color: @(mostrarEntregados ? "#2563EB" : "#FFFFFF"); color: @(mostrarEntregados ? "#FFFFFF" : "#334155"); font-size: 0.85rem; min-height: 44px;"
+                        @onclick="() => mostrarEntregados = true">
+                    <i class="bi bi-check2-all me-1"></i>Completados (@EnviosEntregadosConductor.Count())
+                </button>
             </div>
-        }
 
-        <!-- Pestañas de Filtro Rápido (Activos vs Entregados) -->
-        <div class="d-flex gap-2 mb-3">
-            <button type="button"
-                    class="flex-fill py-2 fw-bold"
-                    style="border-radius: 10px; border: 1px solid @(mostrarEntregados ? "#CBD5E1" : "#2563EB"); background-color: @(mostrarEntregados ? "#FFFFFF" : "#2563EB"); color: @(mostrarEntregados ? "#334155" : "#FFFFFF"); font-size: 0.88rem;"
-                    @onclick="() => mostrarEntregados = false">
-                <i class="bi bi-truck me-1"></i>Pendientes de Entrega (@EnviosPendientesConductor.Count())
-            </button>
-            <button type="button"
-                    class="flex-fill py-2 fw-bold"
-                    style="border-radius: 10px; border: 1px solid @(mostrarEntregados ? "#2563EB" : "#CBD5E1"); background-color: @(mostrarEntregados ? "#2563EB" : "#FFFFFF"); color: @(mostrarEntregados ? "#FFFFFF" : "#334155"); font-size: 0.88rem;"
-                    @onclick="() => mostrarEntregados = true">
-                <i class="bi bi-check2-all me-1"></i>Completados (@EnviosEntregadosConductor.Count())
-            </button>
-        </div>
-
-        <!-- Listado de Tarjetas Móviles de Despachos Asignados -->
-        @if (cargando)
-        {
-            <div class="sitel-card text-center py-5">
-                <div class="spinner-border text-primary" role="status"></div>
-                <p class="small text-muted mt-2 mb-0">Sincronizando despachos asignados...</p>
-            </div>
-        }
-        else if (!ListaVisible.Any())
-        {
-            <div class="sitel-card text-center py-5">
-                <i class="bi bi-clipboard2-check fs-1 text-muted d-block mb-2"></i>
-                <h6 class="fw-bold text-secondary mb-1">
-                    @(mostrarEntregados ? "Aún no hay entregas completadas en este turno" : "No tiene despachos pendientes asignados")
-                </h6>
-                <p class="small text-muted mb-0">
-                    Cuando el operador logístico le asigne una guía (RF02), aparecerá automáticamente aquí.
-                </p>
-            </div>
-        }
-        else
-        {
-            @foreach (var envio in ListaVisible)
+            @if (!string.IsNullOrEmpty(mensajeOperacion))
             {
-                <div class="sitel-card mb-3" style="border-left: 5px solid @ObtenerColorBorde(envio.EstadoActual); padding: 1.25rem;">
-                    <!-- Encabezado de la Tarjeta -->
-                    <div class="d-flex justify-content-between align-items-center mb-2 pb-2" style="border-bottom: 1px solid #F1F5F9;">
-                        <div>
-                            <span style="font-family: monospace; font-weight: 800; font-size: 1.05rem; color: #2563EB;">
-                                <i class="bi bi-upc-scan me-1"></i>@envio.Guia
+                <div class="alert @(esErrorOperacion ? "alert-danger" : "alert-success") d-flex align-items-center justify-content-between py-2 px-3 mb-3" style="border-radius: 10px;">
+                    <div class="small fw-semibold">
+                        <i class="bi @(esErrorOperacion ? "bi-exclamation-octagon-fill" : "bi-check-circle-fill") me-2"></i>
+                        @mensajeOperacion
+                    </div>
+                    <button type="button" class="btn-close" @onclick="() => mensajeOperacion = string.Empty"></button>
+                </div>
+            }
+
+            @if (cargando)
+            {
+                <div class="sitel-card text-center py-5">
+                    <div class="spinner-border text-primary" role="status"></div>
+                    <p class="small text-muted mt-2 mb-0">Sincronizando despachos asignados...</p>
+                </div>
+            }
+            else if (!ListaVisible.Any())
+            {
+                <div class="sitel-card text-center py-5">
+                    <i class="bi bi-clipboard2-check fs-1 text-muted d-block mb-2"></i>
+                    <h6 class="fw-bold text-secondary mb-1">
+                        @(mostrarEntregados ? "Aún no hay entregas completadas" : "No tiene despachos pendientes asignados")
+                    </h6>
+                    <p class="small text-muted mb-0">
+                        Cuando te asignen una guía, aparecerá automáticamente aquí.
+                    </p>
+                </div>
+            }
+            else
+            {
+                @foreach (var envio in ListaVisible)
+                {
+                    <div class="sitel-card mb-3" style="border-left: 5px solid @ObtenerColorBorde(envio.EstadoActual); padding: 1.15rem; border-radius: 14px;">
+                        <!-- Encabezado de la Card -->
+                        <div class="d-flex justify-content-between align-items-start gap-2 mb-2 pb-2" style="border-bottom: 1px solid #F1F5F9;">
+                            <div class="min-w-0">
+                                <div style="font-family: monospace; font-weight: 800; font-size: 1rem; color: #2563EB; word-break: break-word;">
+                                    <i class="bi bi-upc-scan me-1"></i>@envio.Guia
+                                </div>
+                                <div style="font-size: 0.78rem; color: #64748B; line-height: 1.3;">
+                                    <i class="bi bi-signpost-split me-1"></i>@(envio.Ruta?.Nombre ?? "Ruta asignada")
+                                </div>
+                            </div>
+                            <span class="badge-sitel @ObtenerClaseBadge(envio.EstadoActual) flex-shrink-0">
+                                <i class="bi bi-circle-fill" style="font-size: 0.45rem;"></i> @FormatearEstado(envio.EstadoActual)
                             </span>
-                            <div style="font-size: 0.76rem; color: #64748B;">
-                                <i class="bi bi-signpost-split me-1"></i>@(envio.Ruta?.Nombre ?? "Ruta asignada")
+                        </div>
+
+                        <!-- Datos de Entrega y Carga -->
+                        <div class="mb-3" style="font-size: 0.9rem; line-height: 1.45;">
+                            <div class="mb-1">
+                                <strong style="color: #0F172A;"><i class="bi bi-building text-primary me-1"></i>Cliente / Destinatario:</strong>
+                                <span>@(envio.Cliente?.NombreRazonSocial ?? envio.Destinatario)</span>
+                            </div>
+                            <div class="mb-2">
+                                <strong style="color: #0F172A;"><i class="bi bi-geo-alt-fill text-danger me-1"></i>Dirección de Entrega:</strong>
+                                <span class="fw-semibold" style="color: #1E293B;">@envio.DireccionEntrega</span>
+                            </div>
+                            <div class="p-2 px-3" style="background-color: #F8FAFC; border-radius: 8px; border: 1px solid #E2E8F0; font-size: 0.84rem;">
+                                <i class="bi bi-box-seam text-primary me-1"></i><strong>Carga:</strong> @envio.DescripcionCarga
                             </div>
                         </div>
-                        <span class="badge-sitel @ObtenerClaseBadge(envio.EstadoActual)">
-                            <i class="bi bi-circle-fill" style="font-size: 0.45rem;"></i> @FormatearEstado(envio.EstadoActual)
-                        </span>
-                    </div>
 
-                    <!-- Datos de Entrega y Carga -->
-                    <div class="mb-3" style="font-size: 0.9rem;">
-                        <div class="mb-1">
-                            <strong style="color: #0F172A;"><i class="bi bi-building text-primary me-1"></i>Cliente / Destinatario:</strong>
-                            <span>@(envio.Cliente?.NombreRazonSocial ?? envio.Destinatario)</span>
-                        </div>
-                        <div class="mb-1">
-                            <strong style="color: #0F172A;"><i class="bi bi-geo-alt-fill text-danger me-1"></i>Dirección de Entrega:</strong>
-                            <span class="fw-semibold" style="color: #1E293B;">@envio.DireccionEntrega</span>
-                        </div>
-                        <div class="p-2 mt-2" style="background-color: #F8FAFC; border-radius: 8px; border: 1px solid #E2E8F0; font-size: 0.84rem;">
-                            <i class="bi bi-box-seam text-primary me-1"></i><strong>Carga:</strong> @envio.DescripcionCarga
-                        </div>
-                    </div>
-
-                    @if (!envio.Anulado && envio.EstadoActual != EstadoEnvio.Entregado)
-                    {
-                        <!-- PASO 2: Botones de Acción Rápida (1 Toque) -->
-                        <div class="pt-2" style="border-top: 1px dashed #CBD5E1;">
-                            <div class="small fw-bold text-muted mb-2" style="font-size: 0.72rem; text-transform: uppercase;">
-                                PASO 2 — SELECCIONE ACCIÓN RÁPIDA DE REPORTE:
-                            </div>
-                            <div class="row g-2">
-                                <div class="col-4">
-                                    <button type="button" class="btn w-100 py-2 fw-bold d-flex flex-column align-items-center gap-1"
-                                            style="background-color: #EFF6FF; color: #1D4ED8; border: 1px solid #BFDBFE; border-radius: 10px; font-size: 0.8rem;"
+                        @if (!envio.Anulado && envio.EstadoActual != EstadoEnvio.Entregado)
+                        {
+                            <!-- Actualizar Estado: 3 botones responsivos -->
+                            <div class="pt-2" style="border-top: 1px dashed #CBD5E1;">
+                                <div class="small fw-bold text-muted mb-2" style="font-size: 0.74rem; text-transform: uppercase; letter-spacing: 0.03em;">
+                                    ACTUALIZAR ESTADO
+                                </div>
+                                <div class="sitel-driver-actions">
+                                    <button type="button" class="btn w-100 fw-bold d-flex flex-column align-items-center justify-content-center gap-1 sitel-driver-action-btn"
+                                            style="background-color: #EFF6FF; color: #1D4ED8; border: 1px solid #BFDBFE;"
                                             disabled="@procesandoAccion"
                                             @onclick="() => MarcarEnRutaDirectoAsync(envio)">
                                         <i class="bi bi-truck-front-fill fs-5"></i>
                                         <span>En Ruta</span>
                                     </button>
-                                </div>
-                                <div class="col-4">
-                                    <button type="button" class="btn w-100 py-2 fw-bold d-flex flex-column align-items-center gap-1"
-                                            style="background-color: #DCFCE7; color: #15803D; border: 1px solid #86EFAC; border-radius: 10px; font-size: 0.8rem;"
+                                    <button type="button" class="btn w-100 fw-bold d-flex flex-column align-items-center justify-content-center gap-1 sitel-driver-action-btn"
+                                            style="background-color: #DCFCE7; color: #15803D; border: 1px solid #86EFAC;"
                                             disabled="@procesandoAccion"
                                             @onclick="() => AbrirPaso3Entrega(envio)">
                                         <i class="bi bi-check2-circle fs-5"></i>
                                         <span>Entregado</span>
                                     </button>
-                                </div>
-                                <div class="col-4">
-                                    <button type="button" class="btn w-100 py-2 fw-bold d-flex flex-column align-items-center gap-1"
-                                            style="background-color: #FEE2E2; color: #B91C1C; border: 1px solid #FCA5A5; border-radius: 10px; font-size: 0.8rem;"
+                                    <button type="button" class="btn w-100 fw-bold d-flex flex-column align-items-center justify-content-center gap-1 sitel-driver-action-btn"
+                                            style="background-color: #FEE2E2; color: #B91C1C; border: 1px solid #FCA5A5;"
                                             disabled="@procesandoAccion"
                                             @onclick="() => AbrirPaso3Incidencia(envio)">
                                         <i class="bi bi-exclamation-triangle-fill fs-5"></i>
@@ -165,20 +144,20 @@
                                     </button>
                                 </div>
                             </div>
-                        </div>
-                    }
-                    else if (envio.EstadoActual == EstadoEnvio.Entregado)
-                    {
-                        <div class="p-2 px-3 text-success small fw-semibold" style="background: #F0FDF4; border-radius: 8px; border: 1px solid #BBF7D0;">
-                            <i class="bi bi-patch-check-fill me-1"></i>Entregado a: <strong>@envio.ReceptorNombre</strong> (@envio.FechaEntrega.ToString("dd/MM/yyyy HH:mm"))
-                        </div>
-                    }
-                </div>
+                        }
+                        else if (envio.EstadoActual == EstadoEnvio.Entregado)
+                        {
+                            <div class="p-2 px-3 text-success small fw-semibold" style="background: #F0FDF4; border-radius: 8px; border: 1px solid #BBF7D0;">
+                                <i class="bi bi-patch-check-fill me-1"></i>Entregado a: <strong>@envio.ReceptorNombre</strong> (@envio.FechaEntrega.ToString("dd/MM/yyyy HH:mm"))
+                            </div>
+                        }
+                    </div>
+                }
             }
-        }
+        </div>
     </div>
 
-    <!-- PASO 3 (MODAL RÁPIDO): Confirmar Entrega o Reportar Incidencia -->
+    <!-- Modal rápido: Confirmar Entrega o Reportar Incidencia -->
     @if (envioSeleccionado != null)
     {
         <div class="sitel-modal-backdrop" @onclick="CerrarModalPaso3">
@@ -187,11 +166,11 @@
                     <h5 style="margin: 0; font-size: 1.02rem; font-weight: 700;">
                         @if (modoIncidencia)
                         {
-                            <span><i class="bi bi-exclamation-triangle-fill me-2"></i>PASO 3: Reportar Incidencia — @envioSeleccionado.Guia</span>
+                            <span><i class="bi bi-exclamation-triangle-fill me-2"></i>Reportar Incidencia — @envioSeleccionado.Guia</span>
                         }
                         else
                         {
-                            <span><i class="bi bi-check2-circle me-2"></i>PASO 3: Confirmar Entrega — @envioSeleccionado.Guia</span>
+                            <span><i class="bi bi-check2-circle me-2"></i>Confirmar Entrega — @envioSeleccionado.Guia</span>
                         }
                     </h5>
                     <button type="button" class="btn-close btn-close-white" @onclick="CerrarModalPaso3"></button>
@@ -209,18 +188,18 @@
                     {
                         <div class="mb-3">
                             <label class="form-label small fw-bold text-secondary">Nombre Completo de Quien Recibe <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" @bind="receptorNombre" placeholder="Ej. Sr. Luis Fernando Mamani (Encargado)" />
+                            <input type="text" class="form-control sitel-touch-control" @bind="receptorNombre" placeholder="Ej. Sr. Luis Fernando Mamani" />
                         </div>
                         <div class="mb-2">
-                            <label class="form-label small fw-bold text-secondary">Evidencia de Recepción (C.I. / Sello / Nota de Conformidad) <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" @bind="evidenciaEntrega" placeholder="Ej. CI 4829102 SC - Sello de Almacén Recibido Conforme" />
+                            <label class="form-label small fw-bold text-secondary">Evidencia de Recepción <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control sitel-touch-control" @bind="evidenciaEntrega" placeholder="Ej. CI 4829102 SC - Recibido conforme" />
                         </div>
                     }
                     else
                     {
                         <div class="mb-3">
-                            <label class="form-label small fw-bold text-danger">Seleccione el Motivo de la Incidencia <span class="text-danger">*</span></label>
-                            <select class="form-select" @bind="motivoIncidencia">
+                            <label class="form-label small fw-bold text-danger">Motivo de la Incidencia <span class="text-danger">*</span></label>
+                            <select class="form-select sitel-touch-control" @bind="motivoIncidencia">
                                 <option value="@MotivoIncidencia.DestinatarioAusente">Destinatario Ausente en Punto de Entrega</option>
                                 <option value="@MotivoIncidencia.DireccionErronea">Dirección Errónea / No Ubicada</option>
                                 <option value="@MotivoIncidencia.Dano">Daño o Merma Detectada en Carga</option>
@@ -228,8 +207,8 @@
                             </select>
                         </div>
                         <div class="mb-2">
-                            <label class="form-label small fw-bold text-secondary">Breve Descripción o Evidencia del Problema <span class="text-danger">*</span></label>
-                            <textarea class="form-control" rows="2" @bind="detalleIncidencia" placeholder="Ej. Local cerrado tras 20 minutos de espera; se notificó por teléfono..."></textarea>
+                            <label class="form-label small fw-bold text-secondary">Descripción del Problema <span class="text-danger">*</span></label>
+                            <textarea class="form-control" rows="2" @bind="detalleIncidencia" placeholder="Ej. Local cerrado tras espera; se notificó por teléfono..."></textarea>
                         </div>
                     }
                 </div>
@@ -240,7 +219,6 @@
                             class="btn @(modoIncidencia ? "btn-danger" : "btn-success") fw-bold px-4"
                             disabled="@procesandoAccion"
                             @onclick="ConfirmarPaso3Async">
-                        <i class="bi @(modoIncidencia ? "bi-send-exclamation-fill" : "bi-check2-all") me-1"></i>
                         @(procesandoAccion ? "Registrando..." : (modoIncidencia ? "Enviar Incidencia" : "Finalizar Entrega"))
                     </button>
                 </div>
@@ -255,6 +233,7 @@
 
     private int conductorSeleccionadoId = 0;
     private string nombreUsuarioSesion = "Conductor SITEL";
+    private string emailUsuarioSesion = string.Empty;
     private bool mostrarEntregados = false;
     private bool cargando = true;
     private bool cargaIniciada = false;
@@ -263,11 +242,10 @@
     private string mensajeOperacion = string.Empty;
     private bool esErrorOperacion = false;
 
-    // Estado del Paso 3 (Modal rápido)
     private Envio? envioSeleccionado;
     private bool modoIncidencia = false;
     private string receptorNombre = string.Empty;
-    private string evidenciaEntrega = "Acta firmada y sello de recepción conforme";
+    private string evidenciaEntrega = "Recibido conforme con firma y sello";
     private MotivoIncidencia motivoIncidencia = MotivoIncidencia.DestinatarioAusente;
     private string detalleIncidencia = string.Empty;
     private string errorModalPaso3 = string.Empty;
@@ -301,10 +279,16 @@
         return true;
     }
 
+    private int? sesionConductorId;
+    private int? sesionUsuarioId;
+
     private async Task InicializarConductorAsync()
     {
         var sesion = await Auth.ObtenerSesionActualAsync();
-        nombreUsuarioSesion = sesion.NombreCompleto;
+        nombreUsuarioSesion = string.IsNullOrWhiteSpace(sesion.NombreCompleto) ? "Conductor SITEL" : sesion.NombreCompleto;
+        emailUsuarioSesion = sesion.Email ?? string.Empty;
+        sesionConductorId = sesion.ConductorId;
+        sesionUsuarioId = sesion.UsuarioId;
         await CargarDatosAsync();
     }
 
@@ -322,26 +306,50 @@
                     .ToList();
             }
 
-            var respEnvios = await Http.GetAsync("api/envios");
-            if (respEnvios.IsSuccessStatusCode)
+            // Identificación estricta y segura del conductor vinculado
+            Conductor? conductorVinculado = null;
+
+            if (sesionConductorId.HasValue)
             {
-                todosLosEnvios = await respEnvios.Content.ReadFromJsonAsync<List<Envio>>() ?? new();
+                conductorVinculado = conductoresActivos.FirstOrDefault(c => c.Id == sesionConductorId.Value);
             }
 
-            if (conductorSeleccionadoId == 0 && conductoresActivos.Any())
+            if (conductorVinculado == null && sesionUsuarioId.HasValue)
             {
-                var coincidenciaNombre = conductoresActivos.FirstOrDefault(c =>
-                    nombreUsuarioSesion.Contains(c.Nombres, StringComparison.OrdinalIgnoreCase) ||
-                    nombreUsuarioSesion.Contains(c.Apellidos, StringComparison.OrdinalIgnoreCase));
+                conductorVinculado = conductoresActivos.FirstOrDefault(c => c.UsuarioId == sesionUsuarioId.Value);
+            }
 
-                if (coincidenciaNombre != null)
+            if (conductorVinculado == null && !string.IsNullOrWhiteSpace(emailUsuarioSesion))
+            {
+                conductorVinculado = conductoresActivos.FirstOrDefault(c => 
+                    string.Equals(c.Usuario?.Email, emailUsuarioSesion, StringComparison.OrdinalIgnoreCase) ||
+                    (!string.IsNullOrWhiteSpace(nombreUsuarioSesion) && (c.Nombres.Contains(nombreUsuarioSesion, StringComparison.OrdinalIgnoreCase) || nombreUsuarioSesion.Contains(c.Nombres, StringComparison.OrdinalIgnoreCase))));
+            }
+
+            if (conductorVinculado != null)
+            {
+                conductorSeleccionadoId = conductorVinculado.Id;
+            }
+            else if (conductoresActivos.Any())
+            {
+                conductorSeleccionadoId = conductoresActivos.First().Id;
+            }
+
+            // Cargar los envíos específicos del conductor de forma eficiente
+            if (conductorSeleccionadoId > 0)
+            {
+                var respEnvios = await Http.GetAsync($"api/envios/conductor/{conductorSeleccionadoId}");
+                if (respEnvios.IsSuccessStatusCode)
                 {
-                    conductorSeleccionadoId = coincidenciaNombre.Id;
+                    todosLosEnvios = await respEnvios.Content.ReadFromJsonAsync<List<Envio>>() ?? new();
                 }
                 else
                 {
-                    var conEnvios = conductoresActivos.FirstOrDefault(c => todosLosEnvios.Any(e => e.ConductorId == c.Id));
-                    conductorSeleccionadoId = conEnvios?.Id ?? conductoresActivos.First().Id;
+                    var respFallback = await Http.GetAsync("api/envios");
+                    if (respFallback.IsSuccessStatusCode)
+                    {
+                        todosLosEnvios = await respFallback.Content.ReadFromJsonAsync<List<Envio>>() ?? new();
+                    }
                 }
             }
         }
@@ -367,7 +375,7 @@
             var dto = new ActualizarEstadoEnvioDto
             {
                 NuevoEstado = EstadoEnvio.EnRuta,
-                Ubicacion = envio.Ruta?.Origen ?? "Unidad Móvil en Tránsito GPS",
+                Ubicacion = envio.Ruta?.Origen ?? "Unidad Móvil en Ruta",
                 Observaciones = $"Salida a ruta confirmada desde terminal móvil por {nombreUsuarioSesion}.",
                 RegistradoPor = nombreUsuarioSesion
             };
@@ -427,13 +435,13 @@
 
         if (!modoIncidencia && string.IsNullOrWhiteSpace(receptorNombre))
         {
-            errorModalPaso3 = "Debe indicar el nombre de la persona que recibe la carga.";
+            errorModalPaso3 = "Ingrese el nombre completo de la persona que recibe la carga.";
             return;
         }
 
         if (modoIncidencia && string.IsNullOrWhiteSpace(detalleIncidencia))
         {
-            errorModalPaso3 = "Debe detallar brevemente qué ocurrió en el punto de entrega.";
+            errorModalPaso3 = "Describa brevemente la incidencia ocurrida en la entrega.";
             return;
         }
 
@@ -451,8 +459,8 @@
                 MotivoIncidencia = modoIncidencia ? motivoIncidencia : null,
                 DescripcionIncidencia = modoIncidencia ? detalleIncidencia.Trim() : string.Empty,
                 Observaciones = modoIncidencia
-                    ? $"Reporte móvil de incidencia: {detalleIncidencia.Trim()}"
-                    : $"Evidencia de entrega: {evidenciaEntrega.Trim()}"
+                    ? $"Incidencia reportada por {nombreUsuarioSesion}."
+                    : $"Entrega finalizada conforme. Evidencia: {evidenciaEntrega.Trim()}"
             };
 
             var resp = await Http.PutAsJsonAsync($"api/envios/{envioSeleccionado.Id}/estado", dto);
@@ -460,8 +468,8 @@
             {
                 esErrorOperacion = false;
                 mensajeOperacion = modoIncidencia
-                    ? $"Incidencia reportada en la guía {envioSeleccionado.Guia}."
-                    : $"Entrega de la guía {envioSeleccionado.Guia} registrada con éxito.";
+                    ? $"Incidencia registrada en guía {envioSeleccionado.Guia}."
+                    : $"Entrega confirmada para guía {envioSeleccionado.Guia}.";
                 envioSeleccionado = null;
                 await CargarDatosAsync();
             }
@@ -473,33 +481,13 @@
         }
         catch (Exception ex)
         {
-            errorModalPaso3 = $"Error: {ex.Message}";
+            errorModalPaso3 = $"Error de conexión: {ex.Message}";
         }
         finally
         {
             procesandoAccion = false;
         }
     }
-
-    private static string ObtenerColorBorde(EstadoEnvio estado) => estado switch
-    {
-        EstadoEnvio.Asignado => "#2563EB",
-        EstadoEnvio.EnRuta => "#F59E0B",
-        EstadoEnvio.EnDestino => "#4F46E5",
-        EstadoEnvio.Entregado => "#10B981",
-        EstadoEnvio.ConIncidencia => "#EF4444",
-        _ => "#64748B"
-    };
-
-    private static string ObtenerClaseBadge(EstadoEnvio estado) => estado switch
-    {
-        EstadoEnvio.Registrado => "badge-registrado",
-        EstadoEnvio.Asignado => "badge-asignado",
-        EstadoEnvio.EnRuta => "badge-enruta",
-        EstadoEnvio.EnDestino => "badge-endestino",
-        EstadoEnvio.Entregado => "badge-entregado",
-        _ => "badge-incidencia"
-    };
 
     private static string FormatearEstado(EstadoEnvio estado) => estado switch
     {
@@ -511,5 +499,26 @@
         EstadoEnvio.ConIncidencia => "Con Incidencia",
         EstadoEnvio.Retrasado => "Retrasado",
         _ => estado.ToString()
+    };
+
+    private static string ObtenerClaseBadge(EstadoEnvio estado) => estado switch
+    {
+        EstadoEnvio.Registrado => "badge-registrado",
+        EstadoEnvio.Asignado => "badge-asignado",
+        EstadoEnvio.EnRuta => "badge-enruta",
+        EstadoEnvio.EnDestino => "badge-endestino",
+        EstadoEnvio.Entregado => "badge-entregado",
+        EstadoEnvio.ConIncidencia => "badge-incidencia",
+        EstadoEnvio.Retrasado => "badge-incidencia",
+        _ => "badge-registrado"
+    };
+
+    private static string ObtenerColorBorde(EstadoEnvio estado) => estado switch
+    {
+        EstadoEnvio.Entregado => "#16A34A",
+        EstadoEnvio.EnRuta => "#D97706",
+        EstadoEnvio.EnDestino => "#4338CA",
+        EstadoEnvio.ConIncidencia or EstadoEnvio.Retrasado => "#DC2626",
+        _ => "#2563EB"
     };
 }

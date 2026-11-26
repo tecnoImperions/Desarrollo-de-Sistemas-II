@@ -10,4 +10,3 @@ C:\Users\Juan Andres\source\repos\SITEL_SISTEMA\SITEL.Shared\obj\Debug\net10.0\S
 C:\Users\Juan Andres\source\repos\SITEL_SISTEMA\SITEL.Shared\obj\Debug\net10.0\refint\SITEL.Shared.dll
 C:\Users\Juan Andres\source\repos\SITEL_SISTEMA\SITEL.Shared\obj\Debug\net10.0\SITEL.Shared.pdb
 C:\Users\Juan Andres\source\repos\SITEL_SISTEMA\SITEL.Shared\obj\Debug\net10.0\ref\SITEL.Shared.dll
-C:\Users\Juan Andres\source\repos\SITEL_SISTEMA\SITEL.Shared\obj\Debug\net10.0\SITEL.Sh.EC83BD71.Up2Date

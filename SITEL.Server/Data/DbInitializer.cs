@@ -64,6 +64,24 @@ BEGIN
         [ReceptorNombre] = ISNULL([ReceptorNombre], N''),
         [MotivoAnulacion] = ISNULL([MotivoAnulacion], N''),
         [AutorizadoPor] = ISNULL([AutorizadoPor], N'');
+END;
+
+IF OBJECT_ID(N'[dbo].[Conductores]', N'U') IS NOT NULL AND COL_LENGTH(N'[dbo].[Conductores]', N'UsuarioId') IS NULL
+BEGIN
+    ALTER TABLE [dbo].[Conductores] ADD [UsuarioId] INT NULL;
+    IF OBJECT_ID(N'[dbo].[Usuarios]', N'U') IS NOT NULL
+    BEGIN
+        ALTER TABLE [dbo].[Conductores] ADD CONSTRAINT [FK_Conductores_Usuarios_UsuarioId] FOREIGN KEY ([UsuarioId]) REFERENCES [dbo].[Usuarios] ([Id]) ON DELETE SET NULL;
+    END;
+END;
+
+IF OBJECT_ID(N'[dbo].[Clientes]', N'U') IS NOT NULL AND COL_LENGTH(N'[dbo].[Clientes]', N'UsuarioId') IS NULL
+BEGIN
+    ALTER TABLE [dbo].[Clientes] ADD [UsuarioId] INT NULL;
+    IF OBJECT_ID(N'[dbo].[Usuarios]', N'U') IS NOT NULL
+    BEGIN
+        ALTER TABLE [dbo].[Clientes] ADD CONSTRAINT [FK_Clientes_Usuarios_UsuarioId] FOREIGN KEY ([UsuarioId]) REFERENCES [dbo].[Usuarios] ([Id]) ON DELETE SET NULL;
+    END;
 END;";
 
                 if (context.Database.IsRelational())
@@ -117,6 +135,44 @@ END;";
                     );
                     await context.SaveChangesAsync();
                 }
+
+                // Sincronizar usuarios de rol Conductor con sus perfiles en la tabla Conductores
+                var usuariosConductores = await context.Usuarios
+                    .Where(u => u.Rol == RolUsuario.Conductor)
+                    .ToListAsync();
+
+                foreach (var uCond in usuariosConductores)
+                {
+                    var cond = await context.Conductores.FirstOrDefaultAsync(c => c.UsuarioId == uCond.Id);
+                    if (cond == null)
+                    {
+                        var partes = (uCond.NombreCompleto ?? "").Trim().Split(' ', 2, StringSplitOptions.RemoveEmptyEntries);
+                        var primerNombre = partes.Length > 0 ? partes[0] : "Conductor";
+                        var resto = partes.Length > 1 ? partes[1] : primerNombre;
+
+                        var coincide = await context.Conductores
+                            .FirstOrDefaultAsync(c => c.UsuarioId == null && (c.Nombres.Contains(primerNombre) || c.Apellidos.Contains(resto)));
+
+                        if (coincide != null)
+                        {
+                            coincide.UsuarioId = uCond.Id;
+                        }
+                        else
+                        {
+                            context.Conductores.Add(new Conductor
+                            {
+                                UsuarioId = uCond.Id,
+                                Nombres = primerNombre,
+                                Apellidos = resto,
+                                Documento = $"{new Random().Next(1000000, 9999999)} SC",
+                                Licencia = "Cat. C - Pesados",
+                                Telefono = "70000000",
+                                Disponible = true
+                            });
+                        }
+                    }
+                }
+                await context.SaveChangesAsync();
 
                 // 4. Seed Rutas iniciales
                 if (!await context.Rutas.AnyAsync())

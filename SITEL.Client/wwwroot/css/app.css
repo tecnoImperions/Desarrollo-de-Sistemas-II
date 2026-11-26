@@ -341,3 +341,345 @@ body {
         padding: 0 1rem;
     }
 }
+
+/* Barra de error de Blazor: oculta por defecto, visible solo ante excepción real */
+#blazor-error-ui {
+    background: #FEF2F2;
+    color: #991B1B;
+    border-top: 2px solid #EF4444;
+    bottom: 0;
+    box-shadow: 0 -4px 12px rgba(15, 23, 42, 0.15);
+    display: none;
+    font-size: 0.88rem;
+    font-weight: 600;
+    left: 0;
+    padding: 0.75rem 1.25rem;
+    position: fixed;
+    width: 100%;
+    z-index: 2000;
+}
+
+#blazor-error-ui .reload {
+    color: #2563EB;
+    margin-left: 0.75rem;
+    text-decoration: underline;
+}
+
+#blazor-error-ui .dismiss {
+    cursor: pointer;
+    position: absolute;
+    right: 1rem;
+    top: 0.65rem;
+}
+
+/* Shell Móvil Neto para Conductor (RNF02) */
+.sitel-mobile-shell {
+    min-height: 100vh;
+    background-color: var(--bg-app);
+    display: flex;
+    flex-direction: column;
+    overflow-x: hidden;
+}
+
+.sitel-mobile-topbar {
+    height: 58px;
+    background-color: #0F172A;
+    color: #FFFFFF;
+    padding: 0 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 30;
+    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.2);
+}
+
+.sitel-mobile-content {
+    width: 100%;
+    max-width: 540px;
+    margin: 0 auto;
+    padding: 1rem 0.85rem 2.5rem;
+}
+
+/* Diseño Full-Width Mobile-First para Login y Rastreo */
+.sitel-public-shell {
+    min-height: 100dvh;
+    background-color: #0F172A;
+}
+
+.sitel-auth-page {
+    min-height: 100dvh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: radial-gradient(circle at top right, #1E293B 0%, #0F172A 65%);
+    padding: 1.5rem;
+}
+
+.sitel-auth-card {
+    max-width: 960px;
+    width: 100%;
+    border-radius: 18px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 20px 25px -5px rgba(15, 23, 42, 0.35);
+    background-color: #FFFFFF;
+}
+
+.sitel-auth-card--narrow {
+    max-width: 760px;
+}
+
+.sitel-auth-body {
+    padding: 2.5rem;
+    background-color: #FFFFFF;
+}
+
+.sitel-mobile-brand-header {
+    background: linear-gradient(135deg, #1E3A8A 0%, #0F172A 100%);
+    color: #FFFFFF;
+    padding: 1.25rem 1.25rem;
+}
+
+.sitel-touch-control {
+    min-height: 48px;
+}
+
+.sitel-rastreo-search {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.sitel-rastreo-search .sitel-rastreo-input-wrap {
+    flex: 1;
+}
+
+/* Vista del Conductor Mobile-First */
+.sitel-driver-wrap {
+    width: 100%;
+    max-width: 540px;
+    margin: 0 auto;
+}
+
+.sitel-driver-header {
+    background: linear-gradient(135deg, #0F172A 0%, #1E3A8A 100%);
+    color: #FFFFFF;
+    border-radius: 16px;
+    padding: 1.25rem;
+    margin-bottom: 1rem;
+    box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.25);
+}
+
+.sitel-driver-select {
+    width: 100%;
+    max-width: 100%;
+    min-height: 44px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.sitel-driver-actions {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.5rem;
+    align-items: stretch;
+}
+
+.sitel-driver-action-btn {
+    min-height: 60px;
+    height: 100%;
+    border-radius: 10px;
+    font-size: 0.82rem;
+    padding: 0.5rem 0.25rem;
+}
+
+@media (max-width: 768px) {
+    .sitel-public-shell {
+        background-color: #F8FAFC;
+    }
+
+    .sitel-auth-page {
+        display: block;
+        padding: 0;
+        min-height: 100dvh;
+        background: #F8FAFC;
+    }
+
+    .sitel-auth-card {
+        border-radius: 0;
+        border: none;
+        box-shadow: none;
+        min-height: 100dvh;
+        background-color: #F8FAFC;
+        display: block;
+    }
+
+    .sitel-auth-card > .row {
+        margin: 0;
+    }
+
+    .sitel-mobile-brand-header {
+        position: sticky;
+        top: 0;
+        z-index: 25;
+        box-shadow: 0 2px 8px rgba(15, 23, 42, 0.18);
+    }
+
+    .sitel-auth-body {
+        padding: 1.25rem 1rem 2rem;
+        background-color: #F8FAFC;
+    }
+
+    .sitel-mobile-content {
+        padding: 0 0 2rem;
+        max-width: 100%;
+    }
+
+    .sitel-driver-wrap {
+        max-width: 100%;
+    }
+
+    .sitel-driver-header {
+        border-radius: 0;
+        margin-bottom: 1rem;
+        padding: 1.1rem 1rem;
+    }
+
+    .sitel-driver-body {
+        padding: 0 1rem;
+    }
+}
+
+@media (max-width: 575.98px) {
+    .sitel-rastreo-search {
+        flex-direction: column;
+    }
+
+    .sitel-rastreo-search #btn-consultar-guia {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+/* App Nativa del Conductor (Mobile-First) */
+.sitel-driver-app {
+    width: 100%;
+    max-width: 540px;
+    margin: 0 auto;
+    padding-bottom: 88px;
+}
+
+.sitel-driver-appbar {
+    background: linear-gradient(135deg, #0F172A 0%, #1E3A8A 100%);
+    color: #FFFFFF;
+    padding: 1rem;
+    position: sticky;
+    top: 0;
+    z-index: 30;
+    box-shadow: 0 4px 14px rgba(15, 23, 42, 0.2);
+}
+
+@media (min-width: 769px) {
+    .sitel-driver-appbar {
+        border-radius: 16px;
+        margin-bottom: 1rem;
+    }
+}
+
+.sitel-avatar {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: #2563EB;
+    border: 2px solid rgba(147, 197, 253, 0.65);
+    color: #FFFFFF;
+    font-weight: 800;
+    font-size: 1rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.sitel-pulse-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: #4ADE80;
+    display: inline-block;
+    animation: sitelPulse 1.6s infinite;
+}
+
+@keyframes sitelPulse {
+    0% { box-shadow: 0 0 0 0 rgba(74, 222, 128, 0.7); }
+    70% { box-shadow: 0 0 0 7px rgba(74, 222, 128, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(74, 222, 128, 0); }
+}
+
+.sitel-driver-stat {
+    background: #FFFFFF;
+    border: 1px solid var(--border-color);
+    border-radius: 14px;
+    padding: 0.85rem 1rem;
+    box-shadow: var(--shadow-card);
+}
+
+.btn-sitel-amber {
+    background-color: #D97706;
+    border-color: #D97706;
+    color: #FFFFFF;
+}
+
+.btn-sitel-amber:hover:not(:disabled) {
+    background-color: #B45309;
+    border-color: #B45309;
+    color: #FFFFFF;
+}
+
+.sitel-bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: #FFFFFF;
+    border-top: 1px solid var(--border-color);
+    box-shadow: 0 -4px 16px rgba(15, 23, 42, 0.08);
+    display: flex;
+    justify-content: center;
+    z-index: 40;
+    padding: 0.45rem 0.75rem calc(0.45rem + env(safe-area-inset-bottom));
+}
+
+.sitel-bottom-nav-inner {
+    width: 100%;
+    max-width: 540px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+}
+
+.sitel-bottom-nav-btn {
+    min-height: 50px;
+    border-radius: 12px;
+    border: none;
+    font-weight: 700;
+    font-size: 0.92rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.45rem;
+    transition: all 0.15s ease;
+}
+
+.sitel-bottom-nav-btn.active {
+    background-color: #2563EB;
+    color: #FFFFFF;
+    box-shadow: 0 3px 10px rgba(37, 99, 235, 0.3);
+}
+
+.sitel-bottom-nav-btn:not(.active) {
+    background-color: #F1F5F9;
+    color: #475569;
+}

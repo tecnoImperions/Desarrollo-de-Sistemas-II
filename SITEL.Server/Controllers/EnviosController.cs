@@ -46,6 +46,34 @@ namespace SITEL.Server.Controllers
             }
         }
 
+        // GET: api/envios/conductor/{conductorId}
+        [HttpGet("conductor/{conductorId:int}")]
+        public async Task<ActionResult<IEnumerable<Envio>>> GetEnviosPorConductor(int conductorId)
+        {
+            try
+            {
+                var envios = await _context.Envios
+                    .AsNoTracking()
+                    .AsSplitQuery()
+                    .Include(e => e.Cliente)
+                    .Include(e => e.Conductor)
+                    .Include(e => e.Ruta)
+                    .Include(e => e.DetallesCarga)
+                        .ThenInclude(d => d.Producto)
+                    .Include(e => e.HistorialEstados)
+                    .Include(e => e.Incidencias)
+                    .Where(e => e.ConductorId == conductorId)
+                    .OrderByDescending(e => e.FechaRegistro)
+                    .ToListAsync();
+
+                return Ok(envios);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { mensaje = "Error al consultar los despachos del conductor.", detalle = ex.Message });
+            }
+        }
+
         // GET: api/envios/rastreo/SIT-20261122-1234 (RF04: Consulta pública de rastreo sin datos sensibles)
         [AllowAnonymous]
         [HttpGet("rastreo/{guia}")]

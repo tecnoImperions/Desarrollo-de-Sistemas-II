@@ -109,7 +109,21 @@ namespace SITEL.UITests
 
             RegistrarServiciosBase(handler);
             var cut = RenderComponent<ConductorMovil>();
-            Assert.Contains("Terminal Móvil RNF02", cut.Markup);
+            Assert.Contains("Mis Entregas Asignadas", cut.Markup);
+        }
+
+        [Fact]
+        public void Defecto4_RutaConductor_DebeSerUnicaSinAmbiguedadEntreComponentes()
+        {
+            var componentesConRutaConductor = typeof(ConductorMovil).Assembly
+                .GetTypes()
+                .Where(t => t.GetCustomAttributes(typeof(RouteAttribute), false)
+                    .OfType<RouteAttribute>()
+                    .Any(r => string.Equals(r.Template.Trim('/'), "conductor", StringComparison.OrdinalIgnoreCase)))
+                .ToList();
+
+            var unico = Assert.Single(componentesConRutaConductor);
+            Assert.Equal(typeof(ConductorMovil), unico);
         }
 
         [Fact]

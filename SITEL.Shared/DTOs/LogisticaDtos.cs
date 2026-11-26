@@ -226,4 +226,71 @@ namespace SITEL.Shared.DTOs
         public string Observaciones { get; set; } = string.Empty;
         public DateTime FechaHora { get; set; }
     }
+
+    /// <summary>
+    /// DTO para registrar un usuario de forma segura con soporte para vincular o crear perfil operativo (Conductor / Cliente)
+    /// </summary>
+    public class RegistroUsuarioDto
+    {
+        [Required(ErrorMessage = "El nombre completo es obligatorio.")]
+        public string NombreCompleto { get; set; } = string.Empty;
+
+        [Required(ErrorMessage = "El correo electrónico es obligatorio.")]
+        [EmailAddress(ErrorMessage = "Formato de correo inválido.")]
+        public string Email { get; set; } = string.Empty;
+
+        [Required(ErrorMessage = "La contraseña es obligatoria.")]
+        public string PasswordHash { get; set; } = string.Empty;
+
+        public RolUsuario Rol { get; set; } = RolUsuario.Conductor;
+
+        // Campos operacionales opcionales para cuando se registra un Conductor
+        public string? Documento { get; set; }
+        public string? Licencia { get; set; }
+        public string? Telefono { get; set; }
+
+        public static implicit operator RegistroUsuarioDto(Entities.Usuario u) => new()
+        {
+            NombreCompleto = u?.NombreCompleto ?? string.Empty,
+            Email = u?.Email ?? string.Empty,
+            PasswordHash = u?.PasswordHash ?? string.Empty,
+            Rol = u?.Rol ?? RolUsuario.Conductor
+        };
+    }
+
+    /// <summary>
+    /// DTO de respuesta segura para usuarios (sin exponer PasswordHash)
+    /// </summary>
+    public class UsuarioRespuestaDto
+    {
+        public int Id { get; set; }
+        public string NombreCompleto { get; set; } = string.Empty;
+        public string Email { get; set; } = string.Empty;
+        public RolUsuario Rol { get; set; }
+        public int? ConductorId { get; set; }
+        public int? ClienteId { get; set; }
+    }
+
+    /// <summary>
+    /// DTO para crear Conductor con opción de generar automáticamente su cuenta de usuario
+    /// </summary>
+    public class CrearConductorDto
+    {
+        [Required(ErrorMessage = "Nombres son obligatorios.")]
+        public string Nombres { get; set; } = string.Empty;
+
+        [Required(ErrorMessage = "Apellidos son obligatorios.")]
+        public string Apellidos { get; set; } = string.Empty;
+
+        [Required(ErrorMessage = "Documento de identidad es obligatorio.")]
+        public string Documento { get; set; } = string.Empty;
+
+        public string Licencia { get; set; } = "Cat. C - Pesados";
+        public string Telefono { get; set; } = string.Empty;
+        public bool Disponible { get; set; } = true;
+
+        // Credenciales opcionales para crear cuenta de acceso móvil
+        public string? Email { get; set; }
+        public string? Password { get; set; }
+    }
 }

@@ -9,5 +9,8 @@ namespace SITEL.Shared.Entities
         public string Email { get; set; } = string.Empty;
         public string PasswordHash { get; set; } = string.Empty;
         public RolUsuario Rol { get; set; }
+
+        public Conductor? Conductor { get; set; }
+        public Cliente? Cliente { get; set; }
     }
 }

@@ -52,6 +52,19 @@ namespace SITEL.Client.Services
                         await GuardarEnLocalStorageSeguroAsync("userRole", rolNombre);
                         await GuardarEnLocalStorageSeguroAsync("userName", nombre);
                         await GuardarEnLocalStorageSeguroAsync("userEmail", result.Usuario?.Email ?? email.Trim());
+                        if (result.Usuario != null)
+                        {
+                            await GuardarEnLocalStorageSeguroAsync("userId", result.Usuario.Id.ToString());
+                            if (result.Usuario.ConductorId.HasValue)
+                                await GuardarEnLocalStorageSeguroAsync("conductorId", result.Usuario.ConductorId.Value.ToString());
+                            else
+                                await EliminarDeLocalStorageSeguroAsync("conductorId");
+
+                            if (result.Usuario.ClienteId.HasValue)
+                                await GuardarEnLocalStorageSeguroAsync("clienteId", result.Usuario.ClienteId.Value.ToString());
+                            else
+                                await EliminarDeLocalStorageSeguroAsync("clienteId");
+                        }
 
                         OnAuthStateChanged?.Invoke();
 
@@ -125,6 +138,9 @@ namespace SITEL.Client.Services
             await EliminarDeLocalStorageSeguroAsync("userRole");
             await EliminarDeLocalStorageSeguroAsync("userName");
             await EliminarDeLocalStorageSeguroAsync("userEmail");
+            await EliminarDeLocalStorageSeguroAsync("userId");
+            await EliminarDeLocalStorageSeguroAsync("conductorId");
+            await EliminarDeLocalStorageSeguroAsync("clienteId");
 
             OnAuthStateChanged?.Invoke();
         }
@@ -140,11 +156,21 @@ namespace SITEL.Client.Services
             var rol = await LeerDeLocalStorageSeguroAsync("userRole");
             var nombre = await LeerDeLocalStorageSeguroAsync("userName");
             var email = await LeerDeLocalStorageSeguroAsync("userEmail");
+            var userIdStr = await LeerDeLocalStorageSeguroAsync("userId");
+            var condIdStr = await LeerDeLocalStorageSeguroAsync("conductorId");
+            var cliIdStr = await LeerDeLocalStorageSeguroAsync("clienteId");
+
+            int? uId = int.TryParse(userIdStr, out var p1) ? p1 : null;
+            int? cId = int.TryParse(condIdStr, out var p2) ? p2 : null;
+            int? clId = int.TryParse(cliIdStr, out var p3) ? p3 : null;
 
             return new SesionActualDto
             {
                 Autenticado = !string.IsNullOrWhiteSpace(token),
                 Token = token ?? string.Empty,
+                UsuarioId = uId,
+                ConductorId = cId,
+                ClienteId = clId,
                 Rol = string.IsNullOrWhiteSpace(rol) ? "OperadorLogistico" : rol,
                 NombreCompleto = string.IsNullOrWhiteSpace(nombre) ? "Usuario SITEL" : nombre,
                 Email = email ?? string.Empty
@@ -193,6 +219,9 @@ namespace SITEL.Client.Services
     {
         public bool Autenticado { get; set; }
         public string Token { get; set; } = string.Empty;
+        public int? UsuarioId { get; set; }
+        public int? ConductorId { get; set; }
+        public int? ClienteId { get; set; }
         public string NombreCompleto { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty;
         public string Rol { get; set; } = string.Empty;
@@ -211,5 +240,7 @@ namespace SITEL.Client.Services
         public string NombreCompleto { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty;
         public int Rol { get; set; }
+        public int? ConductorId { get; set; }
+        public int? ClienteId { get; set; }
     }
 }

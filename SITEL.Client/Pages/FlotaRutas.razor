@@ -256,6 +256,26 @@
                         <label class="form-label small fw-bold">Teléfono Móvil de Contacto <span class="text-danger">*</span></label>
                         <input type="text" class="form-control" @bind="nuevoConductor.Telefono" placeholder="Ej. 71099887" />
                     </div>
+                    <div class="col-12 mt-2">
+                        <hr class="my-2" />
+                        <div class="form-check form-switch mb-2">
+                            <input class="form-check-input" type="checkbox" id="checkCrearUsuario" @bind="crearCuentaUsuario" />
+                            <label class="form-check-label small fw-bold" for="checkCrearUsuario">
+                                <i class="bi bi-shield-lock me-1"></i>Habilitar acceso al sistema y aplicación móvil
+                            </label>
+                        </div>
+                    </div>
+                    @if (crearCuentaUsuario)
+                    {
+                        <div class="col-md-6">
+                            <label class="form-label small fw-bold">Correo Electrónico <span class="text-danger">*</span></label>
+                            <input type="email" class="form-control" @bind="emailNuevoConductor" placeholder="conductor@sitel.bo" />
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label small fw-bold">Contraseña <span class="text-danger">*</span></label>
+                            <input type="password" class="form-control" @bind="passwordNuevoConductor" placeholder="Sitel2026#" />
+                        </div>
+                    }
                 </div>
             </div>
             <div class="sitel-modal-footer">
@@ -331,6 +351,10 @@
     private Conductor nuevoConductor = new() { Licencia = "Cat. C - Pesados", Disponible = true };
     private Ruta nuevaRuta = new() { Origen = "Almacén Central SCZ", DistanciaKm = 15.0m };
 
+    private bool crearCuentaUsuario = false;
+    private string emailNuevoConductor = string.Empty;
+    private string passwordNuevoConductor = "Sitel2026#";
+
     private IEnumerable<Conductor> ConductoresReales =>
         conductores.Where(c => c != null && !c.Nombres.Contains("Sin Asignar", StringComparison.OrdinalIgnoreCase));
 
@@ -370,6 +394,9 @@
     {
         errorModal = string.Empty;
         nuevoConductor = new Conductor { Licencia = "Cat. C - Pesados", Disponible = true };
+        crearCuentaUsuario = false;
+        emailNuevoConductor = string.Empty;
+        passwordNuevoConductor = "Sitel2026#";
         mostrarModalConductor = true;
     }
 
@@ -390,16 +417,35 @@
             return;
         }
 
+        if (crearCuentaUsuario && (string.IsNullOrWhiteSpace(emailNuevoConductor) || string.IsNullOrWhiteSpace(passwordNuevoConductor)))
+        {
+            errorModal = "Si habilita el acceso al sistema, debe ingresar un correo y contraseña válidos.";
+            return;
+        }
+
         guardandoModal = true;
         errorModal = string.Empty;
 
         try
         {
-            var resp = await Http.PostAsJsonAsync("api/conductores", nuevoConductor);
+            var dto = new CrearConductorDto
+            {
+                Nombres = nuevoConductor.Nombres,
+                Apellidos = nuevoConductor.Apellidos,
+                Documento = nuevoConductor.Documento,
+                Licencia = nuevoConductor.Licencia,
+                Telefono = nuevoConductor.Telefono,
+                Disponible = true,
+                Email = crearCuentaUsuario ? emailNuevoConductor : null,
+                Password = crearCuentaUsuario ? passwordNuevoConductor : null
+            };
+
+            var resp = await Http.PostAsJsonAsync("api/conductores", dto);
             if (resp.IsSuccessStatusCode)
             {
                 esError = false;
-                mensajeAlerta = $"Conductor '{nuevoConductor.Nombres} {nuevoConductor.Apellidos}' registrado y habilitado para despachos.";
+                var infoExtra = crearCuentaUsuario ? " y usuario de acceso móvil creado" : "";
+                mensajeAlerta = $"Conductor '{nuevoConductor.Nombres} {nuevoConductor.Apellidos}' registrado{infoExtra} y habilitado para despachos.";
                 mostrarModalConductor = false;
                 await CargarCatalogosAsync();
             }

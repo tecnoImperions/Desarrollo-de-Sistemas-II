@@ -10,6 +10,9 @@ namespace SITEL.Shared.Entities
 
         public int Id { get; set; }
 
+        public int? UsuarioId { get; set; }
+        public Usuario? Usuario { get; set; }
+
         public string Nombres
         {
             get => _nombres;

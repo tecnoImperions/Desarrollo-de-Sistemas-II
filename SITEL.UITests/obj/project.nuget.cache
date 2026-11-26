@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "aQqHAbGjWlQ=",
+  "dgSpecHash": "sazAGyGNIyI=",
   "success": true,
   "projectFilePath": "C:\\Users\\Juan Andres\\source\\repos\\SITEL_SISTEMA\\SITEL.UITests\\SITEL.UITests.csproj",
   "expectedPackageFiles": [
@@ -58,18 +58,5 @@
     "C:\\Users\\Juan Andres\\.nuget\\packages\\xunit.extensibility.execution\\2.9.3\\xunit.extensibility.execution.2.9.3.nupkg.sha512",
     "C:\\Users\\Juan Andres\\.nuget\\packages\\xunit.runner.visualstudio\\2.8.2\\xunit.runner.visualstudio.2.8.2.nupkg.sha512"
   ],
-  "logs": [
-    {
-      "code": "NU1902",
-      "level": "Warning",
-      "message": "El paquete \"AngleSharp\" 1.2.0 tiene una vulnerabilidad de gravedad moderada conocida, https://github.com/advisories/GHSA-pgww-w46g-26qg",
-      "projectPath": "C:\\Users\\Juan Andres\\source\\repos\\SITEL_SISTEMA\\SITEL.UITests\\SITEL.UITests.csproj",
-      "warningLevel": 1,
-      "filePath": "C:\\Users\\Juan Andres\\source\\repos\\SITEL_SISTEMA\\SITEL.UITests\\SITEL.UITests.csproj",
-      "libraryId": "AngleSharp",
-      "targetGraphs": [
-        "net10.0"
-      ]
-    }
-  ]
+  "logs": []
 }

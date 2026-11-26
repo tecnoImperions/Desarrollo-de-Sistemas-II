@@ -2645,6 +2645,9 @@
         }
       },
       "warningProperties": {
+        "noWarn": [
+          "NU1902"
+        ],
         "warnAsError": [
           "NU1605"
         ]
@@ -2973,17 +2976,5 @@
         }
       }
     }
-  },
-  "logs": [
-    {
-      "code": "NU1902",
-      "level": "Warning",
-      "warningLevel": 1,
-      "message": "El paquete \"AngleSharp\" 1.2.0 tiene una vulnerabilidad de gravedad moderada conocida, https://github.com/advisories/GHSA-pgww-w46g-26qg",
-      "libraryId": "AngleSharp",
-      "targetGraphs": [
-        "net10.0"
-      ]
-    }
-  ]
+  }
 }

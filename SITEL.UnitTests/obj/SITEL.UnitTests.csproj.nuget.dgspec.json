@@ -424,6 +424,9 @@
             "framework": "net10.0",
             "targetAlias": "net10.0",
             "projectReferences": {
+              "C:\\Users\\Juan Andres\\source\\repos\\SITEL_SISTEMA\\SITEL.Client\\SITEL.Client.csproj": {
+                "projectPath": "C:\\Users\\Juan Andres\\source\\repos\\SITEL_SISTEMA\\SITEL.Client\\SITEL.Client.csproj"
+              },
               "C:\\Users\\Juan Andres\\source\\repos\\SITEL_SISTEMA\\SITEL.Shared\\SITEL.Shared.csproj": {
                 "projectPath": "C:\\Users\\Juan Andres\\source\\repos\\SITEL_SISTEMA\\SITEL.Shared\\SITEL.Shared.csproj"
               }
@@ -458,6 +461,10 @@
             "Microsoft.AspNetCore.Authentication.JwtBearer": {
               "target": "Package",
               "version": "[10.0.0, )"
+            },
+            "Microsoft.AspNetCore.Components.WebAssembly.Server": {
+              "target": "Package",
+              "version": "[10.0.14, )"
             },
             "Microsoft.AspNetCore.OpenApi": {
               "target": "Package",

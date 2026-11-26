@@ -12,6 +12,9 @@ namespace SITEL.Shared.Entities
 
         public int Id { get; set; }
 
+        public int? UsuarioId { get; set; }
+        public Usuario? Usuario { get; set; }
+
         [Required(ErrorMessage = "El nombre o razón social es obligatorio.")]
         [StringLength(150, MinimumLength = 3, ErrorMessage = "La razón social debe tener entre 3 y 150 caracteres.")]
         public string NombreRazonSocial
